@@ -17,7 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-public class TeacherMain extends JFrame implements ActionListener, MouseListener{
+public class TeacherMain extends JPanel implements ActionListener, MouseListener{
 	Font fn = new Font("맑은고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	
@@ -81,11 +81,6 @@ public class TeacherMain extends JFrame implements ActionListener, MouseListener
 		d = now.get(Calendar.DAY_OF_MONTH);
 		ta.setText(y+"년 "+m+"월 "+d+"일\n\n");
 		
-		setSize(800,1000);
-		setVisible(true);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
-		
 	}
 	@Override
 	public void mouseClicked(MouseEvent me) {
@@ -115,11 +110,6 @@ public class TeacherMain extends JFrame implements ActionListener, MouseListener
 			ta.setText(y+"년 "+m+"월 "+d+"일\n\n");
 		}
 		
-	}
-
-	public static void main(String[] args) {
-		new TeacherMain();
-
 	}
 
 }
