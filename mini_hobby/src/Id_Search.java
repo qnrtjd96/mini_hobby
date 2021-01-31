@@ -18,7 +18,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-public class Id_Search extends JFrame implements ActionListener, KeyListener{	
+public class Id_Search extends JPanel implements ActionListener, KeyListener{	
 	JPanel pane_logo = new JPanel();
 		ImageIcon img = new ImageIcon("img/logo.png");
 		JLabel logo = new JLabel(img);
@@ -41,7 +41,6 @@ public class Id_Search extends JFrame implements ActionListener, KeyListener{
 	Dimension lblSize = new Dimension(130, 30);
 
 	public Id_Search() {
-		super("ID/비밀번호 찾기");
 		setLayout(null);
 		
 		add(pane_logo);
@@ -86,10 +85,6 @@ public class Id_Search extends JFrame implements ActionListener, KeyListener{
 		btn.setBounds(250, 870, 300, 70);
 		btn.setFont(fnt); btn.setBackground(Color.LIGHT_GRAY);
 		
-		setSize(800,1000);
-		setVisible(true);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
 		btn.addActionListener(this);
 		tf_id.addKeyListener(this); tf_pwd.addKeyListener(this); tf_pwd2.addKeyListener(this);
 	}
@@ -124,11 +119,6 @@ public class Id_Search extends JFrame implements ActionListener, KeyListener{
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {}
-
-	public static void main(String[] args) {
-		new Id_Search();
-
-	}
 
 	
 
