@@ -1,6 +1,6 @@
 
 
-public class main extends JFrameExtends{
+public class main{
 
 	public main() {
 		if(true/*로그인정보가 학생이면*/) {
