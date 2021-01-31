@@ -62,23 +62,23 @@ public class MyMenu_Stu implements MouseListener{
 		JLabel obj = (JLabel)me.getSource();
 		Object lbl = obj.getText();
 		if(lbl.equals("My Page")) {
-			////// 구현해서 paneRight에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			ts.jframeExtends.setVisible(false);
 			//마이페이지 테스트
 			new MyPageTest();
 		}else if(lbl.equals("구매/예약 내역확인")) {
-			////// 구현해서 paneRight에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			ts.jframeExtends.setVisible(false);
 			//구매내역 테스트
 			new PurchaseTest();
 		}else if(lbl.equals("충전하기")) {
-			////// 구현해서 paneRight에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			ts.jframeExtends.setVisible(false);
 		}else if(lbl.equals("회원정보 확인/수정")) {
-			////// 구현해서 paneRight에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			ts.jframeExtends.setVisible(false);
 		}else if(lbl.equals("탈퇴하기")) {
-			////// 구현해서 paneRight에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			ts.jframeExtends.setVisible(false);
 		}
 		

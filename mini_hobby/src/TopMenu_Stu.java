@@ -68,21 +68,21 @@ public class TopMenu_Stu implements ActionListener, MouseListener{
 		Object lbl = obj.getText();
 		System.out.println(lbl);
 		if(lbl.equals("이전으로")) {
-			////// 구현해서 paneCenter에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			this.jframeExtends.setVisible(false);
 			
 		}else if(lbl.equals("메세지함")) {
-			////// 구현해서 paneCenter에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			this.jframeExtends.setVisible(false);
 			//메세지함 호출 테스트
 			new MessegeTest();
 		}else if(lbl.equals("내정보")) {
-			////// 구현해서 paneCenter에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			this.jframeExtends.setVisible(false);
 			//내정보 메뉴 호출
 			new MyMenu_Stu();
 		}else if(lbl.equals("로그아웃")) {
-			////// 구현해서 paneCenter에 add하세요 //////
+			////// 구현해서 객체 호출하세요 //////
 			this.jframeExtends.setVisible(false);
 			
 		}
