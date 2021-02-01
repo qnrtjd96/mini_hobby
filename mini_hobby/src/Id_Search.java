@@ -18,10 +18,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-public class Id_Search extends JPanel implements ActionListener, KeyListener{	
+public class Id_Search extends JFrameExtends implements ActionListener, KeyListener{	
 	JPanel pane_logo = new JPanel();
 		ImageIcon img = new ImageIcon("img/logo.png");
-		JLabel logo = new JLabel(img);
+		JLabel logo = new JLabel("로고");
 	JPanel pane_id = new JPanel();
 		JLabel lbl_idtitle = new JLabel("아이디 찾기");
 		JLabel lbl_id = new JLabel("이메일 주소");
@@ -120,6 +120,9 @@ public class Id_Search extends JPanel implements ActionListener, KeyListener{
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {}
 
-	
+	public static void main(String[] args) {
+		new Id_Search();
+
+	}
 
 }
