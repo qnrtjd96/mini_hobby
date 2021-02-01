@@ -19,12 +19,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-public class TeacherMain extends JFrame implements ActionListener, MouseListener{
+public class TeacherMain  extends JFrameExtends implements ActionListener, MouseListener{
 	Font fn = new Font("맑은고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
 	
-	JPanel upper = new TopMenu_Tea();
+	JPanel upper = new TopMenu_Tea().paneTop;
 	JPanel center = new JPanel();
 		JTextField tf = new JTextField();
 		JButton btn = new JButton("검색");

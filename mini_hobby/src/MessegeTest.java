@@ -13,7 +13,7 @@ public class MessegeTest {
 		
 		//상단바 메뉴 눌렀을때 이벤트 처리를 위한 호출
 		TopMenu_Stu ts = new TopMenu_Stu();
-		ts.jframeExtends.add(BorderLayout.CENTER, paneMessege);
+		ts.add(BorderLayout.CENTER, paneMessege);
 	}
 
 }

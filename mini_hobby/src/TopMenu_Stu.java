@@ -11,8 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class TopMenu_Stu implements ActionListener, MouseListener{
-	JFrameExtends jframeExtends = new JFrameExtends();
+public class TopMenu_Stu extends JFrameExtends implements ActionListener, MouseListener{
+	//JFrameExtends jframeExtends = new JFrameExtends();
 	JPanel paneTop = new JPanel(new BorderLayout());
 		JPanel paneLogo = new JPanel();
 			JButton logoBtn = new JButton("로고이미지");
@@ -45,7 +45,10 @@ public class TopMenu_Stu implements ActionListener, MouseListener{
 		
 		//내정보 패널
 		//paneCenter.add(new MyMenu_Stu().paneStu);
-		jframeExtends.add(BorderLayout.NORTH,paneTop);
+		/*
+		 * jframeExtends.add(BorderLayout.NORTH,paneTop);
+		 */
+		super.add(BorderLayout.NORTH,paneTop);
 		
 		logoBtn.addActionListener(this);
 	}
@@ -58,7 +61,10 @@ public class TopMenu_Stu implements ActionListener, MouseListener{
 			//로고 클릭 시
 			paneCenter.removeAll();
 			paneCenter.setBackground(Color.RED);
-			jframeExtends.add(BorderLayout.CENTER, paneCenter);
+			/*
+			 * jframeExtends.add(BorderLayout.CENTER, paneCenter);
+			 */
+			super.add(BorderLayout.CENTER, paneCenter);
 		}
 	}
 	//label 이벤트 오버라이딩
@@ -69,21 +75,24 @@ public class TopMenu_Stu implements ActionListener, MouseListener{
 		System.out.println(lbl);
 		if(lbl.equals("이전으로")) {
 			////// 구현해서 객체 호출하세요 //////
-			this.jframeExtends.setVisible(false);
+			/*
+			 * this.jframeExtends.setVisible(false);
+			 */
+			super.setVisible(false);
 			
 		}else if(lbl.equals("메세지함")) {
 			////// 구현해서 객체 호출하세요 //////
-			this.jframeExtends.setVisible(false);
+			super.setVisible(false);
 			//메세지함 호출 테스트
 			new MessegeTest();
 		}else if(lbl.equals("내정보")) {
 			////// 구현해서 객체 호출하세요 //////
-			this.jframeExtends.setVisible(false);
+			super.setVisible(false);
 			//내정보 메뉴 호출
 			new MyMenu_Stu();
 		}else if(lbl.equals("로그아웃")) {
 			////// 구현해서 객체 호출하세요 //////
-			this.jframeExtends.setVisible(false);
+			super.setVisible(false);
 			
 		}
 	}

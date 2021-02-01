@@ -55,7 +55,7 @@ public class MyMenu_Stu implements MouseListener{
 		
 		//상단바 메뉴 눌렀을때 이벤트 처리를 위한 호출
 		
-		ts.jframeExtends.add(BorderLayout.CENTER, paneStu);
+		ts.add(BorderLayout.CENTER, paneStu);
 	}
 	@Override
 	public void mouseReleased(MouseEvent me) {
@@ -63,23 +63,23 @@ public class MyMenu_Stu implements MouseListener{
 		Object lbl = obj.getText();
 		if(lbl.equals("My Page")) {
 			////// 구현해서 객체 호출하세요 //////
-			ts.jframeExtends.setVisible(false);
+			ts.setVisible(false);
 			//마이페이지 테스트
 			new MyPageTest();
 		}else if(lbl.equals("구매/예약 내역확인")) {
 			////// 구현해서 객체 호출하세요 //////
-			ts.jframeExtends.setVisible(false);
+			ts.setVisible(false);
 			//구매내역 테스트
 			new PurchaseTest();
 		}else if(lbl.equals("충전하기")) {
 			////// 구현해서 객체 호출하세요 //////
-			ts.jframeExtends.setVisible(false);
+			ts.setVisible(false);
 		}else if(lbl.equals("회원정보 확인/수정")) {
 			////// 구현해서 객체 호출하세요 //////
-			ts.jframeExtends.setVisible(false);
+			ts.setVisible(false);
 		}else if(lbl.equals("탈퇴하기")) {
 			////// 구현해서 객체 호출하세요 //////
-			ts.jframeExtends.setVisible(false);
+			ts.setVisible(false);
 		}
 		
 	}
