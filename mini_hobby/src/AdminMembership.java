@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -17,7 +19,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class AdminMembership extends JFrameExtends implements ItemListener{
+public class AdminMembership extends JFrameExtends implements ItemListener, MouseListener{
 	JPanel pane_membership = new JPanel();
 		// 상단 로고 / 회원가입 라벨 / 학생,선생님 라디오버튼
 		JButton logo = new JButton("Logo"/*img*/);
@@ -67,6 +69,7 @@ public class AdminMembership extends JFrameExtends implements ItemListener{
 		for(int i=0; i<tfStr.length; i++) {
 			tfStr[i].setFont(fntPlain);
 			pane_membership.add(tfStr[i]);
+			tfStr[i].addMouseListener(this);
 		}
 		// 아이디 중복 여부 및 패스워드 제약조건
 		taId.setText("중복여부를 확인하세요."); taPwd.setText("비밀번호는 8글자 이상 기재해야합니다.");
@@ -125,8 +128,12 @@ public class AdminMembership extends JFrameExtends implements ItemListener{
 		checkMusic.setBackground(Color.white); checkPaint.setBackground(Color.white); checkSports.setBackground(Color.white); checkCook.setBackground(Color.white);
 		setVisible(true);
 		
+		// 라디오버튼 이벤트 등록
 		checkStu.addItemListener(this);
 		checkTea.addItemListener(this);
+		
+		// 텍스트필드 이벤트 등록
+		tf_carr.addMouseListener(this);
 	}
 	public void itemStateChanged(ItemEvent ie) {
 		if(checkStu.isSelected()) {
@@ -137,4 +144,13 @@ public class AdminMembership extends JFrameExtends implements ItemListener{
 			lbl_carr.setVisible(true); tf_carr.setVisible(true);
 		}
 	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		JTextField obj = (JTextField)e.getSource();
+		obj.setText("");
+	}
+	public void mouseClicked(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
 }

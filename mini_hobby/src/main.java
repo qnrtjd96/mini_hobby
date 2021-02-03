@@ -7,7 +7,8 @@ public class main{
 			//학생 5~9 페이지 메뉴(2021.01.31 이영준)
 			//new StudenTopMenu(); //상단바 테스트
 			//new AdminMembership(); //회원가입 테스트
-			new StudenCateList();
+			//new StudenCateList();
+			new TeachCateList();
 		}//else if(true/*로그인정보가 강사이면*/){
 //			//강사 28~33페이지 메뉴(2021.01.31 이영준)
 			//new TeachTopMenu();
