@@ -4,13 +4,13 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class MyPageTest extends MyMenu_Stu{
+public class StudenMyPageTest extends StudenMyMenu{
 		JLabel lbl = new JLabel("MY PAGE", JLabel.CENTER);
-	public MyPageTest() {
+	public StudenMyPageTest() {
 		paneRight.setBackground(Color.white);
 		paneRight.add(lbl);
 		
-		paneStu.add(BorderLayout.CENTER, paneRight);
+		
 	}
 
 }

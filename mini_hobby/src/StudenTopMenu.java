@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,14 +12,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class TopMenu_Tea extends JFrameExtends implements ActionListener, MouseListener{
+public class StudenTopMenu extends JFrameExtends implements ActionListener, MouseListener{
 	JPanel paneTop = new JPanel(new BorderLayout());
 		JPanel paneLogo = new JPanel();
 			JButton logoBtn = new JButton("로고이미지");
 		JPanel paneLabel = new JPanel();
 			//JLabel 대입
-
-	public TopMenu_Tea() {
+		
+	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);	
+	public StudenTopMenu() {
 		//logoBtn
 		paneLogo.add(logoBtn);
 			
@@ -32,6 +34,7 @@ public class TopMenu_Tea extends JFrameExtends implements ActionListener, MouseL
 		
 		for(int i=0; i<topLblStr.length; i++) {
 			JLabel topLbl = new JLabel(topLblStr[i], JLabel.CENTER);
+			topLbl.setFont(fntBold15);
 			paneLabel.add(topLbl);
 			topLbl.addMouseListener(this);
 		}
@@ -40,8 +43,13 @@ public class TopMenu_Tea extends JFrameExtends implements ActionListener, MouseL
 		paneTop.setBorder(BorderFactory.createEmptyBorder(20,20,30,20));
 		paneTop.add(BorderLayout.WEST,paneLogo); paneTop.add(BorderLayout.EAST, paneLabel);
 		
+		//배경색상
+		paneTop.setBackground(Color.white); paneLogo.setBackground(Color.white); paneLabel.setBackground(Color.white);
 		//내정보 패널
 		//paneCenter.add(new MyMenu_Stu().paneStu);
+		/*
+		 * jframeExtends.add(BorderLayout.NORTH,paneTop);
+		 */
 		this.add(BorderLayout.NORTH,paneTop);
 		
 		logoBtn.addActionListener(this);
@@ -54,6 +62,9 @@ public class TopMenu_Tea extends JFrameExtends implements ActionListener, MouseL
 		if(obj==logoBtn) {
 			//로고 클릭 시
 			this.setVisible(false);
+			/*
+			 * jframeExtends.add(BorderLayout.CENTER, paneCenter);
+			 */
 		}
 	}
 	//label 이벤트 오버라이딩
@@ -61,24 +72,30 @@ public class TopMenu_Tea extends JFrameExtends implements ActionListener, MouseL
 	public void mouseReleased(MouseEvent me) {
 		JLabel obj = (JLabel)me.getSource();
 		Object lbl = obj.getText();
-		System.out.println(lbl);
 		if(lbl.equals("이전으로")) {
 			////// 구현해서 객체 호출하세요 //////
+			/*
+			 * this.jframeExtends.setVisible(false);
+			 */
 			this.setVisible(false);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
 		}else if(lbl.equals("메세지함")) {
 			////// 구현해서 객체 호출하세요 //////
 			this.setVisible(false);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			//메세지함 호출 테스트
-			new MessegeTest();
+			new StudenMsgTest();
 		}else if(lbl.equals("내정보")) {
 			////// 구현해서 객체 호출하세요 //////
 			this.setVisible(false);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			//내정보 메뉴 호출
-			new MyMenu_Tea();
+			new StudenMyMenu();
 		}else if(lbl.equals("로그아웃")) {
 			////// 구현해서 객체 호출하세요 //////
 			this.setVisible(false);
+			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			
 		}
 	}
