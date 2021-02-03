@@ -26,7 +26,7 @@ public class TeachMyMenu implements MouseListener{
 			JLabel lblClock = new JLabel("○○○님의 ★★클래스 수강까지 1시간 20분 43초 남았습니다.", JLabel.CENTER);
 	
 	TeachTopMenu tt = new TeachTopMenu();
-	
+	Color col6 = new Color(204,222,233);
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntPlain20 = new Font("맑은 고딕", Font.PLAIN, 20);
 	Font fntPlain25 = new Font("맑은 고딕", Font.PLAIN, 25);
@@ -50,7 +50,7 @@ public class TeachMyMenu implements MouseListener{
 		grid.setVgap(15);
 		
 		//paneLeft 기본셋팅
-		paneLeft.setBackground(Color.pink);
+		paneLeft.setBackground(col6);
 		paneLeft.setBorder(lineBorder);
 		
 		//paneRight 기본셋팅

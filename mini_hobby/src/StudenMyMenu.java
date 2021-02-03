@@ -26,7 +26,7 @@ public class StudenMyMenu implements MouseListener{
 			JLabel lblClock = new JLabel("○○○님의 ★★클래스 수강까지 1시간 20분 43초 남았습니다.", JLabel.CENTER);
 	
 	StudenTopMenu ts = new StudenTopMenu();	
-	
+	Color col6 = new Color(204,222,233);
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntPlain20 = new Font("맑은 고딕", Font.PLAIN, 20);
 	Font fntPlain25 = new Font("맑은 고딕", Font.PLAIN, 25);
@@ -50,7 +50,7 @@ public class StudenMyMenu implements MouseListener{
 		grid.setVgap(15);
 		
 		//paneLeft 기본셋팅
-		paneLeft.setBackground(Color.white);
+		paneLeft.setBackground(col6);
 		paneLeft.setBorder(lineBorder);
 		
 		//paneRight 기본셋팅
@@ -65,7 +65,7 @@ public class StudenMyMenu implements MouseListener{
 		//전체를 감싸고있는 패널에 패딩값 10씩 주기
 		paneStu.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		paneStu.add(BorderLayout.WEST,paneLeft); paneStu.add(BorderLayout.CENTER,paneRight); paneStu.add(BorderLayout.SOUTH,paneBottom);
-		
+		paneStu.setBackground(Color.white);
 		//상단바 메뉴 눌렀을때 이벤트 처리를 위한 호출
 		
 		ts.add(BorderLayout.CENTER, paneStu);

@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-public class TeacherMain extends JFrameExtends implements ActionListener, MouseListener{
+public class TeachMain extends JFrameExtends implements ActionListener, MouseListener{
 	Font fn = new Font("맑은고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
@@ -55,7 +55,7 @@ public class TeacherMain extends JFrameExtends implements ActionListener, MouseL
 		String days[] = {"일", "월", "화", "수", "목", "금", "토"}; 
 		JPanel datePane = new JPanel( new GridLayout(0,7,38,25)); // 1~31 날짜 출력 
 
-	public TeacherMain() {
+	public TeachMain() {
 		tt.setVisible(false);
 		add("North", upper);
 		upper.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -195,7 +195,7 @@ public class TeacherMain extends JFrameExtends implements ActionListener, MouseL
 	}
 	
 	public static void main(String[] args) {
-		new TeacherMain();
+		new TeachMain();
 
 	}
 
