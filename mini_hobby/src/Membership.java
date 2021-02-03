@@ -137,5 +137,4 @@ public class Membership extends JFrameExtends implements ItemListener{
 			lbl_carr.setVisible(true); tf_carr.setVisible(true);
 		}
 	}
-
 }
