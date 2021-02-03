@@ -12,7 +12,7 @@ import javax.swing.border.LineBorder;
 public class MyMenu_Tea implements MouseListener{
 
 	//보더레이아웃 내에서 마진값 10씩주기
-	JPanel paneStu = new JPanel(new BorderLayout(10,10));
+	JPanel paneStu = new JPanel(new BorderLayout(20,20));
 		JPanel paneLeft = new JPanel();
 			//왼쪽 메뉴 라벨 입력
 		JPanel paneRight = new JPanel();
@@ -28,7 +28,7 @@ public class MyMenu_Tea implements MouseListener{
 		for(int i=0; i<menuLblStr.length; i++) {
 			JLabel lblLeft = new JLabel(menuLblStr[i], JLabel.LEFT);
 			paneLeft.add(lblLeft);
-			lblLeft.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+			lblLeft.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
 			lblLeft.addMouseListener(this);
 		}
@@ -48,13 +48,13 @@ public class MyMenu_Tea implements MouseListener{
 		//paneBottom 기본셋팅(테스트용으로 라벨 넣음)
 		paneBottom.add(lblClock);
 		
-		//전체를 감싸고있는 패널에 패딩값 10씩 주기
-		paneStu.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		//전체를 감싸고있는 패널에 패딩값 20씩 주기
+		paneStu.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		paneStu.add(BorderLayout.WEST,paneLeft); paneStu.add(BorderLayout.CENTER,paneRight); paneStu.add(BorderLayout.SOUTH,paneBottom);
 		
 		//상단바 메뉴 눌렀을때 이벤트 처리를 위한 호출
 		
-		tt.jframeExtends.add(BorderLayout.CENTER, paneStu);
+		tt.add(BorderLayout.CENTER, paneStu);
 	}
 	@Override
 	public void mouseReleased(MouseEvent me) {
@@ -62,23 +62,23 @@ public class MyMenu_Tea implements MouseListener{
 		Object lbl = obj.getText();
 		if(lbl.equals("My Page")) {
 			////// 구현해서 객체 호출하세요 //////
-			tt.jframeExtends.setVisible(false);
+			tt.setVisible(false);
 			//마이페이지 테스트
 			new MyPageTest();
 		}else if(lbl.equals("구매/예약 내역확인")) {
 			////// 구현해서 객체 호출하세요 //////
-			tt.jframeExtends.setVisible(false);
+			tt.setVisible(false);
 			//구매내역 테스트
 			new PurchaseTest();
 		}else if(lbl.equals("충전하기")) {
 			////// 구현해서 객체 호출하세요 //////
-			tt.jframeExtends.setVisible(false);
+			tt.setVisible(false);
 		}else if(lbl.equals("회원정보 확인/수정")) {
 			////// 구현해서 객체 호출하세요 //////
-			tt.jframeExtends.setVisible(false);
+			tt.setVisible(false);
 		}else if(lbl.equals("탈퇴하기")) {
 			////// 구현해서 객체 호출하세요 //////
-			tt.jframeExtends.setVisible(false);
+			tt.setVisible(false);
 		}
 		
 	}
