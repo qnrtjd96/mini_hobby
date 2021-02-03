@@ -172,33 +172,6 @@ public class TeachReservationDetail extends JFrameExtends implements ActionListe
 		}
 		
 	}
-	public void dialStart() {
-		JDialog dial = new JDialog(this, "수업 가능한 시간을 모두 선택하세요");
-		dial.setSize(340,400);
-		dial.setVisible(true);
-		JPanel dialPane = new JPanel();
-			JLabel lbl1 = new JLabel("선택한 클래스 : 클래스2");
-			JLabel lbl2 = new JLabel("선택한 일자 : 2021년 2월 2일");
-			JPanel select = new JPanel(new GridLayout(0,2));
-				String time[] = {"09:00~10:00","10:00~11:00","11:00~12:00","12:00~13:00","13:00~14:00","14:00~15:00","15:00~16:00"
-						+ "16:00~17:00","17:00~18:00", "18:00~19:00", "19:00~20:00","20:00~21:00","21:00~22:00"};
-			JButton btn = new JButton("수정완료");
-			
-		dial.add(dialPane); dialPane.setLayout(null);
-		dialPane.add(lbl1); dialPane.add(lbl2); dialPane.add(select); dialPane.add(btn);	
-		lbl1.setFont(fn2); lbl1.setBounds(70,20,300,30);
-		lbl2.setFont(fn2); lbl2.setBounds(40,50,300,30);
-		btn.setFont(fn2); btn.setBounds(110,300,120,40); btn.setBackground(Color.LIGHT_GRAY);
-		select.setFont(fnt); select.setBounds(50,90,220,200);
-		for (int t=0; t<time.length; t++) {
-			String str = time[t];
-			JCheckBox box = new JCheckBox(str);
-			box.setFont(fn); box.setHorizontalAlignment(JCheckBox.CENTER);
-			select.add(box);
-		}
-			
-		
-	}
 	public void calendar_Reser() {
 		//맨위 년도, 월 선택 패널 
 		cal.setLayout(null);
