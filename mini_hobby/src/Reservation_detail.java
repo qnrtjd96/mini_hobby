@@ -5,24 +5,32 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class Reservation_detail extends JFrameExtends {
+public class Reservation_detail extends JFrameExtends implements ActionListener, MouseListener{
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
+	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
 	
 	JPanel upper = new TopMenu_Tea().paneTop;
 	JPanel center = new JPanel();
-		JPanel cal = new TeacherMain().cal;
+		JPanel cal = new JPanel();
 		JPanel classPane = new JPanel();
 			JLabel lbl1 = new JLabel("선택한 클래스 : 클래스2");
 			JLabel lbl2 = new JLabel("선택한 일자 : 2021년 2월 2일");
@@ -54,6 +62,16 @@ public class Reservation_detail extends JFrameExtends {
 		
 		Dimension li3_size = new Dimension(150, 600);
 		
+		// 달력에 대한 부분
+		Calendar now = Calendar.getInstance();
+		int y,m,d;
+		JPanel selectPane = new JPanel();
+		JLabel dateLbl = new JLabel();
+		// 달력 패널 
+		JPanel calPane = new JPanel(); 
+			JPanel dayPane = new JPanel(new GridLayout(1,7,40,40)); //일 ~월 글자출력 
+			String days[] = {"일", "월", "화", "수", "목", "금", "토"}; 
+			JPanel datePane = new JPanel( new GridLayout(0,7,38,25)); // 1~31 날짜 출력 
 
 	public Reservation_detail() {
 		add("North", upper);
@@ -62,7 +80,8 @@ public class Reservation_detail extends JFrameExtends {
 		center.add(cal); center.add(classPane); center.add(sp);
 		classPane.add(lbl1); classPane.add(lbl2); classPane.add(select); classPane.add(btn);
 		classPane.setLayout(null);
-		cal.setBounds(20,20,400,400); classPane.setBounds(430,40,340,360);
+		cal.setBounds(20,20,400,400); calendar_Reser();
+		classPane.setBounds(430,40,340,360);
 		classPane.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		lbl1.setFont(fnt); lbl1.setBounds(70,20,300,50);
 		lbl2.setFont(fnt); lbl2.setBounds(40,70,300,50);
@@ -103,9 +122,6 @@ public class Reservation_detail extends JFrameExtends {
 		li10.setBounds(0,500,600,50);
 		li12.setBounds(0,550,600,50);
 		
-		
-		
-        
         
 		review.add("North", re1); re1.setFont(fnt);
 		review.add(rev);
@@ -113,6 +129,97 @@ public class Reservation_detail extends JFrameExtends {
 		rev.add(re3); re3.setFont(fn);
 		
 		setVisible(true);
+		
+		btn.addActionListener(this);
+		
+		
+	}
+	public void mouseClicked(MouseEvent me) {
+		Object obj = me.getSource();
+		JLabel lbl = (JLabel)me.getSource();
+		int date = Integer.parseInt(lbl.getText());
+		lbl2.setText("선택한 일자 : "+y+"년 "+m+"월 "+date+"일");
+		
+		
+	}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	
+	public void actionPerformed(ActionEvent ae) {
+		//컴포넌트 읽어오기
+		Object obj = ae.getSource();
+		if(obj==btn) {
+			// 잔액여부에 따른 if문은 추후 추가
+			JOptionPane.showMessageDialog(this, "결제가 완료되었습니다.\n결제금액 : 70,000원\n잔액 : 100,100원");
+		}
+		
+	}
+	public void calendar_Reser() {
+		//맨위 년도, 월 선택 패널 
+		cal.setLayout(null);
+		
+		cal.add(selectPane); selectPane.setBounds(1,1,398,40);
+		selectPane.add(dateLbl);
+		
+		y = now.get(Calendar.YEAR);
+		m = now.get(Calendar.MONTH)+1;
+		d = now.get(Calendar.DAY_OF_MONTH);
+		dateLbl.setText(y+"년 "+m+"월 "+d+"일");
+		
+		dateLbl.setFont(fnt);
+		selectPane.setBackground(new Color(121,191,192));
+		
+		cal.add(calPane); calPane.setBounds(5,40,390,350);
+		calPane.setLayout(null);
+		calPane.add(dayPane); calPane.add(datePane);
+		dayPane.setBounds(5,0,370,50);
+		datePane.setBounds(5,50,370,300);
+		
+		calendarSetting(y,m);
+		
+		//일~토 넣기 
+		for (int i = 0; i < days.length; i++) {
+			JLabel dayOfWeekLbl = new JLabel(days[i]);
+			dayOfWeekLbl.setHorizontalAlignment(SwingConstants.CENTER);
+			dayPane.add(dayOfWeekLbl);
+			if(i==0) {
+				dayOfWeekLbl.setForeground(Color.RED);
+			}else if(i==6) {
+				dayOfWeekLbl.setForeground(Color.BLUE);
+			}
+			dayOfWeekLbl.setFont(fnt2);
+		}
+	}
+		
+	public void calendarSetting(int y, int m) {
+		int week, lastDay;
+		// 콤보박스에 선택된 년도, 월의 1일로 세팅 
+		now.set(y, m-1, 1); 
+		//1일의 요일 구하기 
+		week = now.get(Calendar.DAY_OF_WEEK); //세팅된 날짜의 요일을 구함 (1일이 무슨요일인지)
+		//월의 마지막날이 몇일인지 구하기 
+		lastDay = now.getActualMaximum(Calendar.DAY_OF_MONTH);
+		// 1일 전까지 공백 출력 
+		for(int space=1; space<week; space++) {
+			datePane.add(new JLabel(""));
+		}
+		// 월의 1일~마지막일 까지 출력 
+		for(int day=1; day<=lastDay; day++) {
+			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
+			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
+			now.set(y, m-1, day); //날짜별로 요일을 구해서
+			int colorWeek = now.get(Calendar.DAY_OF_WEEK);
+			if(colorWeek == 1) { //일요일이면 
+				dayOfMonthLbl.setForeground(Color.RED);
+			}else if(colorWeek == 7) { //토요일이면 
+				dayOfMonthLbl.setForeground(Color.BLUE);
+			}
+			datePane.add(dayOfMonthLbl);
+			dayOfMonthLbl.setFont(fnt2);
+			dayOfMonthLbl.addMouseListener(this);
+		}
 		
 	}
 	
