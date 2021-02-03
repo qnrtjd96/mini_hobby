@@ -24,7 +24,7 @@ public class TeacherMain extends JFrameExtends implements ActionListener, MouseL
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
 	
-	TopMenu_Tea tt = new TopMenu_Tea();
+	TeachTopMenu tt = new TeachTopMenu();
 	JPanel upper = tt.paneTop;
 	
 	JPanel center = new JPanel();

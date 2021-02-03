@@ -17,7 +17,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class Membership extends JFrameExtends implements ItemListener{
+public class AdminMembership extends JFrameExtends implements ItemListener{
 	JPanel pane_membership = new JPanel();
 		// 상단 로고 / 회원가입 라벨 / 학생,선생님 라디오버튼
 		JButton logo = new JButton("Logo"/*img*/);
@@ -47,7 +47,7 @@ public class Membership extends JFrameExtends implements ItemListener{
 		
 		Font fntPlain = new Font("맑은 고딕", Font.PLAIN, 15);
 		Font fntBold = new Font("맑은 고딕", Font.BOLD, 15);
-	public Membership() {
+	public AdminMembership() {
 		add("Center",pane_membership);
 		pane_membership.setLayout(null);
 		pane_membership.add(logo); pane_membership.add(memLbl);
