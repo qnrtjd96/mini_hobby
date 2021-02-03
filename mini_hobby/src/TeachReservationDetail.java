@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
@@ -39,7 +41,8 @@ public class TeachReservationDetail extends JFrameExtends implements ActionListe
 			JLabel lbl1 = new JLabel("선택한 클래스 : 클래스2");
 			JLabel lbl2 = new JLabel("선택한 일자 : 2021년 2월 2일");
 			JPanel select = new JPanel(new GridLayout(0,1));
-				String time[] = {"13:00~14:00","14:00~15:00","15:00~16:00","16:00~17:00"}; 
+				String time[] = {"13:00~14:00","14:00~15:00","15:00~16:00","16:00~17:00"};
+				JCheckBox check[] = new JCheckBox[time.length];
 			JButton btn = new JButton("시간수정");
 			JPanel table = new JPanel(new BorderLayout());
 				JPanel title = new JPanel();
@@ -103,10 +106,9 @@ public class TeachReservationDetail extends JFrameExtends implements ActionListe
 		btn.setFont(fn2); btn.setBounds(110,250,120,40); btn.setBackground(Color.LIGHT_GRAY);
 		select.setFont(fnt); select.setBounds(70,90,200,150);
 		for (int t=0; t<time.length; t++) {
-			String str = time[t];
-			JCheckBox box = new JCheckBox(str);
-			box.setFont(fn); box.setHorizontalAlignment(JCheckBox.CENTER);
-			select.add(box);
+			check[t] = new JCheckBox(time[t]);
+			check[t].setFont(fn); check[t].setHorizontalAlignment(JCheckBox.CENTER);
+			select.add(check[t]);
 		}
 		sp.setBounds(20,450,750,350);
 		center.add(editBtn); center.add(deleteBtn);
@@ -246,11 +248,12 @@ public class TeachReservationDetail extends JFrameExtends implements ActionListe
 	}
 
 }
-class dialStart extends JDialog implements ActionListener{
+class dialStart extends JDialog implements ActionListener, ItemListener{
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
+	JCheckBox box;
 	public void dialStart() {}
 	
 	public dialStart(TeachReservationDetail te) {
@@ -263,6 +266,7 @@ class dialStart extends JDialog implements ActionListener{
 			JPanel select = new JPanel(new GridLayout(0,2));
 				String time[] = {"09:00~10:00","10:00~11:00","11:00~12:00","12:00~13:00","13:00~14:00","14:00~15:00","15:00~"
 						+ "16:00", "16:00~17:00","17:00~18:00", "18:00~19:00", "19:00~20:00","20:00~21:00","21:00~22:00"};
+				JCheckBox check[] = new JCheckBox[time.length];
 			JButton btn = new JButton("수정완료");
 			
 		dial.add(dialPane); dialPane.setLayout(null);
@@ -272,19 +276,26 @@ class dialStart extends JDialog implements ActionListener{
 		btn.setFont(fn2); btn.setBounds(110,300,120,40); btn.setBackground(Color.LIGHT_GRAY);
 		select.setFont(fnt); select.setBounds(50,90,220,200);
 		for (int t=0; t<time.length; t++) {
-			String str = time[t];
-			JCheckBox box = new JCheckBox(str);
-			box.setFont(fn); box.setHorizontalAlignment(JCheckBox.CENTER);
-			select.add(box);
+			check[t] = new JCheckBox(time[t]);
+			check[t].setFont(fn); check[t].setHorizontalAlignment(JCheckBox.CENTER);
+			check[t].addItemListener(this);
+			select.add(check[t]);
 		}
 		btn.addActionListener(this);
 	}
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		String str = e.getActionCommand();
+	public void actionPerformed(ActionEvent ae) {
+		String str = ae.getActionCommand();
 		if(str.equals("수정완료")) {
-			JOptionPane.showMessageDialog(this, "수정완료되었습니다.");
+			JOptionPane.showMessageDialog(this, "수정완료 되었습니다.");
 		}
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent ie) {
+		Object obj = ie.getItem();
+		
+		
 	}
 		
 	
