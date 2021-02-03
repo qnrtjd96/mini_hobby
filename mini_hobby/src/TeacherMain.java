@@ -19,12 +19,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-public class TeacherMain  extends JFrameExtends implements ActionListener, MouseListener{
+public class TeacherMain extends JFrameExtends implements ActionListener, MouseListener{
 	Font fn = new Font("맑은고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
 	
-	JPanel upper = new TopMenu_Tea().paneTop;
+	TopMenu_Tea tt = new TopMenu_Tea();
+	JPanel upper = tt.paneTop;
+	
 	JPanel center = new JPanel();
 		JTextField tf = new JTextField();
 		JButton btn = new JButton("검색");
@@ -54,8 +56,9 @@ public class TeacherMain  extends JFrameExtends implements ActionListener, Mouse
 		JPanel datePane = new JPanel( new GridLayout(0,7,38,25)); // 1~31 날짜 출력 
 
 	public TeacherMain() {
+		tt.setVisible(false);
 		add("North", upper);
-		upper.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		upper.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		add("Center", center);
 		center.setLayout(null);
