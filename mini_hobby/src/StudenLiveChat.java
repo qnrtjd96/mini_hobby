@@ -45,7 +45,7 @@ public class StudenLiveChat extends JPanel{
 	Object teaData[][]= {
 			{"ㅇ","홍길동"},
 			{"ㅇ","이순신"},
-			{"ㅇ","세종대앙"},
+			{"ㅇ","세종대왕"},
 			{"ㅇ","장영실"},
 			{"ㅇ","유승룡"},	
 	};
@@ -85,6 +85,7 @@ public class StudenLiveChat extends JPanel{
 			teaTable.setRowHeight(30);
 			teaTable.setFont(fntPlain15);
 			teaTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //여러개 클릭못하게막기
+			teaTable.getTableHeader().setReorderingAllowed(false); // 이동 불가
 			
 		teaSp = new JScrollPane(teaTable);
 		teaTable.getTableHeader().setFont(fntBold15);

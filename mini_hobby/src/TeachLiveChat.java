@@ -48,7 +48,7 @@ public class TeachLiveChat extends JPanel{
 	Object stuData[][]= {
 			{"ㅇ","홍길동"},
 			{"ㅇ","이순신"},
-			{"ㅇ","세종대앙"},
+			{"ㅇ","세종대왕"},
 			{"ㅇ","장영실"},
 			{"ㅇ","유승룡"},	
 	};
@@ -59,7 +59,7 @@ public class TeachLiveChat extends JPanel{
 	Object teaData[][]= {
 			{"ㅇ","홍길동"},
 			{"ㅇ","이순신"},
-			{"ㅇ","세종대앙"},
+			{"ㅇ","세종대왕"},
 			{"ㅇ","장영실"},
 			{"ㅇ","유승룡"},	
 	};
@@ -101,7 +101,8 @@ public class TeachLiveChat extends JPanel{
 		JTable stuTable = new JTable(stuT);
 			stuTable.setRowHeight(30);
 			stuTable.setFont(fntPlain15);
-		stuTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //여러개 클릭못하게막기
+			stuTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //여러개 클릭못하게막기
+			stuTable.getTableHeader().setReorderingAllowed(false); // 이동 불가
 		stuSp = new JScrollPane(stuTable);
 		stuTable.getTableHeader().setFont(fntBold15);
 		
@@ -114,7 +115,8 @@ public class TeachLiveChat extends JPanel{
 		JTable teaTable = new JTable(teaT);
 			teaTable.setRowHeight(30);
 			teaTable.setFont(fntPlain15);
-		teaTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //여러개 클릭못하게막기
+			teaTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //여러개 클릭못하게막기
+			teaTable.getTableHeader().setReorderingAllowed(false); // 이동 불가
 		teaSp = new JScrollPane(teaTable);
 		teaTable.getTableHeader().setFont(fntBold15);
 		
