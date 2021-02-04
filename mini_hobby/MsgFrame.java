@@ -1,16 +1,5 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-public class MsgFrame extends JPanel {
+public class MsgFrame extends JFrameExtends {
+	JPanel upper = new StudenTopMenu().paneTop;
 	//탭 배경설정을 위한 부모 패널 
 	JPanel tabBack = new JPanel();
 	//탭 패널, 하위메뉴
@@ -34,6 +23,8 @@ public class MsgFrame extends JPanel {
 	public MsgFrame() {
 		setLayout(new BorderLayout());
 		setBackground(Color.white);
+		
+		add("North", upper);
 		
 		//받은 쪽지함
 		getMsgPane.add(new JLabel("왜 안돼?"));
