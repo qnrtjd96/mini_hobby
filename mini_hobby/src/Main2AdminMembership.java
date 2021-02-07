@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -23,7 +25,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class Main2AdminMembership extends JFrame implements ItemListener, ActionListener{
+public class Main2AdminMembership extends JFrame implements ItemListener, ActionListener, MouseListener{
 	JPanel pane_membership = new JPanel();
 		// 상단 로고 / 회원가입 라벨 / 학생,선생님 라디오버튼
 		ImageIcon img = new ImageIcon("img/Biglogo.png");
@@ -54,6 +56,8 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 		
 		Font fntPlain = new Font("맑은 고딕", Font.PLAIN, 15);
 		Font fntBold = new Font("맑은 고딕", Font.BOLD, 15);
+		
+		int check=0;
 	public Main2AdminMembership() {
 		add("Center",pane_membership);
 		pane_membership.setLayout(null);
@@ -74,6 +78,7 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 		for(int i=0; i<tfStr.length; i++) {
 			tfStr[i].setFont(fntPlain);
 			pane_membership.add(tfStr[i]);
+			tfStr[i].addMouseListener(this);
 		}
 		// 아이디 중복 여부 및 패스워드 제약조건
 		taId.setText("중복여부를 확인하세요."); taPwd.setText("비밀번호는 8글자 이상 기재해야합니다.");
@@ -141,12 +146,16 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 		checkStu.addItemListener(this);
 		checkTea.addItemListener(this);
 		btmBtn.addActionListener(this);
+		btn_stuRht.addActionListener(this);
 	}
 	public void itemStateChanged(ItemEvent ie) {
-		if(checkStu.isSelected()) {
+		Object obj = ie.getSource();
+		if(obj==checkStu) {
+			check=1;
 			lbl_cate.setVisible(false); checkMusic.setVisible(false); checkPaint.setVisible(false); checkSports.setVisible(false); checkCook.setVisible(false);
 			lbl_carr.setVisible(false); tf_carr.setVisible(false);
-		}else if(checkTea.isSelected()) {
+		}else if(obj==checkTea) {
+			check=2;
 			lbl_cate.setVisible(true); checkMusic.setVisible(true); checkPaint.setVisible(true); checkSports.setVisible(true); checkCook.setVisible(true);
 			lbl_carr.setVisible(true); tf_carr.setVisible(true);
 		}
@@ -155,10 +164,63 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if (obj==btmBtn) {
-			JOptionPane.showMessageDialog(this, "로그인 화면으로 돌아갑니다.");
-			this.setVisible(false);
-			new Main0Login();
+			setMember();
+		} else if (obj==btn_stuRht) {
+			overlapMember();
 		}
-		
 	}
+	public void mouseReleased(MouseEvent me) {
+		Object obj = me.getSource();
+		if (obj==tfStr[0]) {tfStr[0].setText("");}
+		else if(obj==tfStr[1]) {tfStr[1].setText("");}
+		else if(obj==tfStr[2]) {tfStr[2].setText("");}
+		else if(obj==tfStr[3]) {tfStr[3].setText("");}
+		else if(obj==tfStr[4]) {tfStr[4].setText("");}
+		else if(obj==tfStr[5]) {tfStr[5].setText("");}
+		else if(obj==tfStr[6]) {tfStr[6].setText("");}
+		else if(obj==tfStr[7]) {tfStr[7].setText("");}
+		else if(obj==tfStr[8]) {tfStr[8].setText("");}
+		else if(obj==tfStr[9]) {tfStr[9].setText("");}
+	}
+	public void overlapMember() {
+		String id = tfStr[0].getText();
+		if(id.equals("")) {
+			JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
+		} else {
+			// db에 있는 id랑 같은지... 봐야되는데....
+			
+		}
+	}
+	public void setMember() {
+		MemberVO vo = new MemberVO(tfStr[0].getText(), tfStr[1].getText(), tfStr[3].getText(),
+				tfStr[4].getText(), tfStr[5].getText(), tfStr[6].getText(), tfStr[7].getText(), check);
+		if(vo.getId().equals("")||vo.getPwd().equals("")) {
+			JOptionPane.showMessageDialog(this, "아이디와 비밀번호는 필수 입력조건입니다.");
+		} else if (vo.getName().equals("")||vo.getMail().equals("")||vo.getTel().equals("")) {
+			JOptionPane.showMessageDialog(this, "이름, 메일주소, 연락처는 필수 입력조건입니다."); 
+		} else if (vo.getSort()!=1 && vo.getSort()!=2) {
+			JOptionPane.showMessageDialog(this, "사용자/강사 여부를 선택해주셔야 합니다.");
+		} else if(!(tfStr[1].getText().equals(tfStr[2].getText()))) {
+			JOptionPane.showMessageDialog(this, "비밀번호와 확인비밀번호가 일치하지 않습니다. 다시 확인하세요.");
+		} else if(tfStr[1].getText().length()<8) {
+			JOptionPane.showMessageDialog(this, "비밀번호는 8글자 이상 기재해야 합니다.");
+		} else {
+			MemberDAO dao = new MemberDAO();
+			int result = dao.memberInsert(vo);
+			if (result>0) { // result값이 생겼다는건 등록된 줄이 발생했다는 것임!
+				JOptionPane.showMessageDialog(this, "회원가입이 완료되었습니다. \n 로그인페이지로 돌아갑니다.");
+				this.setVisible(false);
+				new Main0Login();
+				for(int i=0; i<tfStr.length; i++) {
+					tfStr[i].setText("");
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "회원가입에 실패하였습니다.");
+			}
+		}
+	}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mouseClicked(MouseEvent me) {}
 }
