@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ import javax.swing.border.LineBorder;
 
 import admin.Admin0Login;
 import studen.Studen2JFrameExtends;
+import teach.Teach1JFrameExtends;
 
 public class Main0Login extends JFrame implements ActionListener, MouseListener{
 	JPanel login = new JPanel();
@@ -87,11 +89,35 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if(obj==loginBtn) {
-			JOptionPane.showMessageDialog(this, idTf.getText()+"님, 환영합니다.");
-			this.setVisible(false);
-			new Studen2JFrameExtends();
+			String idStr = idTf.getText();
+			String pwdStr = pwdTf.getText();
+			sort(idStr, pwdStr);
 		}
 		
+	}
+	public void sort(String idStr, String pwdStr) {
+		if(idStr.equals("") || pwdStr.equals("")) {
+			JOptionPane.showMessageDialog(this, "공란없이 값을 입력해주세요");
+		} else {
+			MemberDAO dao = new MemberDAO();
+			List<MemberVO> searchList = dao.loginStart(idStr, pwdStr);
+			if (searchList.size()==0) {
+				JOptionPane.showMessageDialog(this, "일치하는 회원정보가 없습니다.\n 재확인 후 로그인 해주십시오");
+			} else {
+				MemberVO vo = searchList.get(0);
+				if (vo.getSort()==1) {
+					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
+					this.setVisible(false);
+					new Studen2JFrameExtends();
+				} else if(vo.getSort()==2) {
+					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
+					this.setVisible(false);
+					new Teach1JFrameExtends();
+				} else if(vo.getName().equals("관리자")) {
+					JOptionPane.showMessageDialog(this, "관리자님께서는 로그인페이지 하단의 Administrator Login을 이용해주십시오");
+				}
+			}
+		}
 	}
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
