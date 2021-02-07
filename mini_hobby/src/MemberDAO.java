@@ -35,6 +35,33 @@ public class MemberDAO extends Main3DBConnection{
 		}
 		return result;
 	}
+	// 아이디 중복확인
+	public List<MemberVO> overlapCheck(String searchId) {
+		List<MemberVO> lst = new ArrayList<MemberVO>();
+		try {
+			getConn();
+			
+			sql="select id, name from membertbl where id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, searchId);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setId(rs.getString(1));
+				vo.setName(rs.getString(2));
+				
+				lst.add(vo);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return lst;	
+	}
 	// 메일주소로 아이디 찾기
 	public List<MemberVO> idSearch(String searchId) {
 		List<MemberVO> lst = new ArrayList<MemberVO>();
@@ -86,6 +113,36 @@ public class MemberDAO extends Main3DBConnection{
 				lst.add(vo);
 			}
 		
+		} catch(Exception e) {
+			e.printStackTrace();	
+		} finally {
+			dbClose();
+		}
+		return lst;
+	}
+	// 로그인 하기
+	public List<MemberVO> loginStart(String searchId, String searchPwd) {
+		List<MemberVO> lst = new ArrayList<MemberVO>();
+		try {
+			getConn();
+			
+			sql = "select id, pwd, name, sort from membertbl where id=? and pwd=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, searchId);
+			pstmt.setString(2, searchPwd);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setId(rs.getString(1));
+				vo.setPwd(rs.getString(2));
+				vo.setName(rs.getString(3));
+				vo.setSort(rs.getInt(4));
+				
+				lst.add(vo);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();	
 		} finally {
