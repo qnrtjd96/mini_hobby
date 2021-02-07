@@ -36,6 +36,9 @@ public class TeachTotal extends JPanel implements MouseListener{
 	public TeachTotal(){
 		setLayout(null);
 		
+		//백그라운드 변경
+		setBackground(Color.white);
+				
 		add(total);
 		add(cal1);
 		add(cal2);
@@ -49,7 +52,7 @@ public class TeachTotal extends JPanel implements MouseListener{
 		
 		total.setBounds(30, 20, 500, 70); total.setFont(fntBold50);
 		
-		grap.setBounds(5, 70, 500, 575);
+		grap.setBounds(5, 40, 500, 575);
 		
 		cal1.setBounds(80, 600, 500, 70); cal2.setBounds(190, 600, 500, 70);
 		cal1.setFont(fntBold20); cal2.setFont(fntBold20);
@@ -74,24 +77,28 @@ public class TeachTotal extends JPanel implements MouseListener{
 			g.clearRect(0,0,getWidth(),getHeight()); //클리어
 			//테두리 그리기
 			//(int x1, int y1, int x2, int y2)
-			g.drawLine(50,540,550,540); //가로줄
+			g.drawLine(50,570,550,570); //가로줄
 			for (int i = 1; i< 21 ; i++) {
 				g.drawString(i*100000 + "", 0, 540-(20*i));
 				if(i ==5) {
-					g.drawLine(50, 440, 550, 440);
+					g.drawString(lab + "000", 80, 570-(lab*2));
+					g.drawLine(50, 470, 550, 470);
 				}
 				if(i == 10) {
-					g.drawLine(50, 340, 550, 340);
+					g.drawString(lab1 + "000", 190, 570-(lab1*2));
+					g.drawLine(50, 370, 550, 370);
 				}
 				if(i == 15) {
-					g.drawLine(50, 240, 550, 240);
+					g.drawString(lab2 + "000", 310, 570-(lab2*2));
+					g.drawLine(50, 270, 550, 270);
 				}
 				if(i == 20) {
-					g.drawLine(50, 140, 550, 140);
+					g.drawString(lab3 + "000", 430, 570-(lab3*2));
+					g.drawLine(50, 170, 550, 170);
 				}
 					
 			}		
-			g.drawLine(50,30,50,540); //세로줄
+			g.drawLine(50,30,50,570); //세로줄
 			
 			//좌표값으로 지정해주기 //(String str, int x, int y)
 //			g.drawString("11월", 130, 500); // name, x, y
@@ -106,13 +113,13 @@ public class TeachTotal extends JPanel implements MouseListener{
 			
 			if(lab > 0)
 				//fillRect(int x, int y, int width, int height)
-				g.fillRect(70,540-lab*2, 60, lab*2);	
+				g.fillRect(70,570-lab*2, 60, lab*2);	
 			if(lab1 > 0)
-				g.fillRect(180,540-lab1*2, 60, lab1*2);	
+				g.fillRect(180,570-lab1*2, 60, lab1*2);	
 			if(lab2 > 0)
-				g.fillRect(300,540-lab2*2, 60, lab2*2);
+				g.fillRect(300,570-lab2*2, 60, lab2*2);
 			if(lab3 > 0)
-				g.fillRect(420,540-lab3*2, 60, lab3*2);
+				g.fillRect(420,570-lab3*2, 60, lab3*2);
 		}
 		
 		
