@@ -6,11 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
@@ -96,14 +98,10 @@ public class Main1AdminIdSearch extends JFrame implements ActionListener, KeyLis
 		String idStr, pwdStr, pwd2Str;
 		if(obj==tf_id && i==KeyEvent.VK_ENTER) {
 			idStr = tf_id.getText();
-			tf_id.setText("");
-			lbl_idprint.setText("입력한 메일주소는 "+idStr+"입니다.");
-		} else if (obj==tf_pwd && i==KeyEvent.VK_ENTER) {
-			pwdStr = tf_pwd.getText();
-			tf_id.setText("");
+			idSearch(idStr);
 		} else if (obj==tf_pwd2 && i==KeyEvent.VK_ENTER) {
-			pwd2Str = tf_pwd2.getText();
-			tf_id.setText("");
+			pwdStr = tf_pwd.getText(); pwd2Str = tf_pwd2.getText();
+			pwdSearch(pwdStr, pwd2Str);
 		}
 		
 	}
@@ -116,6 +114,35 @@ public class Main1AdminIdSearch extends JFrame implements ActionListener, KeyLis
 			new Main0Login();
 		}
 		
+	}
+	public void pwdSearch(String id, String mail) {
+		if (id.equals("") || mail.equals("")) {
+			JOptionPane.showMessageDialog(this, "아이디와 메일주소 모두 입력해주셔야 비밀번호 검색이 가능합니다.");
+		} else {
+			MemberDAO dao = new MemberDAO();
+			List<MemberVO> searchList = dao.pwdSearch(id, mail);
+			if (searchList.size()==0) {
+				lbl_pwdprint.setText("입력하신 [ " + id +" ] 및 [ "+mail+" ] 와/과 일치하는 결과가 없습니다.");
+			} else {
+				MemberVO vo = searchList.get(0);
+				lbl_pwdprint.setText(vo.getName()+" 님의 비밀번호는 "+vo.getPwd()+" 입니다.");
+			}
+		}
+	}
+	public void idSearch(String id) {
+		if(id.equals("")) {
+			JOptionPane.showMessageDialog(this, "등록하셨던 메일주소를 입력해주십시오");
+		} else {
+			MemberDAO dao = new MemberDAO();
+			List<MemberVO> searchList = dao.idSearch(id);
+			if(searchList.size()==0) { // 검색결과가 없음
+				lbl_idprint.setText("입력하신 [ " + id +" ]와/과 일치하는 결과가 없습니다.");
+			} else {
+				MemberVO vo = searchList.get(0);
+				lbl_idprint.setText(vo.getName()+" 님의 ID는 "+vo.getId()+" 입니다.");
+			}
+			tf_id.setText("");
+		}
 	}
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {}
