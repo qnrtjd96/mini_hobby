@@ -8,6 +8,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -57,7 +58,7 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 		Font fntPlain = new Font("맑은 고딕", Font.PLAIN, 15);
 		Font fntBold = new Font("맑은 고딕", Font.BOLD, 15);
 		
-		int check=0;
+		int check=0; int overlap=0;
 	public Main2AdminMembership() {
 		add("Center",pane_membership);
 		pane_membership.setLayout(null);
@@ -166,7 +167,8 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 		if (obj==btmBtn) {
 			setMember();
 		} else if (obj==btn_stuRht) {
-			overlapMember();
+			String idStr = tfStr[0].getText();
+			overlapMember(idStr);
 		}
 	}
 	public void mouseReleased(MouseEvent me) {
@@ -182,12 +184,19 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 		else if(obj==tfStr[8]) {tfStr[8].setText("");}
 		else if(obj==tfStr[9]) {tfStr[9].setText("");}
 	}
-	public void overlapMember() {
-		String id = tfStr[0].getText();
-		if(id.equals("")) {
+	public void overlapMember(String idStr) {
+		if(idStr.equals("")) {
 			JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
 		} else {
-			// db에 있는 id랑 같은지... 봐야되는데....
+			MemberDAO dao = new MemberDAO();
+			List<MemberVO> searchList = dao.overlapCheck(idStr);
+			if(searchList.size()==0) {
+				overlap=2;
+				JOptionPane.showMessageDialog(this, "가입가능한 ID입니다.");
+			} else {
+				overlap=1;
+				JOptionPane.showMessageDialog(this, "중복 ID입니다. 다시 확인해주세요");
+			}
 			
 		}
 	}
@@ -204,6 +213,10 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 			JOptionPane.showMessageDialog(this, "비밀번호와 확인비밀번호가 일치하지 않습니다. 다시 확인하세요.");
 		} else if(tfStr[1].getText().length()<8) {
 			JOptionPane.showMessageDialog(this, "비밀번호는 8글자 이상 기재해야 합니다.");
+		} else if(overlap==0) {
+			JOptionPane.showMessageDialog(this, "ID 중복확인 후 가입신청이 가능합니다.");
+		} else if(overlap==1) {
+			JOptionPane.showMessageDialog(this, "중복된 ID로는 가입이 불가합니다.");
 		} else {
 			MemberDAO dao = new MemberDAO();
 			int result = dao.memberInsert(vo);
