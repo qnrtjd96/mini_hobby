@@ -1,0 +1,107 @@
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+
+import admin.Admin0Login;
+import studen.Studen2JFrameExtends;
+
+public class Main0Login extends JFrame implements ActionListener, MouseListener{
+	JPanel login = new JPanel();
+		ImageIcon img = new ImageIcon("img/Biglogo.png");
+		JButton logo = new JButton(img);
+		
+		JLabel lblId = new JLabel("아이디");  JLabel lblpwd = new JLabel("비밀번호");
+		JTextField idTf = new JTextField();  JTextField pwdTf = new JTextField();
+		
+		JButton loginBtn = new JButton("로그인");
+		
+		JLabel forgot = new JLabel("아이디/비밀번호 찾기");
+		JLabel signIn = new JLabel("회원가입");
+		
+		JLabel adminLogin = new JLabel("Administrator Login");
+	
+	Color col6 = new Color(204,222,233);
+	Font fn = new Font("맑은 고딕",Font.PLAIN, 20);
+	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
+	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
+	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
+	Font fnt3 = new Font("맑은 고딕", Font.BOLD, 25);
+
+	public Main0Login() {
+		login.setBackground(Color.white);
+		add(login); login.setLayout(null);
+		login.add(logo); login.add(lblId); login.add(idTf);
+		login.add(lblpwd); login.add(pwdTf); login.add(loginBtn);
+		logo.setBounds(300,200,200,100); logo.setBackground(Color.white);
+		lblId.setBounds(180,400,100,40); lblId.setFont(fnt);
+		idTf.setBounds(300,400,300,40); idTf.setFont(fn);
+		lblpwd.setBounds(180,460,100,40); lblpwd.setFont(fnt);
+		pwdTf.setBounds(300,460,300,40); pwdTf.setFont(fn);
+		loginBtn.setBounds(180,520,420,60); loginBtn.setFont(fnt3);
+		loginBtn.setBackground(col6);
+		
+		login.add(forgot); login.add(signIn);
+		forgot.setBounds(180,600,200,40); forgot.setFont(fnt2);
+		signIn.setBounds(530,600,100,40); signIn.setFont(fnt2);
+		
+		login.add(adminLogin);
+		adminLogin.setBounds(540,880,200,40); adminLogin.setFont(fnt);
+		
+		setSize(800,1000);
+		setVisible(true);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		loginBtn.addActionListener(this);
+		forgot.addMouseListener(this); signIn.addMouseListener(this);
+		adminLogin.addMouseListener(this);
+	}
+	public void mouseReleased(MouseEvent me) {
+		JLabel lbl = (JLabel)me.getSource();
+		String str = lbl.getText();
+		if(str.equals("아이디/비밀번호 찾기")) {
+			this.setVisible(false);
+			new Main1AdminIdSearch();
+		} else if(str.equals("회원가입")) {
+			this.setVisible(false);
+			new Main2AdminMembership();
+		} else if(str.equals("Administrator Login")) {
+			this.setVisible(false);
+			new Admin0Login();
+		}
+	}
+	
+	public void actionPerformed(ActionEvent ae) {
+		Object obj = ae.getSource();
+		if(obj==loginBtn) {
+			JOptionPane.showMessageDialog(this, idTf.getText()+"님, 환영합니다.");
+			this.setVisible(false);
+			new Studen2JFrameExtends();
+		}
+		
+	}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mouseClicked(MouseEvent me) {}
+
+	public static void main(String[] args) {
+		new Main0Login();
+
+	}
+	
+
+}
