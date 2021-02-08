@@ -259,18 +259,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		System.out.println("검색눌림");
 		JOptionPane.showMessageDialog(this, "ㅎㅎㅎㅎ");
 		
-/*		//DB연결 
-		try {						// 내 오라클 디비 연결
-			conn = DriverManager.getConnection(url, username, userpwd);
-			
-			String sql = "select ";
-			
-			pstmt = conn.prepareStatement(sql);
-			ResultSet rs = pstmt.executeQuery();
-			
-			
-		}catch(Exception e) {	}
-*/	
+
 	}
 	
 	//이벤트 구현 여기서 해야하나?
