@@ -63,9 +63,15 @@ public class Admin0Login extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if(obj==loginBtn) {
-			if (idTf.getText().equals("") || pwdTf.getText().equals("")) {
+			char pwdSet[] = pwdTf.getPassword();
+			String pwdStr = "";
+			for(char cha:pwdSet) {
+				Character.toString(cha);
+				pwdStr += (pwdStr.equals("")) ? ""+cha+"" : ""+cha+"";
+			}
+			if (idTf.getText().equals("") || pwdStr.equals("")) {
 				JOptionPane.showMessageDialog(this, "공란이 존재합니다. \n 아이디 또는 비밀번호가 기억나지 않으시면 관리자 문의해주십시오.");
-			} else if (idTf.getText().equals("master") && pwdTf.getText().equals("0000")) {
+			} else if (idTf.getText().equals("master") && pwdStr.equals("0000")) {
 				JOptionPane.showMessageDialog(this, "관리자 페이지에 접속합니다.");
 				this.setVisible(false);
 				new Admin1Main();
