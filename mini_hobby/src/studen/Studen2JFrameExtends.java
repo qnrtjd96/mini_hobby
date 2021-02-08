@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -27,10 +29,11 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		JButton Logo = new JButton(logo);
 		Dimension logoSize = new Dimension(100, 50);
 		JPanel paneLabel = new JPanel();
-		
+	
 	ImageIcon background = new ImageIcon("img/searchBack.gif");
 	
 	JPanel center = new JPanel(null); //전체 프레임의 중간에 들어갈 패널
+		String defWord = "클래스명 또는 강사의 이름을 입력해주세요.";
 		JTextField searchTf = new JTextField();
 		JButton searchBtn = new JButton("검색");
 		
@@ -39,6 +42,10 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		
 		JTextArea classTa = new JTextArea();
 		String testTa = "예약 클래스 : \n 레이아웃 빨리 끝내고 싶다... \n 날짜: 2021-02-25";
+		
+	//배경 설정
+	JPanel back;
+	int width, height;
 		
 	Font fnt = new Font("맑은 고딕",Font.PLAIN, 15);
 	Font searchFnt = new Font("맑은 고딕", Font.PLAIN, 18);
@@ -56,12 +63,10 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
 	Font fntBold25 = new Font("맑은 고딕", Font.BOLD, 25);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
-
+	
 	public Studen2JFrameExtends() {
 		StudenTopMenu();
 		StudenSearch();
-		
-		
 		
 		setSize(800,1000);
 		setVisible(true);
@@ -85,6 +90,9 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center = new StudenCateList().mainPane;
 			center.setVisible(true);
 			add("Center", center);
+			
+			System.out.println("검색버튼을 누름");
+			matchWord(searchWord);
 		}else if(obj==musicBtn) {
 			center.setVisible(false);
 			center.removeAll();
@@ -116,6 +124,9 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	public void mouseReleased(MouseEvent me) {
 		JLabel obj = (JLabel)me.getSource();
 		Object lbl = obj.getText();
+		
+		//JTextField stuObj = (JTextField)me.getSource();
+		
 		try {
 			if(lbl.equals("이전으로")) {
 				////// 구현해서 객체 호출하세요 //////
@@ -140,7 +151,11 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 					this.setVisible(false);
 					System.exit(0);
 				}
-			}
+			}/* else if(stuObj==searchTf) {
+				System.out.println("텍필 눌림");
+				searchTf.setText("");
+			} */
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -178,12 +193,31 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		
 		Logo.addActionListener(this);
 	}
-	
+
 	public void StudenSearch() {
+		
 		add(center);
 		
 		center.setBackground(Color.white);
 		
+		back = new JPanel() {
+			Toolkit toolkit = Toolkit.getDefaultToolkit();
+			Image img = toolkit.getImage("img/searchBack.gif");
+			public void paint(Graphics g) {
+				width = img.getWidth(this);
+				height = img.getHeight(this);
+				
+				g.drawImage(img, 0,0,1000,height+200, 100,0,width,height, this);
+				
+				setOpaque(false);
+				//super.paintComponent(g);
+			}
+		};
+		back.setBackground(Color.white);
+		back.setBounds(0,65, 1000,500);
+		//center.add(back);
+		
+		searchTf.setText(defWord);
 		searchTf.setBorder(new LineBorder(Color.black, 2));
 		searchTf.setFont(searchFnt); searchTf.setBounds(100,250, 500,40); center.add(searchTf);
 		
@@ -206,33 +240,47 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		//textArea 가운데 정렬..? ㅠㅠ?
 		classTa.setBackground(Color.white); classTa.setBorder(new LineBorder(Color.black, 1)); 
 		classTa.setFont(new Font("맑은 고딕", Font.PLAIN, 13)); classTa.setBounds(580,660, 200,100);
-		classTa.setText(testTa); center.add(classTa);
-		
+		classTa.setText(testTa); 
+		center.add(classTa);
+		center.add(back);
+		//버튼 이벤트 
 		searchBtn.addActionListener(this);
 		musicBtn.addActionListener(this);	artBtn.addActionListener(this);
 		sportBtn.addActionListener(this);	cookBtn.addActionListener(this);
 		
 		
-		setVisible(true);
-		setBackground(Color.white);
+		//setVisible(true);
+		//setBackground(Color.white);
 		
-		////////////
-		JPanel back = new JPanel() {
-			public void paint(Graphics g) {
-				g.drawImage(background.getImage(),0,0,null);
-				
-				setOpaque(false);
-				super.paintComponent(g);
-			}
-		};
 		
-		back.setBounds(0,0, 300,300);
-		center.add(back);
 	}
+	
+	public void matchWord(String searchWord) {
+		System.out.println("검색눌림");
+		JOptionPane.showMessageDialog(this, "ㅎㅎㅎㅎ");
+		
+/*		//DB연결 
+		try {						// 내 오라클 디비 연결
+			conn = DriverManager.getConnection(url, username, userpwd);
+			
+			String sql = "select ";
+			
+			pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			
+			
+		}catch(Exception e) {	}
+*/	
+	}
+	
+	//이벤트 구현 여기서 해야하나?
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
-	public void mouseClicked(MouseEvent me) {}
+	public void mouseClicked(MouseEvent mc) {
+	}
+	
+	
 		
 	public static void main(String[] args) {
 		new Studen2JFrameExtends();
