@@ -92,8 +92,15 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 		Object obj = ae.getSource();
 		if(obj==loginBtn) {
 			String idStr = idTf.getText();
-			String pwdStr = pwdTf.getText();
+			
+			char[] pwdSet = pwdTf.getPassword();
+			String pwdStr = "";
+			for(char cha:pwdSet) {
+				Character.toString(cha);
+				pwdStr += (pwdStr.equals("")) ? ""+cha+"" : ""+cha+"";
+			}
 			sort(idStr, pwdStr);
+			
 		}
 		
 	}
