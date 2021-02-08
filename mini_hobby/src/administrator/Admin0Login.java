@@ -23,7 +23,7 @@ public class Admin0Login extends JFrame implements ActionListener{
 	JButton logo = new JButton(img);
 	
 	JLabel lblId = new JLabel("아이디");  JLabel lblpwd = new JLabel("비밀번호");
-	JTextField idTf = new JTextField();  JTextField pwdTf = new JTextField();
+	JTextField idTf = new JTextField();  JPasswordField pwdTf = new JPasswordField();
 	
 	JButton loginBtn = new JButton("사장님만을 위한 로그인");
 	
