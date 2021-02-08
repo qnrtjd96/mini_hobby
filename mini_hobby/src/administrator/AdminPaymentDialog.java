@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +20,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+
+import dbConnection.BoardDAO;
+import dbConnection.BoardVO;
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
 
 public class AdminPaymentDialog extends JFrame implements MouseListener{
 	JPanel mainPane = new JPanel();
@@ -41,8 +47,11 @@ public class AdminPaymentDialog extends JFrame implements MouseListener{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
+	
+	String id;
 	public AdminPaymentDialog() {};
 	public AdminPaymentDialog(String id, String name) {
+		this.id = id;
 		mainPane.setLayout(null);
 		//기본셋팅
 		topLbl = new JLabel(id+"("+name+")"+"학생님의 결제내역 입니다.", JLabel.CENTER);
@@ -93,8 +102,9 @@ public class AdminPaymentDialog extends JFrame implements MouseListener{
 		
 		
 		// 테이블 데이터
-		model.addRow(recoList1);
-		model.addRow(recoList2);
+		getBoardList();
+		//model.addRow(recoList1);
+		//model.addRow(recoList2);
 		
 		// 위치값
 		topLbl.setBounds(0,0,485,30);
@@ -131,7 +141,6 @@ public class AdminPaymentDialog extends JFrame implements MouseListener{
 			int row = diaTable.getSelectedRow();
 			int col = diaTable.getSelectedColumn();
 			Object value = diaTable.getValueAt(row, col);
-			System.out.println(row+"/"+col);
 			if(value.equals("○")) {
 				diaTable.setValueAt("●", row, col);
 			}else if(value.equals("●")) {
@@ -143,4 +152,15 @@ public class AdminPaymentDialog extends JFrame implements MouseListener{
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
+	//결제 상세내역 선택
+	public void getBoardList() {
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.PaymentSelect(id);
+		
+		for(int i=0; i<lst.size();i++) {
+			BoardVO vo = lst.get(i);
+			Object[] data = {vo.getClass_num(), vo.getId(), vo.getName(), vo.getCost(), vo.getPay_date()};
+			model.addRow(data);
+		}
+	}
 }

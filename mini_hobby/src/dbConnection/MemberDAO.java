@@ -58,6 +58,30 @@ public class MemberDAO extends DBConnection{
 		}
 		return result;
 	}
+	// 관리자 결제관리
+	public List<MemberVO> memberAllSelect() {
+		//선택한 레코드를 보관할 컬렉션
+		List<MemberVO> lst = new ArrayList<MemberVO>();
+		try {
+			getConn();
+			
+			sql = "select id, name, count(id) from (select m.id, m.pwd, m.name, m.birth, m.mail, m.tel, m.addr, m.sort from membertbl m join stu_class s on m.id = s.id where m.sort=1) group by id, name";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//레코드를 VO 담고 VO를 List에 담고
+				MemberVO vo = new MemberVO(rs.getString(1),rs.getString(2),rs.getInt(3));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
 	// 아이디 중복확인
 	public List<MemberVO> overlapCheck(String searchId) {
 		List<MemberVO> lst = new ArrayList<MemberVO>();

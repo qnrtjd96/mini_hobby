@@ -10,6 +10,7 @@ public class MemberVO {
 	private String addr;
 	private String login_date;
 	private int sort;
+	private int payCnt;
 	
 
 	public MemberVO() {
@@ -21,6 +22,17 @@ public class MemberVO {
 	public MemberVO(String id, String mail) {
 		this.id = id;
 		this.mail = mail;
+	}
+	public MemberVO(String id, String name, int payCnt) {
+		this.id = id;
+		this.name = name;
+		this.payCnt = payCnt;
+	}
+	public int getPayCnt() {
+		return payCnt;
+	}
+	public void setPayCnt(int payCnt) {
+		this.payCnt = payCnt;
 	}
 	public MemberVO(String id, String pwd, String name, String birth, String mail, String tel, String addr, int sort) {
 		this(id, mail);

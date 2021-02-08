@@ -4,19 +4,41 @@ public class BoardVO {
 	private int class_num;
 	private String id;
 	private String classname;
+	private String name; //membertbl 강사이름 조인
+	private String pay_date; // stu_class 결제일자 조인
 	private String cate;
 	private String review;
 	private String city;
 	private int cost;
 	private String intro;
 	private String career;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPay_date() {
+		return pay_date;
+	}
+	public void setPay_date(String pay_date) {
+		this.pay_date = pay_date;
+	}
+
 	private String area;
 	private String writedate;
 	
 	public BoardVO() {
 		
 	}
-	
+	// 관리자 결제 상세내역
+	public BoardVO(int class_num, String id, String name, int cost, String pay_date) {
+		this.class_num = class_num;
+		this.id = id;
+		this.name = name;
+		this.cost = cost;
+		this.pay_date = pay_date;
+	}
 	public BoardVO(int class_num, String id, String classname, String cate, String review,
 			String city, int cost, String intro, String career, String area, String writedate) {
 		this.class_num = class_num;
