@@ -52,7 +52,6 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		JPanel datePane = new JPanel( new GridLayout(0,7)); //날짜 출력 
 	
 	//수강 예정 테이블, 전체 구매 테이블
-	DefaultTableCellRenderer cellRen = new DefaultTableCellRenderer();
 	
 	DefaultTableModel dueModel;
 	JTable dueTable;		JScrollPane dueSp;
@@ -79,8 +78,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	
 	public StudenPurchase() {
 		
-		//setBackground(Color.white);
-		//setLayout(null);
+		setBorder(new LineBorder(Color.black, 1));
 		setBackground(Color.white);
 		setLayout(null);
 		spTitle.setFont(fnt);	spTitle.setBounds(15, 15, 150, 20);	add(spTitle);
@@ -92,27 +90,45 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		calendarStu();
 		
 		//예약 중인 클래스
-		cellRen.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		dueModel = new DefaultTableModel(dueCol, 0);
+		dueModel = new DefaultTableModel(dueCol, 0) {
+			public boolean isCellEditable(int i, int c) {
+				return false;
+			}
+		};
 		dueTable = new JTable(dueModel);
+		dueTable.getColumn("번호").setPreferredWidth(30);
+		dueTable.getColumn("클래스명").setPreferredWidth(120);
+		dueTable.getColumn("예약일").setPreferredWidth(40);
+		dueTable.getColumn("예약시간").setPreferredWidth(40);
+		dueTable.getColumn("장소").setPreferredWidth(40);
 		dueTable.getTableHeader().setBackground(col6);	dueTable.getTableHeader().setFont(headFnt);
 		dueSp = new JScrollPane(dueTable);		//dueSp.setSize(300, 200);
-		dueSp.setBounds(30, 360, 550, 100);		add(dueSp);
+		dueSp.setBounds(25, 360, 520, 140);		add(dueSp);
 		
 		//버튼 넣기.. 달력 크기 조절하고 다시 셋바운드로 맞추기
 		rebookBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);	
-		rebookBtn.setBounds(445,460, 70,30);		add(rebookBtn);
+		rebookBtn.setBounds(410,500, 70,30);		add(rebookBtn);
 		cancelBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);
-		cancelBtn.setBounds(510,460, 70,30);		add(cancelBtn);
+		cancelBtn.setBounds(475,500, 70,30);		add(cancelBtn);
 		
 		//전체 구매 클래스
-		allModel = new DefaultTableModel(allCol, 0);
+		allModel = new DefaultTableModel(allCol, 0) {
+			public boolean isCellEditable(int i, int c) {
+				return false;
+			}
+		};
 		allPurchase = new JTable(allModel);
-		//allPurchase.getTableHeader().setDefaultRenderer(cellRen);
+		allPurchase = new JTable(allModel);
+		allPurchase.getTableHeader().setReorderingAllowed(false);
+		allPurchase.getColumn("번호").setPreferredWidth(30);
+		allPurchase.getColumn("클래스명").setPreferredWidth(120);
+		allPurchase.getColumn("예약일").setPreferredWidth(40);
+		allPurchase.getColumn("장소").setPreferredWidth(40);
+		allPurchase.getColumn("리뷰작성").setPreferredWidth(40);
 		allPurchase.getTableHeader().setBackground(col6);	allPurchase.getTableHeader().setFont(headFnt);
 		allSp = new JScrollPane(allPurchase);
-		allSp.setBounds(30, 490, 550, 170);		add(allSp);
+		allSp.setBounds(25, 530, 520, 220);		add(allSp);
 		
 		rebookBtn.addActionListener(this);
 		cancelBtn.addActionListener(this);
@@ -223,6 +239,3 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 //다이얼로그 클래스 ... 프레임 상속이 필요하다..
 
 
-
-
- 
