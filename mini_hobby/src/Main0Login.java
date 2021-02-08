@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-import admin.Admin0Login;
+import administrator.Admin0Login;
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
 import studen.Studen2JFrameExtends;
 import teach.Teach1JFrameExtends;
 
@@ -41,7 +43,7 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
 	Font fnt3 = new Font("맑은 고딕", Font.BOLD, 25);
-
+	
 	public Main0Login() {
 		login.setBackground(Color.white);
 		add(login); login.setLayout(null);

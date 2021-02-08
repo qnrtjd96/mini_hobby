@@ -17,6 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
+
 public class Main1AdminIdSearch extends JFrame implements ActionListener, KeyListener{	
 	ImageIcon img = new ImageIcon("img/Biglogo.png");
 	JLabel logo = new JLabel(img);

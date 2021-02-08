@@ -1,4 +1,4 @@
-package admin;
+package administrator;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,7 +25,7 @@ public class AdminPaymentList extends JPanel implements MouseListener{
 			DefaultTableModel model;
 			
 			DefaultTableCellRenderer tScheduleCellRenderer = new DefaultTableCellRenderer();
-			
+	
 	// 테이블 필드명
 	Object headList[] = {"아이디","이름","결제횟수"};
 	// 테이블 레코드 테스트 값

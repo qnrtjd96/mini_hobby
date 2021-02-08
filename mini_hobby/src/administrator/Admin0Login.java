@@ -1,4 +1,4 @@
-package admin;
+package administrator;
 
 
 import java.awt.Color;
@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import admin.Admin1Main;
+import administrator.Admin1Main;
 
 public class Admin0Login extends JFrame implements ActionListener{
 	JPanel login = new JPanel();
