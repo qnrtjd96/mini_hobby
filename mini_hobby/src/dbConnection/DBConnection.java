@@ -1,9 +1,10 @@
+package dbConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class Main3DBConnection {
+public class DBConnection {
 	//1. 드라이브로딩 
 	static {
 		try {
@@ -21,7 +22,7 @@ public class Main3DBConnection {
 	String userid = "c##kangsan";
 	String userpwd = "kangsan";
 	
-	public Main3DBConnection() {}
+	public DBConnection() {}
 	//DB연결 
 	public void getConn() {
 		try {

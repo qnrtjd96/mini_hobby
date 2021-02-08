@@ -1,3 +1,4 @@
+package dbConnection;
 
 public class Mem_teacherVO {
 	private int career_year;

@@ -1,7 +1,8 @@
+package dbConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberDAO extends Main3DBConnection{
+public class MemberDAO extends DBConnection{
 
 	public MemberDAO() {
 		

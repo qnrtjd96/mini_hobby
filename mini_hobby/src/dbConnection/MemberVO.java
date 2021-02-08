@@ -1,3 +1,4 @@
+package dbConnection;
 
 public class MemberVO {
 	private String id;

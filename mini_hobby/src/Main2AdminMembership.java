@@ -28,6 +28,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import dbConnection.Mem_teacherVO;
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
+
 public class Main2AdminMembership extends JFrame implements ItemListener, ActionListener, MouseListener{
 	JPanel pane_membership = new JPanel();
 		// 상단 로고 / 회원가입 라벨 / 학생,선생님 라디오버튼
