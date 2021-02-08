@@ -47,6 +47,8 @@ public class TeachInfo extends JPanel implements ActionListener {
 			
 		JPanel InfoSouth = new JPanel();
 			JButton doBtn = new JButton("수정하기");
+			JButton confBtn = new JButton("수정완료");
+			
 			
 	public TeachInfo() {
 		setLayout(new BorderLayout());
@@ -114,6 +116,7 @@ public class TeachInfo extends JPanel implements ActionListener {
 		teaAddrTf.setEnabled(false); careerTa.setEnabled(false); 
 		
 		doBtn.addActionListener(this);
+		confBtn.addActionListener(this);
 		
 		setVisible(true);
 		
@@ -130,30 +133,40 @@ public class TeachInfo extends JPanel implements ActionListener {
 			teaAddrTf.setEnabled(true); careerTa.setEnabled(true);
 			cate[0].setEnabled(true); cate[1].setEnabled(true);
 			cate[2].setEnabled(true); cate[3].setEnabled(true);
+			
 			doBtn.setVisible(false);
 			
-			JButton confBtn = new JButton("수정완료");
+			/* 내가 하고싶은것.. 수정하기 누르면 수정완료 버튼으로 바뀌고
+			 * 수정완료 버튼을 누르면 옵션 패널이 떠서 확인 버튼 누르면
+			 * 변경된 데이터 DB에 업데이트!
+			 * 수정완료 버튼을 멤버에두고 여기에다 두고 했는데도 안됨 ㅠㅠ
+			 */
+			//confBtn = new JButton("수정완료");
+			
 			InfoSouth.add(confBtn); confBtn.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-			InfoSub.add("South", InfoSouth);
+			InfoSub.add("South", InfoSouth); //confBtn.setVisible(false);
+			
 			confBtn.setVisible(true);
 			
-			//syso가 안 뜬다..?
-			if(actionStr.equals(cate[0].getText())) {
-				System.out.println("음악을 선택");
-			}else if(actionStr.equals(cate[1].getText())) {
-				System.out.println("미술을 선택");
-			}else if(actionStr.equals(cate[2].getText())) {
-				System.out.println("스포츠를 선택");
-			}else if(actionStr.equals(cate[3].getText())) {
-				System.out.println("요리를 선택");
-				
-			confBtn.addActionListener(this);
-			if(actionStr.equals(confBtn.getText())) {
-				JOptionPane.showConfirmDialog(this, "수정을 완료하시겠습니까?");
-			}
 			
-			}
+			//syso가 안 뜬다..?
+			//confBtn.addActionListener(this);
+			
+		}else if(actionStr.equals(confBtn.getText())) {
+			System.out.println("수정완료버튼");
+			JOptionPane.showConfirmDialog(this, "수정을 완료하시겠습니까?");
 		}
+		
+		//이거를 수정완료나 수정하기 버튼 이벤트 안으로 보낼 수 있나?
+		if(actionStr.equals(cate[0].getText())) {
+			System.out.println("음악을 선택");
+		}else if(actionStr.equals(cate[1].getText())) {
+			System.out.println("미술을 선택");
+		}else if(actionStr.equals(cate[2].getText())) {
+			System.out.println("스포츠를 선택");
+		}else if(actionStr.equals(cate[3].getText())) {
+			System.out.println("요리를 선택");
+		}	
 	}
 
 	public static void main(String[] args) {
