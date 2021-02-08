@@ -28,8 +28,8 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 		JButton logo = new JButton(img);
 		
 		JLabel lblId = new JLabel("아이디");  JLabel lblpwd = new JLabel("비밀번호");
-		JTextField idTf = new JTextField();  JTextField pwdTf = new JTextField();
-		
+		JTextField idTf = new JTextField();  //JTextField pwdTf = new JTextField();
+							JPasswordField pwdTf = new JPasswordField();
 		JButton loginBtn = new JButton("로그인");
 		
 		JLabel forgot = new JLabel("아이디/비밀번호 찾기");
