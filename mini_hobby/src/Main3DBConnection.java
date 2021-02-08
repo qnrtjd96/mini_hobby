@@ -17,9 +17,9 @@ public class Main3DBConnection {
 	ResultSet rs = null;
 	String sql = null;
 	
-	String url = "jdbc:oracle:thin:@211.49.231.6:1521:orcl";
-	String userid = "kangsan";
-	String userpwd = "tiger";
+	String url = "jdbc:oracle:thin:@bitcamp4.iptime.org:1521:xe";
+	String userid = "c##kangsan";
+	String userpwd = "kangsan";
 	
 	public Main3DBConnection() {}
 	//DB연결 

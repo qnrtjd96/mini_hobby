@@ -35,6 +35,28 @@ public class MemberDAO extends Main3DBConnection{
 		}
 		return result;
 	}
+	//레코드 추가 - 강사
+	public int Mem_teachInsert(Mem_teacherVO vo) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql = "insert into mem_teacher(career_year, cate, Id) "
+					+ " values(?,?,?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getCareer_year());
+			pstmt.setString(2, vo.getCate());
+			pstmt.setString(3, vo.getId());
+			
+			result = pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
 	// 아이디 중복확인
 	public List<MemberVO> overlapCheck(String searchId) {
 		List<MemberVO> lst = new ArrayList<MemberVO>();

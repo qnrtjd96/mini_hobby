@@ -1,14 +1,14 @@
 
 public class MemberVO {
-	String id;
-	String pwd;
-	String name;
-	String birth;
-	String mail;
-	String tel;
-	String addr;
-	String login_date;
-	int sort;
+	private String id;
+	private String pwd;
+	private String name;
+	private String birth;
+	private String mail;
+	private String tel;
+	private String addr;
+	private String login_date;
+	private int sort;
 	
 
 	public MemberVO() {
