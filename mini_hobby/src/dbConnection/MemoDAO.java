@@ -56,5 +56,24 @@ public class MemoDAO extends DBConnection{
 		}
 		return lst;
 	}
+	
+	public int deleteMemo(MemoVO vom) {
+		int result = 0;
+		try {
+			getConn();
+			
+			sql="delete from memotbl where id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vom.getId());
+			
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return result;
+	}
 
 }
