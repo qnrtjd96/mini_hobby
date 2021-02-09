@@ -105,7 +105,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		} else if(obj==btn_list) { // 내글목록
 			center.setVisible(false);
 			center.removeAll();
-			//center = new TeachCateList().mainPane;
+			center = new TeachMyList(vo).mainPane;
 			add(center);
 			center.setVisible(true);
 		} else if(obj==btn_new) { // 새글쓰기
