@@ -20,7 +20,6 @@ public class MemberDAO extends DBConnection{
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				//레코드를 VO2에 담고 VO2를 List에 담고
-				System.out.println("rs.getString" + rs.getString(3));
 				MemberVO vo2 = new MemberVO(rs.getString(1), rs.getInt(2), rs.getString(3));
 				lst.add(vo2);
 			}
@@ -60,7 +59,7 @@ public class MemberDAO extends DBConnection{
 		
 	//관리자에서 회원조회할떄 필요 , 회원출력부분  AdminMemberList
 	//2021-02-08 이강산
-	public List<MemberVO> memberAllSelect() {
+	public List<MemberVO> memberSelect() {
 		//선택한 레코드를 보관할 컬렉션
 		List<MemberVO> lst= new ArrayList<MemberVO>();
 		try {

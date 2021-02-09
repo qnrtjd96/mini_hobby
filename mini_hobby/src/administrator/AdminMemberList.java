@@ -158,7 +158,7 @@ public class AdminMemberList extends JPanel{
 	public void getMemberAll() {
 		//데이터베이스의 모든 회원을 선택해서 JTable에 표시한다
 		MemberDAO dao = new MemberDAO();
-		List<MemberVO> lst = dao.memberAllSelect();
+		List<MemberVO> lst = dao.memberSelect();
 		
 		setNewTableList(lst);
 	}
