@@ -27,6 +27,8 @@ public class BoardVO {
 
 	private String area;
 	private String writedate;
+	private String classdate;
+	private String classtime;
 	
 	public BoardVO() {
 		
@@ -52,6 +54,21 @@ public class BoardVO {
 		this.career=career;
 		this.area=area;
 		this.writedate=writedate;
+	}
+	public String getClassdate() {
+		return classdate;
+	}
+
+	public void setClassdate(String classdate) {
+		this.classdate = classdate;
+	}
+
+	public String getClasstime() {
+		return classtime;
+	}
+
+	public void setClasstime(String classtime) {
+		this.classtime = classtime;
 	}
 
 	public int getClass_num() {
