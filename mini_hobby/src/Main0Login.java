@@ -26,7 +26,7 @@ import teach.Teach1JFrameExtends;
 public class Main0Login extends JFrame implements ActionListener, MouseListener{
 	
 	JPanel login = new JPanel();
-		ImageIcon img = new ImageIcon("img/Biglogo.png");
+		ImageIcon img = new ImageIcon("mini_hobby/img/Biglogo.png");
 		JButton logo = new JButton(img);
 		
 		JLabel lblId = new JLabel("아이디");  JLabel lblpwd = new JLabel("비밀번호");
@@ -45,6 +45,8 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
 	Font fnt3 = new Font("맑은 고딕", Font.BOLD, 25);
+	
+	String idStr, pwdStr;
 	
 	public Main0Login() {
 		login.setBackground(Color.white);
@@ -119,7 +121,7 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 				if (vo.getSort()==1) {
 					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
 					this.setVisible(false);
-					new Studen2JFrameExtends();
+					new Studen2JFrameExtends(idStr, pwdStr);
 				} else if(vo.getSort()==2) {
 					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
 					this.setVisible(false);
