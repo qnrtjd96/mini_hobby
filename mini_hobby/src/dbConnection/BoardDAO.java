@@ -18,13 +18,36 @@ public class BoardDAO extends DBConnection{
 					+ " career, area, writedate) values (classnum.nextval, ?,?,?,?,?,?,?,?,?,sysdate)";
 			
 			pstmt = conn.prepareStatement(sql);
-			// 만들다 말았음
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			dbClose();
 		}
 		return result;
+	}
+	// 관리자 결제관리 상세내역
+	public List<BoardVO> PaymentSelect(String searchId) {
+		//선택한 레코드를 보관할 컬렉션
+		List<BoardVO> lst = new ArrayList<BoardVO>();
+		try {
+			getConn();
+			
+			sql = "select b.class_num, b.id, m.name, b.cost, to_char(s.pay_date, 'YYYY/MM/DD') from stu_class s join boardtbl b on s.class_num = b.class_num join membertbl m on b.id = m.id where s.id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, searchId);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//레코드를 VO 담고 VO를 List에 담고
+				BoardVO vo = new BoardVO(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getString(5));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
 	}
 	// 상세정보에서 쓸거
 	public List<BoardVO> detailBoard(String id) {
