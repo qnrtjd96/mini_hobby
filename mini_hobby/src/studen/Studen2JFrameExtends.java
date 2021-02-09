@@ -82,7 +82,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		if (obj==Logo) {
 			center.setVisible(false);
 			center.removeAll();
-			StudenSearch(idStr);
+			StudenSearch();
 			center.setVisible(true);
 		} else if(obj==searchBtn) {
 			String searchWord = searchTf.getText();
