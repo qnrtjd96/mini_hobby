@@ -8,7 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -23,9 +26,21 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
-public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener{
+import dbConnection.BoardDAO;
+import dbConnection.BoardVO;
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
+import dbConnection.MemoDAO;
+import dbConnection.MemoVO;
+import dbConnection.Stu_ClassDAO;
+import dbConnection.Stu_ClassVO;
+
+public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener, Runnable{
 	JPanel paneTop = new JPanel(new BorderLayout());
 		ImageIcon logo = new ImageIcon("img/logo.png");
 		JButton Logo = new JButton(logo);
@@ -40,7 +55,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	JPanel center = new JPanel();
 		JTextField tf = new JTextField();
 		JButton btn = new JButton("검색");
-		JLabel login = new JLabel("○○○님 로그인 완료");
+		JLabel login;
 		JLabel count = new JLabel("누적 수강생 수 : 12명");
 		JPanel cal = new JPanel();
 		JButton btn_list = new JButton("내 글 목록");
@@ -48,8 +63,8 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		JLabel lbl_ta = new JLabel("메모");
 		JTextArea ta = new JTextArea();
 		JScrollPane sp = new JScrollPane(ta);
-		JLabel lbl_ = new JLabel("＃＃＃님이 예약하신 클래스까지");
-		JLabel lbl_2 = new JLabel("21시간 40분 23초 남았습니다.");
+		JLabel lbl_ = new JLabel("<html>＃＃＃님이 예약하신 클래스까지<br>21시간 40분 23초 남았습니다.");
+		JLabel lbl_2 = new JLabel();
 		JButton btn_save = new JButton("메모저장");
 		JButton btn_delete = new JButton("메모삭제");
 		JPanel Down = new JPanel(new BorderLayout());
@@ -70,11 +85,44 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		JPanel dayPane = new JPanel(new GridLayout(1,7,40,40)); //일 ~월 글자출력 
 		String days[] = {"일", "월", "화", "수", "목", "금", "토"}; 
 		JPanel datePane = new JPanel( new GridLayout(0,7,38,25)); // 1~31 날짜 출력 
-
-	public Teach1JFrameExtends() {
+	
+	MemberVO vo;
+	String id;
+	public Teach1JFrameExtends() {}
+	public Teach1JFrameExtends(String id) {
+		this.id = id;
+		
+		Stu_ClassDAO dao2 = new Stu_ClassDAO();
+		List<Stu_ClassVO> lst2 = dao2.teachReservationList(id);
+		for (int i=0; i<lst2.size(); i++) {
+			Stu_ClassVO voClass = lst2.get(i);
+			Object obj[] = {voClass.getClass_num(), voClass.getPay_class(), voClass.getClassdate(), voClass.getId()};
+			model.addRow(obj);
+		}
+		table.setTableHeader(new JTableHeader(table.getColumnModel()) {
+			public Dimension getPreferredSize() {
+		    Dimension d = super.getPreferredSize();
+		    d.height = 50;
+		    return d;
+			}
+		});
+		//table = new JTable(model); 720 No 클래스명 예약일자 수강생
+		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+		dtcr.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		table.getParent().setBackground(Color.white);
+		table.setFont(fn);
+		table.setRowHeight(40); 
+		table.getTableHeader().setBackground(col);
+		table.getTableHeader().setFont(fnt);
+		table.getColumn("No").setPreferredWidth(70); table.getColumn("No").setCellRenderer(dtcr);
+		table.getColumn("클래스명").setPreferredWidth(300);
+		table.getColumn("예약일자").setPreferredWidth(175); table.getColumn("예약일자").setCellRenderer(dtcr);
+		table.getColumn("수강생").setPreferredWidth(175); table.getColumn("수강생").setCellRenderer(dtcr);
+		
+		
 		TeachTopMenu();
 		TeachMain();
-		
 		
 		
 		setSize(800,1000);
@@ -82,6 +130,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBackground(Color.white);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 	}
 	//logo 버튼 이벤트 오버라이딩
 	public void actionPerformed(ActionEvent ae) {
@@ -102,7 +151,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		} else if(obj==btn_list) { // 내글목록
 			center.setVisible(false);
 			center.removeAll();
-			center = new TeachCateList().mainPane;
+			center = new TeachMyList(vo).mainPane;
 			add(center);
 			center.setVisible(true);
 		} else if(obj==btn_new) { // 새글쓰기
@@ -112,10 +161,18 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 			add(center);
 			center.setVisible(true);
 			
-		} else if(obj==btn_save) {
-			JOptionPane.showMessageDialog(this, "저장되었습니다");
-		} else if(obj==btn_delete) {
-			ta.setText(y+"년 "+m+"월 "+d+"일\n\n");
+		} else if(obj==btn_save) { // 메모저장
+			MemoVO vom = new MemoVO(ta.getText().substring(0, 10), ta.getText().substring(11), vo.getId());
+			MemoDAO dao = new MemoDAO();
+			dao.InsertMemo(vom);
+			JOptionPane.showMessageDialog(this, "메모가 저장되었습니다.");
+		} else if(obj==btn_delete) { // 메모삭제
+			MemoVO vom = new MemoVO(ta.getText().substring(0, 10), ta.getText().substring(11), vo.getId());
+			MemoDAO dao = new MemoDAO();
+			dao.deleteMemo(vom);
+			JOptionPane.showMessageDialog(this, "메모가 삭제되었습니다.");
+			ta.setText(vom.getMemo_date());
+			
 		}
 	}
 	//label 이벤트 오버라이딩
@@ -143,7 +200,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 					this.setVisible(true);
 					add("Center", center);
 				} else {
-					JOptionPane.showMessageDialog(this, "로그인에 실패하셨습니다.");
+					JOptionPane.showMessageDialog(this, "접속에 실패하셨습니다.");
 				}
 			}else if(lbl.equals("로그아웃")) {
 				int answer = JOptionPane.showConfirmDialog(this, "로그아웃 하시겠습니까?", "로그아웃 확인", 0);
@@ -163,7 +220,15 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		Object obj = me.getSource();
 		JLabel lbl = (JLabel)me.getSource();
 		int date = Integer.parseInt(lbl.getText());
-		ta.setText(y+"년 "+m+"월 "+date+"일\n\n");
+		MemoDAO dao = new MemoDAO();
+		List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
+		if (lst.size()==0) { // 저장된 메모가 없을경우
+			ta.setText(y+"-"+m+"-"+date+"\n\n");
+		} else { // 저장메모가 있을경우
+			MemoVO vom = lst.get(0);
+			ta.setText(y+"-"+m+"-"+date+"\n\n"+vom.getMemo_detail());
+		}
+		
 	}
 	public void TeachTopMenu() {
 		add("North",paneTop);
@@ -198,6 +263,11 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		Logo.addActionListener(this);
 	}
 	public void TeachMain() {
+		MemberDAO dao = new MemberDAO();
+		List<MemberVO> lst = dao.overlapCheck(id);
+		this.vo = lst.get(0);
+		login = new JLabel(vo.getName()+"님 로그인 완료");
+		
 		center.removeAll();
 		add("Center", center);
 		center.setBackground(Color.white);
@@ -205,7 +275,9 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		center.add(tf); center.add(btn); center.add(login); center.add(count);
 		center.add(cal); calendar_Tea();
 		center.add(btn_list); center.add(btn_new); center.add(lbl_ta); center.add(sp);
-		center.add(lbl_); center.add(lbl_2); center.add(btn_save); center.add(btn_delete); 
+		center.add(lbl_); center.add(btn_save); center.add(btn_delete);
+		center.add(lbl_2);
+		setCountLbl(vo.getId()); setTimeLbl_(vo.getId());
 		
 		tf.setBounds(20,20,640,40); btn.setBounds(670,20,80,40);
 		login.setBounds(20,70,300,40); count.setBounds(450,70,300,40);
@@ -217,7 +289,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 
 		btn.setFont(fn); login.setFont(fn); count.setFont(fn); btn_list.setFont(fn);
 		btn_new.setFont(fn); lbl_ta.setFont(fnt); lbl_.setFont(fn); btn_save.setFont(fn);
-		lbl_2.setFont(fn); btn_delete.setFont(fn); 
+		btn_delete.setFont(fn); lbl_2.setFont(fn);
 		
 		btn.setBackground(col); btn.addActionListener(this);
 		btn_list.setBackground(col); btn_list.addActionListener(this);
@@ -225,16 +297,53 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		btn_save.setBackground(col); btn_save.addActionListener(this);
 		btn_delete.setBackground(col); btn_delete.addActionListener(this);
 		
-		lbl_.setHorizontalAlignment(JLabel.CENTER); lbl_2.setHorizontalAlignment(JLabel.CENTER);
+		lbl_.setHorizontalAlignment(JLabel.CENTER);
+		lbl_2.setHorizontalAlignment(JLabel.CENTER);
 		
 		center.add(Down); Down.add(lbl); lbl.setFont(fnt); Down.add(sp2);
 		Down.setBounds(20,600,740,250); Down.setBorder(new LineBorder(Color.black, 1));
 		Down.setBackground(Color.white); Down.setLayout(null); 
 		lbl.setBounds(250,5,300,50); sp2.setBounds(10,60,720,180);
-		table.getParent().setBackground(Color.white);
-		table.getParent().setFont(fn);
-		table.getTableHeader().setBackground(col);
-		table.getTableHeader().setFont(fnt);
+	}
+	String time;
+	public void setTimeLbl_(String id) {
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> lst = dao.teachTime(id);
+		Stu_ClassVO vos = lst.get(0);
+		
+		time = vos.getClassdate()+" "+vos.getClasstime()+":00";
+		
+		lbl_.setText(vos.getId()+"님이 예약하신 클래스까지");
+		
+		Thread t1 = new Thread(this);
+		t1.start();
+	}
+	public void run() {
+		while(true) {
+			try {
+				Calendar now = Calendar.getInstance();
+				SimpleDateFormat f = new SimpleDateFormat("yyyy-mm-dd kk:mm:ss");
+				String nowStr = f.format(now.getTime());
+				Date d1 = f.parse(time);
+				Date d2 = f.parse(nowStr);
+				int diff=(int)(d2.getTime()-d1.getTime());
+				int dd = diff/(1000*60*60*24);
+				int hh = (diff%(1000*60*60*24))/(1000*60*60);
+				int mm = (diff%(1000*60*60))/(1000*60);
+				int ss = (diff%(1000*60))/1000;
+				
+				lbl_2.setText(Math.abs(dd)+"일"+ Math.abs(hh)+"시간"+Math.abs(mm)+"분"
+						+ Math.abs(ss)+"초 남았습니다.");
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			try { Thread.sleep(1000); }catch(Exception e) {}
+		}
+	}
+	public void setCountLbl(String id) {
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		int stu = dao.teachCountStu(id);
+		count.setText("누적 수강생 수 : "+stu+"명");
 	}
 	public void calendar_Tea() {
 		dayPane.setVisible(false); datePane.setVisible(false);
@@ -251,9 +360,16 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		m = now.get(Calendar.MONTH)+1;
 		d = now.get(Calendar.DAY_OF_MONTH);
 		dateLbl.setText(y+"년 "+m+"월 "+d+"일");
-		ta.setText(y+"년 "+m+"월 "+d+"일\n\n");
+		ta.setText(y+"-"+m+"-"+d+"\n\n");
 		dateLbl.setFont(fnt);
 		selectPane.setBackground(new Color(204,222,233));
+		
+		MemoDAO dao = new MemoDAO();
+		List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
+		if (lst.size()!=0) {
+			MemoVO vom = lst.get(0);
+			ta.setText(y+"-"+m+"-"+d+"\n\n"+vom.getMemo_detail());
+		}
 		
 		cal.add(calPane); calPane.setBounds(5,40,390,350);
 		calPane.setLayout(null); calPane.setBackground(Color.white);
@@ -291,12 +407,30 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		for(int space=1; space<week; space++) {
 			datePane.add(new JLabel(""));
 		}
-		// 월의 1일~마지막일 까지 출력 
+		
+		// 월의 1일~마지막일 까지 출력 (+라벨 배경색 바꾸기 위한 작업)
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.boardCalendar(vo.getId());
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
 			now.set(y, m-1, day); //날짜별로 요일을 구해서
 			int colorWeek = now.get(Calendar.DAY_OF_WEEK);
+			for(int i=0; i<lst.size(); i++) {
+				BoardVO vob = lst.get(i);
+				String date = vob.getClassdate();
+				int month = Integer.parseInt(date.substring(5,7));
+				if (month==m) {
+					int da = Integer.parseInt(date.substring(8));
+					if(da>=d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+						dayOfMonthLbl.setOpaque(true);
+						dayOfMonthLbl.setBackground(col);
+					} else if(da<d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+						dayOfMonthLbl.setOpaque(true);
+						dayOfMonthLbl.setBackground(Color.LIGHT_GRAY);
+					}
+				}
+			} 
 			if(colorWeek == 1) { //일요일이면 
 				dayOfMonthLbl.setForeground(Color.RED);
 			}else if(colorWeek == 7) { //토요일이면 
@@ -306,11 +440,5 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 			dayOfMonthLbl.setFont(fnt2);
 			dayOfMonthLbl.addMouseListener(this);
 		}
-		
-	}
-	
-	public static void main(String[] args) {
-		new Teach1JFrameExtends();
-
 	}
 }
