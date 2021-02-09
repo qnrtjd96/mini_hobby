@@ -64,9 +64,17 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	Font fntBold25 = new Font("맑은 고딕", Font.BOLD, 25);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
 	
+	String idStr;
+	
 	public Studen2JFrameExtends() {
-		StudenTopMenu();
-		StudenSearch();
+		
+	}
+	
+	public Studen2JFrameExtends() {
+		this.idStr = idStr;
+		
+		StudenTopMenu(idStr);
+		StudenSearch(idStr);
 		
 		setSize(800,1000);
 		setVisible(true);
@@ -74,6 +82,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		setBackground(Color.white);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
+	
   //logo 버튼 이벤트 오버라이딩
 	public void actionPerformed(ActionEvent ae) {
 		//컴포넌트 읽어오기
@@ -81,7 +90,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		if (obj==Logo) {
 			center.setVisible(false);
 			center.removeAll();
-			StudenSearch();
+			StudenSearch(idStr);
 			center.setVisible(true);
 		} else if(obj==searchBtn) {
 			String searchWord = searchTf.getText();
@@ -90,7 +99,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center = new StudenCateList().mainPane;
 			center.setVisible(true);
 			add("Center", center);
-			
 			System.out.println("검색버튼을 누름");
 			matchWord(searchWord);
 		}else if(obj==musicBtn) {
@@ -122,10 +130,12 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	//label 이벤트 오버라이딩
 	@Override
 	public void mouseReleased(MouseEvent me) {
+		this.idStr = idStr;
+		
 		JLabel obj = (JLabel)me.getSource();
 		Object lbl = obj.getText();
 		
-		//JTextField stuObj = (JTextField)me.getSource();
+		//JTextField stuObj = (JTextField)me.getSource(); textfield nono textarea
 		
 		try {
 			if(lbl.equals("이전으로")) {
@@ -142,7 +152,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			}else if(lbl.equals("내정보")) {
 				center.setVisible(false);
 				center.removeAll();
-				center = new Studen4MyMenu().paneStu;
+				center = new Studen4MyMenu(idStr).paneStu;
 				this.setVisible(true);
 				add("Center", center);
 			}else if(lbl.equals("로그아웃")) {
@@ -239,7 +249,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		
 		//textArea 가운데 정렬..? ㅠㅠ?
 		classTa.setBackground(Color.white); classTa.setBorder(new LineBorder(Color.black, 1)); 
-		classTa.setFont(new Font("맑은 고딕", Font.PLAIN, 13)); classTa.setBounds(580,660, 200,100);
+		classTa.setFont(new Font("맑은 고딕", Font.PLAIN, 15)); classTa.setBounds(580,700, 200,100);
 		classTa.setText(testTa); 
 		center.add(classTa);
 		center.add(back);
@@ -249,9 +259,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		sportBtn.addActionListener(this);	cookBtn.addActionListener(this);
 		
 		
-		//setVisible(true);
-		//setBackground(Color.white);
-		
 		
 	}
 	
@@ -259,7 +266,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		System.out.println("검색눌림");
 		JOptionPane.showMessageDialog(this, "ㅎㅎㅎㅎ");
 		
-
 	}
 	
 	//이벤트 구현 여기서 해야하나?
