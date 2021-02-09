@@ -64,15 +64,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	Font fntBold25 = new Font("맑은 고딕", Font.BOLD, 25);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
 	
-	String idStr;
-	
 	public Studen2JFrameExtends() {
-		
-	}
-	
-	public Studen2JFrameExtends() {
-		this.idStr = idStr;
-		
 		StudenTopMenu();
 		StudenSearch();
 		
@@ -130,7 +122,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	//label 이벤트 오버라이딩
 	@Override
 	public void mouseReleased(MouseEvent me) {
-		this.idStr = idStr;
 		
 		JLabel obj = (JLabel)me.getSource();
 		Object lbl = obj.getText();
@@ -152,7 +143,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			}else if(lbl.equals("내정보")) {
 				center.setVisible(false);
 				center.removeAll();
-				center = new Studen4MyMenu(idStr).paneStu;
+				center = new Studen4MyMenu().paneStu;
 				this.setVisible(true);
 				add("Center", center);
 			}else if(lbl.equals("로그아웃")) {
