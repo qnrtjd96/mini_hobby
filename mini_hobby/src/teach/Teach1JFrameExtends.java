@@ -25,8 +25,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import studen.StudenCateList;
-
 public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener{
 	JPanel paneTop = new JPanel(new BorderLayout());
 		ImageIcon logo = new ImageIcon("img/logo.png");
