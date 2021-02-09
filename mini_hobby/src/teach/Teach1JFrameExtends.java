@@ -56,15 +56,15 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		JTextField tf = new JTextField();
 		JButton btn = new JButton("검색");
 		JLabel login;
-		JLabel count = new JLabel("누적 수강생 수 : 12명");
+		JLabel count = new JLabel("누적 수강생 수 : 0명");
 		JPanel cal = new JPanel();
 		JButton btn_list = new JButton("내 글 목록");
 		JButton btn_new = new JButton("새 글 쓰기");
 		JLabel lbl_ta = new JLabel("메모");
 		JTextArea ta = new JTextArea();
 		JScrollPane sp = new JScrollPane(ta);
-		JLabel lbl_ = new JLabel("<html>＃＃＃님이 예약하신 클래스까지<br>21시간 40분 23초 남았습니다.");
-		JLabel lbl_2 = new JLabel();
+		JLabel lbl_ = new JLabel("수강예정인 클래스 및 수강생이");
+		JLabel lbl_2 = new JLabel("존재하지 않습니다.");
 		JButton btn_save = new JButton("메모저장");
 		JButton btn_delete = new JButton("메모삭제");
 		JPanel Down = new JPanel(new BorderLayout());
@@ -246,37 +246,6 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		this.vo = lst.get(0);
 		login = new JLabel(vo.getName()+"님 로그인 완료");
 		
-		Stu_ClassDAO dao2 = new Stu_ClassDAO();
-		List<Stu_ClassVO> lst2 = dao2.teachReservationList(id);
-		if(lst2.size()>0) {
-			for (int i=0; i<lst2.size(); i++) {
-				Stu_ClassVO voClass = lst2.get(i);
-				Object obj[] = {voClass.getClass_num(), voClass.getPay_class(), voClass.getClassdate(), voClass.getId()};
-				model.addRow(obj);
-			}
-		}
-		
-		table.setTableHeader(new JTableHeader(table.getColumnModel()) {
-			public Dimension getPreferredSize() {
-		    Dimension d = super.getPreferredSize();
-		    d.height = 50;
-		    return d;
-			}
-		});
-		//table = new JTable(model); 720 No 클래스명 예약일자 수강생
-		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
-		dtcr.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		table.getParent().setBackground(Color.white);
-		table.setFont(fn);
-		table.setRowHeight(40); 
-		table.getTableHeader().setBackground(col);
-		table.getTableHeader().setFont(fnt);
-		table.getColumn("No").setPreferredWidth(70); table.getColumn("No").setCellRenderer(dtcr);
-		table.getColumn("클래스명").setPreferredWidth(300);
-		table.getColumn("예약일자").setPreferredWidth(175); table.getColumn("예약일자").setCellRenderer(dtcr);
-		table.getColumn("수강생").setPreferredWidth(175); table.getColumn("수강생").setCellRenderer(dtcr);
-		
 		center.removeAll();
 		add("Center", center);
 		center.setBackground(Color.white);
@@ -286,7 +255,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		center.add(btn_list); center.add(btn_new); center.add(lbl_ta); center.add(sp);
 		center.add(lbl_); center.add(btn_save); center.add(btn_delete);
 		center.add(lbl_2);
-		setCountLbl(vo.getId()); setTimeLbl_(vo.getId());
+		
 		
 		tf.setBounds(20,20,640,40); btn.setBounds(670,20,80,40);
 		login.setBounds(20,70,300,40); count.setBounds(450,70,300,40);
@@ -313,6 +282,38 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		Down.setBounds(20,600,740,250); Down.setBorder(new LineBorder(Color.black, 1));
 		Down.setBackground(Color.white); Down.setLayout(null); 
 		lbl.setBounds(250,5,300,50); sp2.setBounds(10,60,720,180);
+		
+		Stu_ClassDAO dao2 = new Stu_ClassDAO();
+		List<Stu_ClassVO> lst2 = dao2.teachReservationList(id);
+		if(lst2.size()>0) {
+			for (int i=0; i<lst2.size(); i++) {
+				Stu_ClassVO voClass = lst2.get(i);
+				Object obj[] = {voClass.getClass_num(), voClass.getPay_class(), voClass.getClassdate(), voClass.getId()};
+				model.addRow(obj);
+			}
+			setCountLbl(vo.getId()); setTimeLbl_(vo.getId());
+		}
+		
+		table.setTableHeader(new JTableHeader(table.getColumnModel()) {
+			public Dimension getPreferredSize() {
+		    Dimension d = super.getPreferredSize();
+		    d.height = 50;
+		    return d;
+			}
+		});
+		//table = new JTable(model); 720 No 클래스명 예약일자 수강생
+		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+		dtcr.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		table.getParent().setBackground(Color.white);
+		table.setFont(fn);
+		table.setRowHeight(40); 
+		table.getTableHeader().setBackground(col);
+		table.getTableHeader().setFont(fnt);
+		table.getColumn("No").setPreferredWidth(70); table.getColumn("No").setCellRenderer(dtcr);
+		table.getColumn("클래스명").setPreferredWidth(300);
+		table.getColumn("예약일자").setPreferredWidth(175); table.getColumn("예약일자").setCellRenderer(dtcr);
+		table.getColumn("수강생").setPreferredWidth(175); table.getColumn("수강생").setCellRenderer(dtcr);
 	}
 	String time;
 	public void setTimeLbl_(String id) {
