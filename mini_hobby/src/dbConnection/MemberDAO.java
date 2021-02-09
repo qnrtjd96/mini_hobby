@@ -7,6 +7,81 @@ public class MemberDAO extends DBConnection{
 	public MemberDAO() {
 		
 	}
+	//휴먼계정 조회
+	//2020-02-09 이강산
+	public List<MemberVO> sleepingAllSelect() {
+		//선택한 레코드를 보관할 컬렉션
+		List<MemberVO> lst= new ArrayList<MemberVO>();
+		try {
+			getConn(); 
+			sql = "SELECT id, sort, TO_Char(login_date, 'YY/MM/DD') login_date FROM MEMBERTBL WHERE login_date <= TO_CHAR(SYSDATE-365,'YYYYMMDD')";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//레코드를 VO2에 담고 VO2를 List에 담고
+				System.out.println("rs.getString" + rs.getString(3));
+				MemberVO vo2 = new MemberVO(rs.getString(1), rs.getInt(2), rs.getString(3));
+				lst.add(vo2);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;	
+	}
+	
+	//관리자에서 회원조회할떄 필요  AdminMemberList , 선생님부분
+	//2021-02-08 이강산
+	public List<MemberVO> TeacherAllSelect() {
+		//선택한 레코드를 보관할 컬렉션
+		List<MemberVO> lst2= new ArrayList<MemberVO>();
+		try {
+			getConn(); 
+			sql = "select a.id, a.name, b.cate from memberTbl a join mem_teacher b on a.id = b.id where a.sort=2";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//레코드를 VO2에 담고 VO2를 List에 담고
+				MemberVO vo2 = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3));
+				lst2.add(vo2);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst2;
+	}
+		
+	//관리자에서 회원조회할떄 필요 , 회원출력부분  AdminMemberList
+	//2021-02-08 이강산
+	public List<MemberVO> memberAllSelect() {
+		//선택한 레코드를 보관할 컬렉션
+		List<MemberVO> lst= new ArrayList<MemberVO>();
+		try {
+			getConn(); 
+			sql = "select id, name, TO_Char(birth, 'YY/MM/DD') birth" + 
+				  " from memberTbl where sort=1 order by id asc";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//레코드를 VO에 담고 VO를 List에 담고
+				MemberVO vo = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3));
+				lst.add(vo);
+			}		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
 	// 레코드 추가 - 회원등록
 	public int memberInsert(MemberVO vo) {
 		int result=0;
