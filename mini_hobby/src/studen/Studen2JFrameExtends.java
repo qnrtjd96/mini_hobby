@@ -73,8 +73,8 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	public Studen2JFrameExtends() {
 		this.idStr = idStr;
 		
-		StudenTopMenu(idStr);
-		StudenSearch(idStr);
+		StudenTopMenu();
+		StudenSearch();
 		
 		setSize(800,1000);
 		setVisible(true);
