@@ -15,15 +15,14 @@ import javax.swing.border.LineBorder;
 
 public class StudenMyPage extends JPanel implements MouseListener{
 	Font fntBold50 = new Font("맑은 고딕", Font.BOLD, 60);
+	Font fntBold25 = new Font("맑은 고딕", Font.BOLD, 25);
 		JLabel charge = new JLabel("나의 잔액 : 15,100원");
 		JPanel cal = new JPanel();
 		JLabel ture1 = new JLabel("참여예정"); 
 		JLabel false1 = new JLabel("참여완료");
 		JLabel total = new JLabel("나의 이용횟수");
 		p grap = new p(); //그래프예정
-		JLabel lab1 = new JLabel("Lv. 프로취미러");
-		JLabel lab2 = new JLabel("다음 등급까지");
-		JLabel lab3 = new JLabel("7/10");
+
 		JLabel red = new JLabel("■");
 		JLabel blue = new JLabel("■");
 		// 달력에 대한 부분
@@ -49,15 +48,17 @@ public class StudenMyPage extends JPanel implements MouseListener{
 	public StudenMyPage() {
 		setLayout(null);
 
+		//패널에추가
 		add(charge); 
 		add(cal); calendar_Tea();
 		add(blue);  add(red);
 		add(ture1); add(false1);
 
-		add(total); add(lab1);
-		add(grap);	  add(lab2);
-							  add(lab3);
+		add(total); 
+		add(grap);	
+		//////////////////////////
 
+		//위치잡기 폰트박기
 		//int x, int y, int width, int height						
 		charge.setBounds(290,5,500,70); charge.setFont(fntPlain25);
 		cal.setBounds(27, 75, 500, 400); cal.setFont(fntPlain15); cal.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
@@ -66,12 +67,10 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		ture1.setBounds(380, 480, 500, 20);	false1.setBounds(470, 480, 500, 20);
 		ture1.setFont(fntBold15); 			false1.setFont(fntBold15);
 
-		total.setBounds(80, 530, 500, 70);	lab1.setBounds(350, 530, 500, 70);
-		total.setFont(fntBold20);			lab1.setFont(fntBold20);
-		grap.setBounds(27, 580, 300, 200);	lab2.setBounds(350, 580, 500, 70);
-											lab2.setFont(fntBold20);
-											lab3.setBounds(380, 630, 500, 100);
-											lab3.setFont(fntBold50);
+		total.setBounds(220, 530, 500, 70);	
+		total.setFont(fntBold25);			
+		grap.setBounds(27, 580, 500, 200);	
+		/////////////////////////////////						
 
 
 		//마지막 paneRight에 추가
@@ -85,14 +84,14 @@ public class StudenMyPage extends JPanel implements MouseListener{
 			g.clearRect(0,0,getWidth(),getHeight()); //클리어
 			//테두리 그리기
 			//(int x1, int y1, int x2, int y2)
-			g.drawLine(30,160,200,160); //가로줄
+			g.drawLine(30,160,500,160); //가로줄
 			for (int i = 1; i< 16 ; i++) {
 				if(i ==5) {
-					g.drawLine(30, 110, 200, 110);
+					g.drawLine(30, 110, 500, 110);
 					g.drawString(i + "", 10, 160-(10*i));
 				}
 				if(i == 10) {
-					g.drawLine(30, 60, 200, 60);
+					g.drawLine(30, 60, 500, 60);
 					g.drawString(i + "", 10, 160-(10*i));
 				}
 				if(i ==15) {
