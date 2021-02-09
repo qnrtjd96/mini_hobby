@@ -117,7 +117,7 @@ public class TeachDeleteUser extends JPanel implements ActionListener{
 			System.out.println("회원탈퇴성공... ㅠㅠ");
 		}else {
 			System.out.println("회원탈퇴실패^^");
-		}
+		} 
 	}
 
 
