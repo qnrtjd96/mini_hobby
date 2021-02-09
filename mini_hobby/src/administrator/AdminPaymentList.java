@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,6 +16,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
 
 public class AdminPaymentList extends JPanel implements MouseListener{
 	JPanel mainPane = new JPanel();
@@ -29,8 +33,8 @@ public class AdminPaymentList extends JPanel implements MouseListener{
 	// 테이블 필드명
 	Object headList[] = {"아이디","이름","결제횟수"};
 	// 테이블 레코드 테스트 값
-	Object recoList1[] = {"adfg1234","홍길동","<HTML><U>3</U><HTML>"};
-	Object recoList2[] = {"ggdg123","강길동","<HTML><U>2</U><HTML>"};
+	//Object recoList1[] = {"adfg1234","홍길동","<HTML><U>3</U><HTML>"};
+	//Object recoList2[] = {"ggdg123","강길동","<HTML><U>2</U><HTML>"};
 	
 	Color col6 = new Color(204,222,233);
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
@@ -81,8 +85,9 @@ public class AdminPaymentList extends JPanel implements MouseListener{
 		tcmSchedule.getColumn(2).setCellRenderer(tScheduleCellRenderer);
 		
 		// 테이블 데이터
-		model.addRow(recoList1);
-		model.addRow(recoList2);
+		getMember();
+		//model.addRow(recoList1);
+		//model.addRow(recoList2);
 		
 		// 테이블 위치조정
 		pmtLbl.setBounds(275,20,200,30);
@@ -119,5 +124,15 @@ public class AdminPaymentList extends JPanel implements MouseListener{
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
-
+	//학생 선택
+	public void getMember() {
+		MemberDAO dao = new MemberDAO();
+		List<MemberVO> lst = dao.memberAllSelect();
+		
+		for(int i=0; i<lst.size();i++) {
+			MemberVO vo = lst.get(i);
+			Object[] data = {vo.getId(), vo.getName(), "<HTML><U>"+vo.getPayCnt()+"</U></HTML>"};
+			model.addRow(data);
+		}
+	}
 }
