@@ -9,6 +9,7 @@ public class Mem_teacherVO {
 	private String city;
 	private int cost;
 	private String tName;
+	private String career;
 	public Mem_teacherVO() {
 	}
 	public Mem_teacherVO(int career_year, String cate, String id) {
@@ -23,6 +24,20 @@ public class Mem_teacherVO {
 		this.city = city;
 		this.cost = cost;
 		this.tName = tName;
+	}
+	//강사 클래스 검색(TeachCateList.java)
+	//클래스명, 지역, 강사명, 경력사항
+	public Mem_teacherVO(String className, String city, String career, String tName) {
+		this.className = className;
+		this.city = city;
+		this.career = career;
+		this.tName = tName;
+	}
+	public String getCareer() {
+		return career;
+	}
+	public void setCareer(String career) {
+		this.career = career;
 	}
 	public String getClassName() {
 		return className;

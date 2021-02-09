@@ -158,7 +158,6 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 			int colCount = table.getColumnCount();
 			Object value = table.getValueAt(row, col);
 			if(col==1) {
-				System.out.println(col);
 				title = (String)model.getValueAt(row, 2); // 클래스명 가져오기 (혹시몰라서)
 				StudenReservationDetail srvd = new StudenReservationDetail();
 			}
