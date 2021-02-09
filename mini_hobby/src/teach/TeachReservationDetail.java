@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -21,6 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import dbConnection.BoardDAO;
+import dbConnection.BoardVO;
+import dbConnection.MemberVO;
 
 public class TeachReservationDetail extends JDialog implements ActionListener, MouseListener{
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
@@ -80,8 +85,16 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			JPanel dayPane = new JPanel(new GridLayout(1,7,40,40)); //일 ~월 글자출력 
 			String days[] = {"일", "월", "화", "수", "목", "금", "토"}; 
 			JPanel datePane = new JPanel( new GridLayout(0,7,38,25)); // 1~31 날짜 출력 
+			
+	String id;
+	BoardDAO dao = new BoardDAO();
+	List<BoardVO> lst = dao.detailBoard(id);
 
-	public TeachReservationDetail() {
+	public TeachReservationDetail() {}
+	public TeachReservationDetail(String id) {
+		this.id=id;
+		
+		
 		setBackground(Color.white);
 		add("Center", center);
 		center.setLayout(null); center.setBackground(Color.white);
@@ -158,6 +171,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		JLabel lbl = (JLabel)me.getSource();
 		int date = Integer.parseInt(lbl.getText());
 		lbl2.setText("선택한 일자 : "+y+"년 "+m+"월 "+date+"일");
+		String time = y+"-"+m+"-"+date;
 		
 	}
 	public void mousePressed(MouseEvent e) {}
@@ -169,7 +183,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		//컴포넌트 읽어오기
 		Object obj = ae.getSource();
 		if(obj==btn) {
-			TeachReservationDetail2DialStart newDial = new TeachReservationDetail2DialStart(null);
+			new TeachReservationDetail2DialStart(id);
 		}
 		
 	}
@@ -223,11 +237,28 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			datePane.add(new JLabel(""));
 		}
 		// 월의 1일~마지막일 까지 출력 
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.boardCalendar(id);
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
 			now.set(y, m-1, day); //날짜별로 요일을 구해서
 			int colorWeek = now.get(Calendar.DAY_OF_WEEK);
+			for(int i=0; i<lst.size(); i++) {
+				BoardVO vob = lst.get(i);
+				String date = vob.getClassdate();
+				int month = Integer.parseInt(date.substring(5,7));
+				if (month==m) {
+					int da = Integer.parseInt(date.substring(8));
+					if(da>=d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+						dayOfMonthLbl.setOpaque(true);
+						dayOfMonthLbl.setBackground(col6);
+					} else if(da<d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+						dayOfMonthLbl.setOpaque(true);
+						dayOfMonthLbl.setBackground(Color.LIGHT_GRAY);
+					}
+				}
+			} 
 			if(colorWeek == 1) { //일요일이면 
 				dayOfMonthLbl.setForeground(Color.RED);
 			}else if(colorWeek == 7) { //토요일이면 

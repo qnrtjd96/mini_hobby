@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,6 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import dbConnection.BoardDAO;
+import dbConnection.BoardVO;
 
 public class TeachReservationDetail2DialStart extends JDialog implements ActionListener, ItemListener {
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
@@ -22,10 +26,13 @@ public class TeachReservationDetail2DialStart extends JDialog implements ActionL
 	JCheckBox box;
 	
 	JDialog dial;
+	String id;
+	BoardDAO dao = new BoardDAO();
+	List<BoardVO> lst = dao.detailBoard(id);
 	public void dialStart() {}
 	
-	public TeachReservationDetail2DialStart(TeachReservationDetail te) {
-		dial = new JDialog(te, "수업 가능한 시간을 모두 선택하세요");
+	public TeachReservationDetail2DialStart(String id) {
+		dial = new JDialog();
 		dial.setSize(340,400);
 		dial.setLocation(200, 200);
 		dial.setVisible(true);
@@ -65,6 +72,8 @@ public class TeachReservationDetail2DialStart extends JDialog implements ActionL
 	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		Object obj = ie.getItem();
+		String select = obj.toString();
+		System.out.println(select);
 		
 	}
 		
