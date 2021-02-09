@@ -146,7 +146,6 @@ public class AdminSleepUser extends JPanel implements MouseListener, ActionListe
 		for(int i=0; i<lst.size(); i++) {
 			MemberVO vo2 = lst.get(i);
 			if(vo2.getSort() == 1) {
-				System.out.println("vo2.getLogin_date = " + vo2.getLogin_date());
 				Object[] teaData = {'○',i+1 ,vo2.getId(), "학생", vo2.getLogin_date()};
 				teaT.addRow(teaData);
 			}else {
