@@ -39,8 +39,8 @@ public class AdminPaymentDialog extends JFrame implements MouseListener{
 	// 테이블 필드명
 	Object headList[] = {"선택","강사아이디","이름","금액","결제일자"};
 	// 테이블 레코드 테스트 값
-	Object recoList1[] = {"○","adfg1234","김강사","30000","2021.02.07"};
-	Object recoList2[] = {"○","ggdg123","박강사","20000","2021.01.15"};
+	//Object recoList1[] = {"○","adfg1234","김강사","30000","2021.02.07"};
+	//Object recoList2[] = {"○","ggdg123","박강사","20000","2021.01.15"};
 	
 	Color col6 = new Color(204,222,233);
 	Font fntPlain13 = new Font("맑은 고딕", Font.PLAIN, 13);
@@ -159,7 +159,7 @@ public class AdminPaymentDialog extends JFrame implements MouseListener{
 		
 		for(int i=0; i<lst.size();i++) {
 			BoardVO vo = lst.get(i);
-			Object[] data = {vo.getClass_num(), vo.getId(), vo.getName(), vo.getCost(), vo.getPay_date()};
+			Object[] data = {"○", vo.getId(), vo.getName(), vo.getCost(), vo.getPay_date()};
 			model.addRow(data);
 		}
 	}

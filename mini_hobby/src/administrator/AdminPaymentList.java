@@ -131,7 +131,7 @@ public class AdminPaymentList extends JPanel implements MouseListener{
 		
 		for(int i=0; i<lst.size();i++) {
 			MemberVO vo = lst.get(i);
-			Object[] data = {vo.getId(), vo.getName(), vo.getPayCnt()};
+			Object[] data = {vo.getId(), vo.getName(), "<HTML><U>"+vo.getPayCnt()+"</U></HTML>"};
 			model.addRow(data);
 		}
 	}
