@@ -24,9 +24,6 @@ import studen.Studen2JFrameExtends;
 import teach.Teach1JFrameExtends;
 
 public class Main0Login extends JFrame implements ActionListener, MouseListener{
-	//현정 브런치 테스트용 주석입니다!
-	
-	String gitTeString = "깃허브 테스트용 변수입니다";
 	
 	JPanel login = new JPanel();
 		ImageIcon img = new ImageIcon("img/Biglogo.png");
