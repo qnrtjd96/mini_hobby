@@ -16,6 +16,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,7 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class StudenReservationDetail extends JPanel implements ActionListener, MouseListener{
+public class StudenReservationDetail extends JDialog implements ActionListener, MouseListener{
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
@@ -151,6 +152,8 @@ public class StudenReservationDetail extends JPanel implements ActionListener, M
 		rev.add(re3); re3.setFont(fn);
 		rev.setBackground(Color.white); review.setBackground(Color.white);
 		
+		setSize(800,920);
+		setLocation(50, 100);
 		setVisible(true);
 		
 		btn.addActionListener(this);
