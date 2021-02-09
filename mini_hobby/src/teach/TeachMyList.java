@@ -47,10 +47,11 @@ public class TeachMyList extends JPanel implements MouseListener{
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
 	
 	MemberVO vo;
+	String id;
 	public TeachMyList() {}
 
-	public TeachMyList(MemberVO vo) {
-		this.vo = vo;
+	public TeachMyList(String id) {
+		this.id=id;
 		
 		mainPane.setLayout(null);
 		mainPane.setBackground(Color.white);
@@ -126,7 +127,7 @@ public class TeachMyList extends JPanel implements MouseListener{
 		} else if (obj==table) {
 			int col = table.getSelectedColumn();
 			if (col==1) {
-				new TeachReservationDetail();
+				new TeachReservationDetail(id);
 			}
 		}	
 	}

@@ -94,11 +94,14 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		
 		Stu_ClassDAO dao2 = new Stu_ClassDAO();
 		List<Stu_ClassVO> lst2 = dao2.teachReservationList(id);
-		for (int i=0; i<lst2.size(); i++) {
-			Stu_ClassVO voClass = lst2.get(i);
-			Object obj[] = {voClass.getClass_num(), voClass.getPay_class(), voClass.getClassdate(), voClass.getId()};
-			model.addRow(obj);
+		if(lst2.size()>0) {
+			for (int i=0; i<lst2.size(); i++) {
+				Stu_ClassVO voClass = lst2.get(i);
+				Object obj[] = {voClass.getClass_num(), voClass.getPay_class(), voClass.getClassdate(), voClass.getId()};
+				model.addRow(obj);
+			}
 		}
+		
 		table.setTableHeader(new JTableHeader(table.getColumnModel()) {
 			public Dimension getPreferredSize() {
 		    Dimension d = super.getPreferredSize();
@@ -154,7 +157,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		} else if(obj==btn_list) { // 내글목록
 			center.setVisible(false);
 			center.removeAll();
-			center = new TeachMyList(vo).mainPane;
+			center = new TeachMyList(id).mainPane;
 			add(center);
 			center.setVisible(true);
 		} else if(obj==btn_new) { // 새글쓰기
