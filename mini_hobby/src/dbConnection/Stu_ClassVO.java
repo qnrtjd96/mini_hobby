@@ -7,6 +7,8 @@ public class Stu_ClassVO {
 	private String pay_cate;
 	private int pay;
 	private String pay_date;
+	private String classdate;
+	private String classtime;
 	
 	public Stu_ClassVO() {
 		
@@ -18,6 +20,18 @@ public class Stu_ClassVO {
 		this.pay_cate=pay_cate;
 		this.pay=pay;
 		this.pay_date=pay_date;
+	}
+	public String getClassdate() {
+		return classdate;
+	}
+	public void setClassdate(String classdate) {
+		this.classdate = classdate;
+	}
+	public String getClasstime() {
+		return classtime;
+	}
+	public void setClasstime(String classtime) {
+		this.classtime = classtime;
 	}
 
 	public int getClass_num() {
