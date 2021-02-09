@@ -271,5 +271,73 @@ public class MemberDAO extends DBConnection{
 		}
 		return lst;
 	}
+	
+	//회원정보 받아오기
+	public List<MemberVO> getMemberInfo(String idStr){	//String stuId
+			
+		List<MemberVO> lst = new ArrayList<MemberVO>();
+			
+		try {
+			getConn();
+
+			sql = "select id, pwd, name, to_char(birth, 'YYYY/MM/DD'), mail, tel, addr, sort from membertbl where id=? ";
+				
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+				
+			rs = pstmt.executeQuery();
+				
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				System.out.println("rs.getString(1) : id >>> "+rs.getString(1));
+				vo.setId(rs.getString(1));
+				vo.setPwd(rs.getString(2));
+				vo.setName(rs.getString(3));
+				vo.setBirth(rs.getString(4));
+				vo.setMail(rs.getString(5));
+				vo.setTel(rs.getString(6));
+				vo.setAddr(rs.getString(7));
+				vo.setSort(rs.getInt(8));
+				
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
+		
+	//회원정보 수정
+	public int memberUpdate(MemberVO vo, String idStr){
+			
+		int result=0;
+			
+		try {
+			getConn();
+				
+			sql = "update membertbl set pwd=?, name=?, mail=?, tel=?, addr=? where id=? ";
+				
+			pstmt = conn.prepareStatement(sql);
+				
+			pstmt.setString(1, vo.getPwd());
+			pstmt.setString(2, vo.getName());
+			pstmt.setString(3, vo.getMail());
+			pstmt.setString(4, vo.getTel());
+			pstmt.setString(5, vo.getAddr());
+			pstmt.setString(6, idStr);
+				
+			result=pstmt.executeUpdate();
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+			
+		return result;
+	}
+
 
 }
