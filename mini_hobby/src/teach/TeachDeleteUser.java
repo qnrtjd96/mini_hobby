@@ -1,4 +1,4 @@
-package studen;
+package teach;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 
-public class StudenDeleteUser extends JPanel implements ActionListener{
+public class TeachDeleteUser extends JPanel implements ActionListener{
 	JPanel deletMain = new JPanel(null);
 	
 	JLabel deleteTitle = new JLabel("탈퇴하기");
@@ -38,7 +38,7 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 	JPanel robotSouth = new JPanel();
 		JButton chooBtn = new JButton("선택완료");
 	
-	public StudenDeleteUser() {
+	public TeachDeleteUser() {
 		add(deletMain);
 		setBackground(Color.white);
 		
