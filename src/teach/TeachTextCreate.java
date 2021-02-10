@@ -175,22 +175,22 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 		//폼의 데이터를 VO에 셋팅
 		//아이디, 클래스명,  카테고리, 지역, 쓴날자, 강의시간
 		int cost = Integer.parseInt(pay2.getText());
-		BoardVO vo = new BoardVO(vo2.getId(), classname2.getText(), vo2.getCate(), dbarea, cost, classdetail2.getText(),total2.getText(), detail2.getText(), date);
+		//BoardVO vo = new BoardVO(vo2.getId(), classname2.getText(), vo2.getCate(), dbarea, cost, classdetail2.getText(),total2.getText(), detail2.getText(), date);
 		//이름과 연락처가 있을때만 데이터베이스 작업하기
 		if(classname2.getText().equals("") || pay2.getText().equals("") || classdetail2.getText().equals("") || total2.getText().equals("") || detail2.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "모든부분을 입력하셔야 합니다..");
 		}else{
 			BoardDAO dao = new BoardDAO();
-			int result = dao.insertBoard(vo);
-			if(result>0) {//회원등록됨
+			//int result = dao.insertBoard(vo);
+			//if(result>0) {//회원등록됨
 				JOptionPane.showMessageDialog(this,"회원이 등록되었습니다.");
 				getMember();
-			}else {//회원등록실패함
+			//}else {//회원등록실패함
 				JOptionPane.showMessageDialog(this,"회원이 실패했습니다.");
 			}
 		}
 		
-	}
+	//}
 		
 	@Override
 	public void itemStateChanged(ItemEvent e) {

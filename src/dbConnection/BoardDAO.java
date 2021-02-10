@@ -50,15 +50,44 @@ public class BoardDAO extends DBConnection{
 		return lst;
 	}
 	// 상세정보에서 쓸거
-	public List<BoardVO> detailBoard(String id) {
+	public List<BoardVO> detailBoard(String classname) {
 		List<BoardVO> lst = new ArrayList<BoardVO>();
 		try {
 			getConn();
 			
-			sql = "select b.* from (select * from boardtbl where id=?) b join membertbl m on b.id=m.id";
+			sql = "select cate, classdate, classtime from boardtbl where classname=?";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
+			pstmt.setString(1, classname);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardVO vob = new BoardVO();
+				vob.setCate(rs.getString(1));
+				vob.setClassdate(rs.getString(2));
+				vob.setClasstime(rs.getString(3));
+				
+				lst.add(vob);
+				
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return lst;
+	}
+	// 테이블세팅
+	public List<BoardVO> detailTable(String classname, String classdate) {
+		List<BoardVO> lst = new ArrayList<BoardVO>();
+		try {
+			getConn();
+			
+			sql = "select * from boardtbl where classname=? and classdate=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, classname);
+			pstmt.setString(2, classdate);
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -73,6 +102,8 @@ public class BoardDAO extends DBConnection{
 				vob.setCareer(rs.getString(9));
 				vob.setArea(rs.getString(10));
 				vob.setWritedate(rs.getString(11));
+				vob.setClassdate(rs.getString(12));
+				vob.setClasstime(rs.getString(13));
 				vob.setReview(rs.getString(5));
 				
 				lst.add(vob);
@@ -116,7 +147,8 @@ public class BoardDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql="select class_num, classname, area, to_char(classdate, 'yyyy-mm-dd'), classtime from boardtbl where id=?";
+			sql="select class_num, classname, area, to_char(classdate, 'yyyy-mm-dd'), classtime from boardtbl"
+					+ " where id=? order by classdate asc";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -136,6 +168,23 @@ public class BoardDAO extends DBConnection{
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
+			dbClose();
+		}
+		return lst;
+	}
+	// 강사 detail에서 쓸거
+	public List<BoardVO> teachDetail(String id) {
+		List<BoardVO> lst = new ArrayList<BoardVO>();
+		try {
+			getConn();
+			
+			sql="select ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+		} catch(Exception e) {
+			
+		}finally {
 			dbClose();
 		}
 		return lst;
