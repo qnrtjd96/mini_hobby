@@ -1,6 +1,6 @@
 package administrator;
 
-
+//테스트
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
