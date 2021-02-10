@@ -116,7 +116,8 @@ public class BoardDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql="select class_num, classname, area, to_char(classdate, 'yyyy-mm-dd'), classtime from boardtbl where id=?";
+			sql="select class_num, classname, area, to_char(classdate, 'yyyy-mm-dd'), classtime from boardtbl"
+					+ " where id=? order by classdate asc";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);

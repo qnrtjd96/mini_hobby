@@ -197,5 +197,32 @@ public class MemberDAO extends DBConnection{
 		}
 		return lst;
 	}
+	// 내정보 로그인하기
+	public String loginInfo(String id) {
+		String pwd = null;
+		List<MemberVO> lst = new ArrayList<MemberVO>();
+		try {
+			getConn();
+			
+			sql="select pwd from membertbl where id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setPwd(rs.getString(1));
+				
+				lst.add(vo);
+			}
+			pwd = lst.get(0).getPwd();
+		} catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return pwd;
+	}
 
 }

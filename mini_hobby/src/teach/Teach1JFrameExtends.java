@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,7 +42,7 @@ import dbConnection.MemoVO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
 
-public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener, Runnable{
+public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener, Runnable, WindowListener{
 	JPanel paneTop = new JPanel(new BorderLayout());
 		ImageIcon logo = new ImageIcon("img/logo.png");
 		JButton Logo = new JButton(logo);
@@ -91,6 +93,9 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	public Teach1JFrameExtends() {}
 	public Teach1JFrameExtends(String id) {
 		this.id = id;
+		MemberDAO dao = new MemberDAO();
+		List<MemberVO> lst = dao.overlapCheck(id);
+		vo = lst.get(0);
 		
 		
 		TeachTopMenu();
@@ -102,6 +107,12 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBackground(Color.white);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+	}
+	// X눌러서 창 끄면 이벤트 발생
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// 여기다가 로그아웃시 access_mem에서 정보 delete넣을거임!
 		
 	}
 	//logo 버튼 이벤트 오버라이딩
@@ -169,9 +180,11 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 				add("Center", center);
 			}else if(lbl.equals("내정보")) {
 				String pwd = JOptionPane.showInputDialog("비밀번호를 입력하세요.");
+				MemberDAO dao = new MemberDAO();
+				String rePwd = dao.loginInfo(id);
 				if (pwd==null) {
 					
-				} else if (pwd.equals("master1234")) {
+				} else if (pwd.equals(rePwd)) {
 					center.setVisible(false);
 					center.removeAll();
 					center = new Teach3MyMenu().paneStu;
@@ -241,9 +254,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		Logo.addActionListener(this);
 	}
 	public void TeachMain() {
-		MemberDAO dao = new MemberDAO();
-		List<MemberVO> lst = dao.overlapCheck(id);
-		this.vo = lst.get(0);
+		
 		login = new JLabel(vo.getName()+"님 로그인 완료");
 		
 		center.removeAll();
@@ -420,7 +431,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		
 		// 월의 1일~마지막일 까지 출력 (+라벨 배경색 바꾸기 위한 작업)
 		BoardDAO dao = new BoardDAO();
-		List<BoardVO> lst = dao.boardCalendar(vo.getId());
+		List<BoardVO> lst = dao.boardCalendar(id);
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -451,4 +462,16 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 			dayOfMonthLbl.addMouseListener(this);
 		}
 	}
+	@Override
+	public void windowOpened(WindowEvent e) {	}
+	@Override
+	public void windowClosed(WindowEvent e) {	}
+	@Override
+	public void windowIconified(WindowEvent e) {	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {	}
+	@Override
+	public void windowActivated(WindowEvent e) {	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {	}
 }

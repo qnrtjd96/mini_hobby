@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Calendar;
 import java.util.List;
 
@@ -172,6 +174,12 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		int date = Integer.parseInt(lbl.getText());
 		lbl2.setText("선택한 일자 : "+y+"년 "+m+"월 "+date+"일");
 		String time = y+"-"+m+"-"+date;
+		for(int i=0; i<lst.size(); i++) {
+			BoardVO vob = lst.get(i);
+			if (vob.getClassdate().equals(time)) {
+				
+			}
+		}
 		
 	}
 	public void mousePressed(MouseEvent e) {}
