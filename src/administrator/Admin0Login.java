@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 package administrator;
 //
@@ -201,8 +200,6 @@ public class Admin0Login extends JFrame implements ActionListener{
 	}
 
 }
->>>>>>> refs/remotes/origin/master
-=======
 package administrator;
 
 //테스트
@@ -303,4 +300,3 @@ public class Admin0Login extends JFrame implements ActionListener{
 	}
 
 }
->>>>>>> refs/remotes/origin/master
