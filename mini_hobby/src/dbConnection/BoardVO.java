@@ -12,24 +12,10 @@ public class BoardVO {
 	private int cost;
 	private String intro;
 	private String career;
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getPay_date() {
-		return pay_date;
-	}
-	public void setPay_date(String pay_date) {
-		this.pay_date = pay_date;
-	}
-
 	private String area;
 	private String writedate;
 	private String classdate;
 	private String classtime;
-	
 	public BoardVO() {
 		
 	}
@@ -54,6 +40,18 @@ public class BoardVO {
 		this.career=career;
 		this.area=area;
 		this.writedate=writedate;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPay_date() {
+		return pay_date;
+	}
+	public void setPay_date(String pay_date) {
+		this.pay_date = pay_date;
 	}
 	public String getClassdate() {
 		return classdate;

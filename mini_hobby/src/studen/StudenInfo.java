@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +13,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
 
 public class StudenInfo extends JPanel implements ActionListener {
 	Font westFnt = new Font("맑은 고딕", Font.BOLD, 25);
@@ -25,19 +29,28 @@ public class StudenInfo extends JPanel implements ActionListener {
 			JLabel stuEmail = new JLabel("이메일"); JLabel stuTel = new JLabel("연락처");
 			JLabel stuAddr = new JLabel("주소");
 
-			JLabel stuIdLbl = new JLabel("abcd1234");
-			JTextField stuPwdTf = new JTextField();		String pwdTest = "pwd1234";
-			JTextField stuNameTf = new JTextField(250);		String nameTest = "세종대왕";
-			JLabel stuBirthLbl = new JLabel("2000/12/25");
-			JTextField stuEmailTf = new JTextField(250);	String emailTest = "abcd@naver.com";
-			JTextField stuTelTf = new JTextField(250);		String telTest = "010-1234-1234";
-			JTextField stuAddrTf = new JTextField(250);		String addrTest = "서울시 양천구 목3동";
+			JTextField stuIdTf = new JTextField();			String idTest = "";
+			JTextField stuPwdTf = new JTextField();			String pwdTest = "";
+			JTextField stuNameTf = new JTextField(250);		String nameTest = "";
+			JTextField stuBirthTf = new JTextField();		String birthTest = "";
+			JTextField stuEmailTf = new JTextField(250);	String emailTest = "";
+			JTextField stuTelTf = new JTextField(250);		String telTest = "";
+			JTextField stuAddrTf = new JTextField(250);		String addrTest = "";
 		
 		JPanel InfoSouth = new JPanel();
 			JButton doBtn = new JButton("수정하기");
 			JButton confBtn = new JButton("수정완료");
-			
+		
+	String idStr;
+	
 	public StudenInfo() {
+		
+	}
+			
+	public StudenInfo(String idStr) {
+		
+		this.idStr = idStr; //받아온 매개변수 멤버변수에 세팅
+		
 		//패널 기본 설정
 		add(InfoSub);
 		InfoSub.setBackground(Color.white);
@@ -59,18 +72,14 @@ public class StudenInfo extends JPanel implements ActionListener {
 		stuAddr.setBounds(30,410, 100,30); stuAddr.setFont(westFnt); InfoCenter.add(stuAddr);
 		
 		//오른쪽 사용자 정보 출력란
-		
-		//사용자 정보 세팅..db에서 가져와야함
-		
-		
-		stuIdLbl.setBounds(150,80, 250,30); stuIdLbl.setFont(centerFnt); InfoCenter.add(stuIdLbl);
-		stuIdLbl.setBorder(new LineBorder(Color.black, 1));
+		stuIdTf.setBounds(150,80, 250,30); stuIdTf.setFont(centerFnt); InfoCenter.add(stuIdTf);
+		stuIdTf.setText(idTest);	stuIdTf.setBorder(new LineBorder(Color.black, 1));
 		stuPwdTf.setBounds(150,135, 250,30); stuPwdTf.setFont(centerFnt); InfoCenter.add(stuPwdTf);
 		stuPwdTf.setText(pwdTest);	stuPwdTf.setBorder(new LineBorder(Color.black, 1));
 		stuNameTf.setBounds(150,190, 250,30); stuNameTf.setFont(centerFnt); InfoCenter.add(stuNameTf);
 		stuNameTf.setText(nameTest); stuNameTf.setBorder(new LineBorder(Color.black, 1));
-		stuBirthLbl.setBounds(150,245, 250,30); stuBirthLbl.setFont(centerFnt); InfoCenter.add(stuBirthLbl);
-		stuBirthLbl.setBorder(new LineBorder(Color.black, 1));
+		stuBirthTf.setBounds(150,245, 250,30); stuBirthTf.setFont(centerFnt); InfoCenter.add(stuBirthTf);
+		stuBirthTf.setText(birthTest); stuBirthTf.setBorder(new LineBorder(Color.black, 1));
 		stuEmailTf.setBounds(150,300, 250,30); stuEmail.setFont(centerFnt); InfoCenter.add(stuEmailTf);
 		stuEmailTf.setText(emailTest); stuEmailTf.setBorder(new LineBorder(Color.black, 1));
 		stuTelTf.setBounds(150,355, 250,30); stuTelTf.setFont(centerFnt); InfoCenter.add(stuTelTf);
@@ -91,6 +100,8 @@ public class StudenInfo extends JPanel implements ActionListener {
 				
 		setVisible(true);
 		
+		getStuInfo(idStr);
+		
 	}
 	
 	@Override
@@ -110,21 +121,58 @@ public class StudenInfo extends JPanel implements ActionListener {
 			
 		}else if(obj==confBtn) {
 			System.out.println("수정완료버튼 눌림");
-			sendStuInfo();
+			sendStuInfo(idStr);
 		}
 	}
 	
-	public void sendStuInfo() {
-		JOptionPane.showMessageDialog(this, "수정완료버튼 눌림?");
+	
+	//회원정보 세팅
+	public void getStuInfo(String idStr) { //회원정보 세팅
+
+		System.out.println("회원정보 세팅 여기까지 가능?");
 		
+		System.out.println("idStr------------------------" + idStr);
+		MemberDAO dao = new MemberDAO();
+		List<MemberVO> searchId = dao.getMemberInfo(idStr);
+		
+		if(searchId.size()==0 ) {
+			System.out.println("아이디를 매치를 못함...");
+		}else {
+			MemberVO vo = searchId.get(0);
+			
+			if(vo.getId().equals(idStr)) {
+				idTest = vo.getId();			stuIdTf.setText(idTest);	
+				pwdTest = vo.getPwd();			stuPwdTf.setText(pwdTest);
+				nameTest = vo.getName();		stuNameTf.setText(nameTest);
+				birthTest = vo.getBirth();		stuBirthTf.setText(birthTest);
+				telTest = vo.getTel();			stuTelTf.setText(telTest);
+				emailTest = vo.getMail();		stuEmailTf.setText(emailTest);
+				addrTest = vo.getAddr();		stuAddrTf.setText(addrTest);
+			}	
+		}
+		
+		
+	}
+	//회원정보 수정
+	public void sendStuInfo(String idStr) {
 		//수정정보 받아오는 부분
-		String rewritePwd = stuPwdTf.getText();	String rewriteName = stuNameTf.getText();	
-		String rewriteEmail = stuEmailTf.getText();	String rewriteTel = stuTelTf.getText();	
 		String rewriteAddr = stuAddrTf.getText();
-		
 		System.out.println("받아오는지 확인 > "+ rewriteAddr);
 		
-		//디비에 updata 해주기
+		MemberVO vo = new MemberVO();
+		vo.setPwd(stuPwdTf.getText());		vo.setName(stuNameTf.getText());
+		vo.setMail(stuEmailTf.getText());	vo.setTel(stuTelTf.getText());
+		vo.setAddr(stuAddrTf.getText());
+		
+		MemberDAO dao = new MemberDAO();
+		
+		int result = dao.memberUpdate(vo, idStr);
+		if(result>0) { //수정완료 확인부분
+			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다!");
+			getStuInfo(idStr);
+		}else {
+			JOptionPane.showMessageDialog(this, "수정이 실패됐습니다, 다시 시도해주세요");
+		}
 		
 		//비활성화 시키기
 		stuPwdTf.setEnabled(false);		stuNameTf.setEnabled(false);

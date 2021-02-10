@@ -33,7 +33,15 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
+	
+	String idStr;
+	
 	public Studen4MyMenu() {
+		
+	}
+	public Studen4MyMenu(String idStr) {
+		this.idStr = idStr;
+		
 		add("Center", paneStu);
 		
 		paneStu.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
@@ -106,7 +114,7 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 		}else if(lbl.equals("회원정보 확인/수정")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new StudenInfo().InfoSub;
+			center = new StudenInfo(idStr).InfoSub;
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);

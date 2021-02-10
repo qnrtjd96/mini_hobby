@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -23,14 +26,19 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import dbConnection.Acess_memDAO;
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
+import main.Main0Login;
+
 public class Studen2JFrameExtends extends JFrame implements ActionListener, MouseListener{
 	JPanel paneTop = new JPanel(new BorderLayout());
-		ImageIcon logo = new ImageIcon("img/logo.png");
+		ImageIcon logo = new ImageIcon("mini_hobby/img/logo.png");
 		JButton Logo = new JButton(logo);
 		Dimension logoSize = new Dimension(100, 50);
 		JPanel paneLabel = new JPanel();
 	
-	ImageIcon background = new ImageIcon("img/searchBack.gif");
+	ImageIcon background = new ImageIcon("mini_hobby/img/searchBack.gif");
 	
 	JPanel center = new JPanel(null); //전체 프레임의 중간에 들어갈 패널
 		String defWord = "클래스명 또는 강사의 이름을 입력해주세요.";
@@ -64,9 +72,18 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	Font fntBold25 = new Font("맑은 고딕", Font.BOLD, 25);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
 	
+	String idStr, pwdStr;
+	
 	public Studen2JFrameExtends() {
-		StudenTopMenu();
-		StudenSearch();
+		
+	}
+	
+	public Studen2JFrameExtends(String idStr, String pwdStr) {
+		this.idStr = idStr;
+		this.pwdStr = pwdStr;
+		
+		StudenTopMenu(idStr);
+		StudenSearch(idStr);
 		
 		
 		setSize(800,1000);
@@ -74,6 +91,8 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBackground(Color.white);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		addWindowListener(new AdapterInner());
 	}
 	
   //logo 버튼 이벤트 오버라이딩
@@ -83,7 +102,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		if (obj==Logo) {
 			center.setVisible(false);
 			center.removeAll();
-			StudenSearch();
+			StudenSearch(idStr);
 			center.setVisible(true);
 		} else if(obj==searchBtn) {
 			String searchWord = searchTf.getText();
@@ -150,22 +169,37 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 				////// 구현해서 객체 호출하세요 //////
 				center.setVisible(false);
 				center.removeAll();
-				center = new Studen3MsgFrame().tabBack;
+				center = new Studen3MsgFrame(idStr).tabBack;
 				this.setVisible(true);
 				add("Center", center);
 			}else if(lbl.equals("내정보")) {
-				center.setVisible(false);
-				center.removeAll();
-				center = new Studen4MyMenu().paneStu;
-				this.setVisible(true);
-				add("Center", center);
+				//내 정보 들어가기 전에 비밀번호 재입력
+				String inputPwdString = JOptionPane.showInputDialog("비밀번호를 입력해주세요");
+				MemberDAO dao = new MemberDAO();
+				List<MemberVO> checkpwdList = dao.loginStart(idStr, pwdStr);
+				MemberVO vo = checkpwdList.get(0);
+				if(inputPwdString.equals(vo.getPwd())) {
+					center.setVisible(false);
+					center.removeAll();
+					center = new Studen4MyMenu(idStr).paneStu;
+					this.setVisible(true);
+					add("Center", center);
+				}else {
+					JOptionPane.showMessageDialog(this ,"잘못된 비밀번호 입니다");
+				}	
 			}else if(lbl.equals("로그아웃")) {
 				int answer = JOptionPane.showConfirmDialog(this, "로그아웃 하시겠습니까?", "로그아웃 확인", 0);
 				if (answer==0) {
 					this.setVisible(false);
-					System.exit(0);
+					this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+					Acess_memDAO dao = new Acess_memDAO();
+					int result = dao.LogOut(idStr);
+					
+					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
+					new Main0Login();
 				}
-			}/* else if(stuObj==searchTf) {
+			}
+			/* else if(stuObj==searchTf) {
 				System.out.println("텍필 눌림");
 				searchTf.setText("");
 			} */
@@ -174,7 +208,16 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			e.printStackTrace();
 		}
 	}
-	public void StudenTopMenu() {
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
+	}
+	public void StudenTopMenu(String idStr) {
 		
 		//paneLabel 간격조정
 		GridLayout grid = new GridLayout(0,4);
@@ -200,7 +243,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		paneTop.setBackground(Color.white); Logo.setBackground(Color.white); paneLabel.setBackground(Color.white);
 		
 		//내정보 패널
-		//paneCenter.add(new MyMenu_Stu().paneStu);
 		add(BorderLayout.NORTH,paneTop);
 		
 		setVisible(true);
@@ -208,7 +250,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		Logo.addActionListener(this);
 	}
 
-	public void StudenSearch() {
+	public void StudenSearch(String idStr) {
 		
 		add(center);
 		
@@ -221,10 +263,9 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 				width = img.getWidth(this);
 				height = img.getHeight(this);
 				
-				g.drawImage(img, 0,0,1000,height+200, 100,0,width,height, this);
+				g.drawImage(img, 0,0,width+200,height+70, 100,0,width,height, this);
 				
 				setOpaque(false);
-				//super.paintComponent(g);
 			}
 		};
 		back.setBackground(Color.white);

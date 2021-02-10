@@ -21,15 +21,15 @@ public class Teach2MsgFrame extends JPanel {
 	
 	Font TabFnt = new Font("돋움체", Font.BOLD, 20);
 	Font fnt = new Font("돋움체", Font.BOLD, 18);
-	
-	public Teach2MsgFrame() {
+	public Teach2MsgFrame() {}
+	public Teach2MsgFrame(String id) {
 		setLayout(new BorderLayout());
 		setBackground(Color.white);
 		
 		add("Center", tabBack);
 		
 		//받은 쪽지함
-		MsgTab.addTab("받은쪽지", new TeachMsgReceive().mainPane);
+		MsgTab.addTab("받은쪽지", new TeachMsgReceive(id).mainPane);
 		getMsgPane.setBackground(Color.white);
 		
 		//보낸쪽지함

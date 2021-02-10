@@ -6,8 +6,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Library/commons-math3-3.6.1.jar"/>
-	<classpathentry kind="lib" path="D:/Library/ojdbc8.jar"/>
-	<classpathentry kind="lib" path="D:/Library/poi-5.0.0.jar"/>
+	<classpathentry kind="lib" path="/Users/hyunjungkim/Documents/Library/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="/Users/hyunjungkim/Documents/Library/ojdbc8.jar"/>
+	<classpathentry kind="lib" path="/Users/hyunjungkim/Documents/Library/poi-5.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
