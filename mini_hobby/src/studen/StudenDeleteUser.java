@@ -25,9 +25,9 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 		
 		//버튼에 이미지 넣어주기
 		ImageIcon answer[] = {
-				new ImageIcon("randomImg/distractor11.jpg"),  new ImageIcon("randomImg/answer.png"),new ImageIcon("randomImg/distractor33.jpg"),
-				new ImageIcon("randomImg/distractor1.jpg"), new ImageIcon("randomImg/distractor2.jpg"), new ImageIcon("randomImg/distractor4.jpg"),
-				new ImageIcon("randomImg/distractor5.jpg"), new ImageIcon("randomImg/distractor6.jpg"), new ImageIcon("randomImg/distractor7.jpg"),
+				new ImageIcon("mini_hobby/randomImg/distractor11.jpg"),  new ImageIcon("mini_hobby/randomImg/answer.png"),new ImageIcon("mini_hobby/randomImg/distractor33.jpg"),
+				new ImageIcon("mini_hobby/randomImg/distractor1.jpg"), new ImageIcon("mini_hobby/randomImg/distractor2.jpg"), new ImageIcon("mini_hobby/randomImg/distractor4.jpg"),
+				new ImageIcon("mini_hobby/randomImg/distractor5.jpg"), new ImageIcon("mini_hobby/randomImg/distractor6.jpg"), new ImageIcon("mini_hobby/randomImg/distractor7.jpg"),
 		};
 
 		Random randomNum = new Random(); //.nextInt(9);
@@ -59,7 +59,7 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 			gBtn[idx].addActionListener(this);
 		}
 		
-		//랜덤숫자로 GridLayout에 삽입
+		//랜덤숫자로 이미지 섞기
 		for(int i=0; i<9; i++) {
 			int a = randomNum.nextInt(9);
 		    JToggleButton btn = gBtn[0];
@@ -68,9 +68,10 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 		}
 		gPane.setVisible(false);
 		gPane.removeAll();
-			
+		
+		//섞은 이미지 넣기
 		for(int i=0; i<gBtn.length; i++) {
-				gPane.add(gBtn[i]);
+			gPane.add(gBtn[i]);
 		}
 		gPane.setVisible(true);
 			
@@ -89,7 +90,7 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 		
 		setVisible(true);
 	}
-	
+	//버튼 이벤트 .. .ㅠㅠ 왜 안돼!!
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();

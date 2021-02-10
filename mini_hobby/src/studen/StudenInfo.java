@@ -129,14 +129,11 @@ public class StudenInfo extends JPanel implements ActionListener {
 	//회원정보 세팅
 	public void getStuInfo(String idStr) { //회원정보 세팅
 
-		System.out.println("회원정보 세팅 여기까지 가능?");
-		
-		System.out.println("idStr------------------------" + idStr);
 		MemberDAO dao = new MemberDAO();
 		List<MemberVO> searchId = dao.getMemberInfo(idStr);
 		
 		if(searchId.size()==0 ) {
-			System.out.println("아이디를 매치를 못함...");
+			System.out.println("erro!!!!!! 아이디를 매치를 못함...");
 		}else {
 			MemberVO vo = searchId.get(0);
 			

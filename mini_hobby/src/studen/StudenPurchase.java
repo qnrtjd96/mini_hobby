@@ -12,11 +12,13 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,6 +28,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import org.apache.poi.hssf.dev.EFBiffViewer;
+
+import dbConnection.MemberVO;
+import dbConnection.Stu_ClassDAO;
+import dbConnection.Stu_ClassVO;
 
 public class StudenPurchase extends JPanel implements ActionListener, MouseListener {
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
@@ -52,7 +60,6 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		JPanel datePane = new JPanel( new GridLayout(0,7)); //날짜 출력 
 	
 	//수강 예정 테이블, 전체 구매 테이블
-	
 	DefaultTableModel dueModel;
 	JTable dueTable;		JScrollPane dueSp;
 	String dueCol[] = {"번호", "클래스명", "예약일", "예약시간", "장소"};
@@ -61,7 +68,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	DefaultTableModel allModel;
 	JTable allPurchase;		JScrollPane allSp;
 	
-	String allCol[] = {"번호", "클래스명", "예약일", "장소", "리뷰작성"};
+	String allCol[] = {"번호", "클래스명", "강사", "장소", "리뷰작성"};
 	Object allData[][] = new Object[0][allCol.length];
 	
 	JButton rebookBtn = new JButton("예약변경");
@@ -76,7 +83,15 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	
 	Color col6 = new Color(204,222,233);
 	
-	public StudenPurchase() {
+	String idStr;
+	
+	public void StudenPurchase() {
+		
+	}
+	
+	public StudenPurchase(String idStr) {
+		
+		this.idStr = idStr;
 		
 		setBorder(new LineBorder(Color.black, 1));
 		setBackground(Color.white);
@@ -90,7 +105,6 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		calendarStu();
 		
 		//예약 중인 클래스
-		
 		dueModel = new DefaultTableModel(dueCol, 0) {
 			public boolean isCellEditable(int i, int c) {
 				return false;
@@ -123,28 +137,93 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		allPurchase.getTableHeader().setReorderingAllowed(false);
 		allPurchase.getColumn("번호").setPreferredWidth(30);
 		allPurchase.getColumn("클래스명").setPreferredWidth(120);
-		allPurchase.getColumn("예약일").setPreferredWidth(40);
+		allPurchase.getColumn("강사").setPreferredWidth(40);
 		allPurchase.getColumn("장소").setPreferredWidth(40);
 		allPurchase.getColumn("리뷰작성").setPreferredWidth(40);
 		allPurchase.getTableHeader().setBackground(col6);	allPurchase.getTableHeader().setFont(headFnt);
 		allSp = new JScrollPane(allPurchase);
 		allSp.setBounds(25, 530, 520, 220);		add(allSp);
 		
+		//이벤트 구현 필요 ...rebookBtn > JDialog, cancelBtn > db에서 지우기
 		rebookBtn.addActionListener(this);
 		cancelBtn.addActionListener(this);
+		
+		setDuePurchase(idStr);
+		setAllPurchase(idStr);
+		
 	}
+	
+	
+	//학생 전체 내역 띄우기
+	public void setAllPurchase(String idStr) {
+		System.out.println("구매내역 아이디 받아오는지 확인 >> "+idStr);
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> allLst = dao.showAllPurchase(idStr);
+		if(allLst.size()==0) {
+			System.out.println("set DuePurchase erro... > 예약 중인 클래스를 찾지 못함");
+		}else {
+			Stu_ClassVO vo = allLst.get(0);
+			System.out.println("vo에서 아이디 받아옴 ...? "+vo);
+			System.out.println("vo.getID > > > "+vo.getId());
+			if(vo.getId().equals(idStr)) {
+				for(int i=0; i<allLst.size(); i++) {
+					vo = allLst.get(i);
+					
+					Object[] dueClassObj = {
+							i+1,				vo.getPay_class(),		vo.getTeach_id(),
+							vo.getClassdate(), 	vo.getArea(),
+					};
+					
+					allModel.addRow(dueClassObj);
+				}
+				
+			}	
+		}
+			
+	}
+	
+	//학생 예약 내역 띄우기
+	public void setDuePurchase(String idStr) {
+		System.out.println("구매내역 아이디 받아오는지 확인 >> "+idStr);
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> dueLst = dao.showAllPurchase(idStr);
+		
+		if(dueLst.size()==0) {
+			System.out.println("set DuePurchase erro... > 예약 중인 클래스를 찾지 못함");
+		}else {
+			Stu_ClassVO vo = dueLst.get(0);
+			System.out.println("vo에서 아이디 받아옴 ...? "+vo);
+			System.out.println("vo.getID > > > "+vo.getId());
+			if(vo.getId().equals(idStr)) {
+				for(int i=0; i<dueLst.size(); i++) {
+					vo = dueLst.get(i);
+
+					Object[] dueClassObj = {
+							i+1,
+							vo.getPay_class(), vo.getClassdate(), 
+							vo.getClasstime(), vo.getArea()
+					};
+					dueModel.addRow(dueClassObj);
+				}
+			}	
+		}
+			
+	}
+	
+	//학생 예약 내역 취소
+	public void cancelDueClass() {
+		
+	}
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if(obj==rebookBtn) {
 			System.out.println("예약변경 누름");
-			//다이얼로그
-			//Dialog log = new Dialog(this);
+			new rebookDialog();
 			
-			//JDialog log = new JDialog();
-			//log.setTitle("테스트");
-			//dialStart newDial = new dialStart(new StudenTopMenu()); //클래스 하단에 클래스 만들어주기
+			
 		}else if(obj==cancelBtn) {
 			System.out.println("예약취소 누름");
 			//다이얼로그 ...날짜계산필요 (일주일?3일전에 변경안됨)
@@ -152,6 +231,8 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
 			if(cancelCho==1) {
 				//디비 연결해서 예약 취소하기 ..
+				cancelDueClass();
+				
 			}
 		}
 	}
@@ -236,6 +317,19 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 
 
 
-//다이얼로그 클래스 ... 프레임 상속이 필요하다..
+
+//다이얼로그용 클래스.... 매개변수 어떻게 받아오지? 
+class rebookDialog extends JDialog {
+	
+	public rebookDialog() {
+		super(new JFrame(), "다이얼로그 테스트 중");
+		
+		
+		setSize(340,400);
+		setLocation(200,200);
+		setVisible(true);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	}
+}
 
 

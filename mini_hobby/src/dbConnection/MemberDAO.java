@@ -316,7 +316,7 @@ public class MemberDAO extends DBConnection{
 			
 		try {
 			getConn();
-				
+			
 			sql = "update membertbl set pwd=?, name=?, mail=?, tel=?, addr=? where id=? ";
 				
 			pstmt = conn.prepareStatement(sql);

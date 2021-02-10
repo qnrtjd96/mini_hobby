@@ -93,5 +93,83 @@ public class Stu_ClassDAO extends DBConnection{
 		}
 		return lst;
 	}
+	
+
+	//학생 구매내역 > 예약 중인 내역
+	public List<Stu_ClassVO> showDuePurchase(String idStr) {
+		System.out.println("....예약 중인 클래스 DAO 실행 됨?");
+		
+		List<Stu_ClassVO> dueLst = new ArrayList<Stu_ClassVO>();
+		
+		try {
+			getConn();
+			
+			sql = "select stu.id ,stu.pay_class, bor.id, to_char(stu.classdate, 'mm/dd'), stu.classtime, bor.area "
+					+ "from stu_class stu, boardtbl bor where stu.class_num=bor.class_num "
+						+ "and stu.id=? and stu.classdate >= sysdate ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {	//담는거 까먹지 말기 ^^
+				Stu_ClassVO vo = new Stu_ClassVO(
+							rs.getString(1), rs.getString(2), rs.getString(3),
+							rs.getString(4), rs.getString(5), rs.getString(6)
+						);
+				
+				dueLst.add(vo);
+				System.out.println("반복문에 담기나?"+dueLst);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		System.out.println("dueLst에 뭐가 있는지...? "+dueLst);
+		return dueLst;
+		
+	}
+	
+	//학생 구매내역 > 전체 중인 클래스 ... 조건 달아주기
+	public List<Stu_ClassVO> showAllPurchase(String idStr) {
+		System.out.println("...  구매내역 DAO 실행 됨?");
+		
+		List<Stu_ClassVO> allLst = new ArrayList<Stu_ClassVO>();
+		
+		try {
+			getConn();
+
+			sql = "select stu.id ,stu.pay_class, bor.id, to_char(stu.classdate, 'mm/dd'), stu.classtime, bor.area "
+					+ "from stu_class stu, boardtbl bor where stu.class_num=bor.class_num "
+						+ "and stu.id=? and stu.classdate < sysdate ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {	//담는거 까먹지 말기 ^^
+				Stu_ClassVO vo = new Stu_ClassVO(
+							rs.getString(1), rs.getString(2), rs.getString(3),
+							rs.getString(4), rs.getString(5), rs.getString(6)
+						);
+				allLst.add(vo);
+				System.out.println("반복문에 담기나?"+allLst);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		System.out.println("dueLst에 뭐가 있는지...? "+allLst);
+		return allLst;
+		
+	}
+	
+	
 
 }

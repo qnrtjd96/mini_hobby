@@ -100,7 +100,7 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 		}else if(lbl.equals("구매/예약 내역확인")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new StudenPurchase();
+			center = new StudenPurchase(idStr);
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);

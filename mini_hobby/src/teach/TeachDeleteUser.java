@@ -25,9 +25,9 @@ public class TeachDeleteUser extends JPanel implements ActionListener{
 		
 		//버튼에 이미지 넣어주기
 		ImageIcon answer[] = {
-				new ImageIcon("randomImg/distractor11.jpg"),  new ImageIcon("randomImg/answer.png"),new ImageIcon("randomImg/distractor33.jpg"),
-				new ImageIcon("randomImg/distractor1.jpg"), new ImageIcon("randomImg/distractor2.jpg"), new ImageIcon("randomImg/distractor4.jpg"),
-				new ImageIcon("randomImg/distractor5.jpg"), new ImageIcon("randomImg/distractor6.jpg"), new ImageIcon("randomImg/distractor7.jpg"),
+				new ImageIcon("mini_hobby/randomImg/distractor11.jpg"),  new ImageIcon("mini_hobby/randomImg/answer.png"),new ImageIcon("mini_hobby/randomImg/distractor33.jpg"),
+				new ImageIcon("mini_hobby/randomImg/distractor1.jpg"), new ImageIcon("mini_hobby/randomImg/distractor2.jpg"), new ImageIcon("mini_hobby/randomImg/distractor4.jpg"),
+				new ImageIcon("mini_hobby/randomImg/distractor5.jpg"), new ImageIcon("mini_hobby/randomImg/distractor6.jpg"), new ImageIcon("mini_hobby/randomImg/distractor7.jpg"),
 		};
 
 		Random randomNum = new Random(); //.nextInt(9);
@@ -117,8 +117,7 @@ public class TeachDeleteUser extends JPanel implements ActionListener{
 			System.out.println("회원탈퇴성공... ㅠㅠ");
 		}else {
 			System.out.println("회원탈퇴실패^^");
-		} 
+		}
 	}
-
 
 }
