@@ -156,6 +156,4 @@ public class MemberVO {
 	public void setCate(String cate) {
 		this.cate = cate;
 	}
-	
-	
 }
