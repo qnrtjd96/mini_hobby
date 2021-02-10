@@ -11,6 +11,8 @@ public class Stu_ClassVO {
 	private String pay_date;
 	private String classdate;
 	private String classtime;
+	private String teach_id; //BoardTbl 선생님 아이디 조인
+	private String area; //BoardTbl 상세지역 조인
 	
 	public Stu_ClassVO() {
 		
@@ -93,6 +95,18 @@ public class Stu_ClassVO {
 
 	public void setPay_date(String pay_date) {
 		this.pay_date = pay_date;
+	}
+	public String getTeach_id() {
+		return teach_id;
+	}
+	public void setTeach_id(String teach_id) {
+		this.teach_id = teach_id;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 	
