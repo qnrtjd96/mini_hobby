@@ -46,7 +46,6 @@ public class TeachMyList extends JPanel implements MouseListener{
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
 	
-	MemberVO vo;
 	String id;
 	public TeachMyList() {}
 
@@ -86,7 +85,7 @@ public class TeachMyList extends JPanel implements MouseListener{
 		table.getTableHeader().setFont(fntBold20);
 		
 		BoardDAO dao = new BoardDAO();
-		List<BoardVO> lst = dao.teachMyList(vo.getId());
+		List<BoardVO> lst = dao.teachMyList(id);
 		for (int i=0; i<lst.size(); i++) {
 			BoardVO vob = lst.get(i);
 			Object obj[] = {vob.getClass_num(), vob.getClassname(), vob.getArea(), vob.getClassdate(),
@@ -126,8 +125,12 @@ public class TeachMyList extends JPanel implements MouseListener{
 			searchTf.setText("");
 		} else if (obj==table) {
 			int col = table.getSelectedColumn();
+			int row = table.getSelectedRow();
+			String classname = (String)table.getValueAt(row, col);
+			System.out.println(classname);
+			System.out.println(id);
 			if (col==1) {
-				new TeachReservationDetail(id);
+				new TeachReservationDetail(id, classname);
 			}
 		}	
 	}
