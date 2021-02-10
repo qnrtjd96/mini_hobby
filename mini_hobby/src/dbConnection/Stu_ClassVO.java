@@ -22,6 +22,15 @@ public class Stu_ClassVO {
 		this.sName = sName;
 		this.pay = pay;
 	}
+	//학생예약내역용 ..
+	public Stu_ClassVO(String id,String pay_class, String teach_id, String classdate, String classtime, String area) {
+		this.id = id;
+		this.pay_class = pay_class;
+		this.teach_id = teach_id;
+		this.classdate = classdate;
+		this.classtime = classtime;
+		this.area = area;
+	}
 	public Stu_ClassVO(int class_num, String id, String pay_class, String pay_cate, int pay, String pay_date) {
 		this.class_num=class_num;
 		this.id=id;

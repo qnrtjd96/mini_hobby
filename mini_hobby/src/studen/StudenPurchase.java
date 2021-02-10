@@ -12,6 +12,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,6 +27,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import dbConnection.Stu_ClassDAO;
+import dbConnection.Stu_ClassVO;
 
 public class StudenPurchase extends JPanel implements ActionListener, MouseListener {
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
@@ -61,7 +65,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	DefaultTableModel allModel;
 	JTable allPurchase;		JScrollPane allSp;
 	
-	String allCol[] = {"번호", "클래스명", "예약일", "장소", "리뷰작성"};
+	String allCol[] = {"번호", "클래스명", "강사", "예약일", "장소"};
 	Object allData[][] = new Object[0][allCol.length];
 	
 	JButton rebookBtn = new JButton("예약변경");
@@ -76,7 +80,13 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	
 	Color col6 = new Color(204,222,233);
 	
-	public StudenPurchase() {
+	String idStr;
+	
+	public void StudenPurchase() {	}
+	
+	public StudenPurchase(String idStr) {
+		
+		this.idStr = idStr;
 		
 		setBorder(new LineBorder(Color.black, 1));
 		setBackground(Color.white);
@@ -90,7 +100,6 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		calendarStu();
 		
 		//예약 중인 클래스
-		
 		dueModel = new DefaultTableModel(dueCol, 0) {
 			public boolean isCellEditable(int i, int c) {
 				return false;
@@ -123,15 +132,82 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		allPurchase.getTableHeader().setReorderingAllowed(false);
 		allPurchase.getColumn("번호").setPreferredWidth(30);
 		allPurchase.getColumn("클래스명").setPreferredWidth(120);
+		allPurchase.getColumn("강사").setPreferredWidth(40);
 		allPurchase.getColumn("예약일").setPreferredWidth(40);
 		allPurchase.getColumn("장소").setPreferredWidth(40);
-		allPurchase.getColumn("리뷰작성").setPreferredWidth(40);
 		allPurchase.getTableHeader().setBackground(col6);	allPurchase.getTableHeader().setFont(headFnt);
 		allSp = new JScrollPane(allPurchase);
 		allSp.setBounds(25, 530, 520, 220);		add(allSp);
 		
+		//이벤트 구현 필요 ...rebookBtn > JDialog, cancelBtn > db에서 지우기
 		rebookBtn.addActionListener(this);
 		cancelBtn.addActionListener(this);
+		
+		setDuePurchase(idStr);
+		setAllPurchase(idStr);
+		
+	}
+	
+	
+	//학생 전체 내역 띄우기
+	public void setAllPurchase(String idStr) {
+		System.out.println("구매내역 아이디 받아오는지 확인 >> "+idStr);
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> allLst = dao.showAllPurchase(idStr);
+		if(allLst.size()==0) {
+			System.out.println("set DuePurchase erro... > 예약 중인 클래스를 찾지 못함");
+		}else {
+			Stu_ClassVO vo = allLst.get(0);
+			System.out.println("vo에서 아이디 받아옴 ...? "+vo);
+			System.out.println("vo.getID > > > "+vo.getId());
+			if(vo.getId().equals(idStr)) {
+				for(int i=0; i<allLst.size(); i++) {
+					vo = allLst.get(i);
+					
+					Object[] dueClassObj = {
+							i+1,				vo.getPay_class(),		vo.getTeach_id(),
+							vo.getClassdate(), 	vo.getArea(),
+					};
+					
+					allModel.addRow(dueClassObj);
+				}
+				
+			}	
+		}
+			
+	}
+	
+	//학생 예약 내역 띄우기
+	public void setDuePurchase(String idStr) {
+		System.out.println("구매내역 아이디 받아오는지 확인 >> "+idStr);
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> dueLst = dao.showAllPurchase(idStr);
+		
+		if(dueLst.size()==0) {
+			System.out.println("set DuePurchase erro... > 예약 중인 클래스를 찾지 못함");
+		}else {
+			Stu_ClassVO vo = dueLst.get(0);
+			System.out.println("vo에서 아이디 받아옴 ...? "+vo);
+			System.out.println("vo.getID > > > "+vo.getId());
+			if(vo.getId().equals(idStr)) {
+				for(int i=0; i<dueLst.size(); i++) {
+					vo = dueLst.get(i);
+
+					Object[] dueClassObj = {
+							i+1,
+							vo.getPay_class(), vo.getClassdate(), 
+							vo.getClasstime(), vo.getArea()
+					};
+					dueModel.addRow(dueClassObj);
+				}
+			}	
+		}
+			
+	}
+	
+	//학생 예약 내역 취소
+	public void cancelDueClass() {
+		
 	}
 	
 	@Override
