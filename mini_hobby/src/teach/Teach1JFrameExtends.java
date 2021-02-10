@@ -168,7 +168,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 			}else if(lbl.equals("메세지함")) {
 				center.setVisible(false);
 				center.removeAll();
-				center = new Teach2MsgFrame().tabBack;
+				center = new Teach2MsgFrame(id).tabBack;
 				center.setVisible(true);
 				add("Center", center);
 			}else if(lbl.equals("내정보")) {
@@ -207,7 +207,6 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	class AdapterInner extends WindowAdapter{
 		//다시 오버라이딩
 		public void windowClosing(WindowEvent we) {
-			System.out.println("윈도우 이벤트 처리 완료");
 			Acess_memDAO dao = new Acess_memDAO();
 			int result = dao.LogOut(id);
 			System.exit(0);

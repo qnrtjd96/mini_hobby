@@ -169,7 +169,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 				////// 구현해서 객체 호출하세요 //////
 				center.setVisible(false);
 				center.removeAll();
-				center = new Studen3MsgFrame().tabBack;
+				center = new Studen3MsgFrame(idStr).tabBack;
 				this.setVisible(true);
 				add("Center", center);
 			}else if(lbl.equals("내정보")) {
@@ -212,7 +212,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	class AdapterInner extends WindowAdapter{
 		//다시 오버라이딩
 		public void windowClosing(WindowEvent we) {
-			System.out.println("윈도우 이벤트 처리 완료");
 			Acess_memDAO dao = new Acess_memDAO();
 			int result = dao.LogOut(idStr);
 			System.exit(0);

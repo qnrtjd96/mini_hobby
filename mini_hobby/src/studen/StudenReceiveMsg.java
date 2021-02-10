@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +19,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
+import dbConnection.ConsDAO;
+import dbConnection.ConsVO;
+
 public class StudenReceiveMsg extends JPanel implements MouseListener{
 	JPanel mainPane = new JPanel();
 		JTable table;
@@ -24,11 +29,8 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 			DefaultTableModel model;
 			
 	// 테이블 필드명
-	Object headList[] = {"선택","메세지내용","보낸사람","보낸시간"};
-	// 테이블 레코드 테스트 값
-	Object recoList1[] = {"○","<HTML><U> 잘모르겠어</U></HTML>","홍길동","2021.02.04 13:55"};
-	Object recoList2[] = {"○","<HTML><U> 이게맞는건가</U></HTML>","감길동","2021.02.04 16:11"};
-	
+	Object headList[] = {"선택","글번호","메세지내용","보낸사람","보낸시간"};
+
 	DefaultTableCellRenderer tScheduleCellRenderer = new DefaultTableCellRenderer();
 	
 	Color col6 = new Color(204,222,233);
@@ -36,7 +38,10 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
 	
 	JLabel delLbl = new JLabel("삭제하기", JLabel.CENTER);
-	public StudenReceiveMsg() {
+	String idStr;
+	
+	public StudenReceiveMsg(String id) {
+		this.idStr = id;
 		mainPane.setLayout(null);
 		mainPane.setBackground(Color.white);
 
@@ -50,6 +55,7 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 		
 		// 컬럼 너비 조절
 		table.getColumn("선택").setPreferredWidth(30);
+		table.getColumn("글번호").setPreferredWidth(30);
 		table.getColumn("메세지내용").setPreferredWidth(300);
 		table.getColumn("보낸사람").setPreferredWidth(100);
 		table.getColumn("보낸시간").setPreferredWidth(100);
@@ -83,14 +89,14 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 		tScheduleCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		TableColumnModel tcmSchedule = table.getColumnModel();
 		tcmSchedule.getColumn(0).setCellRenderer(tScheduleCellRenderer);
-		tcmSchedule.getColumn(2).setCellRenderer(tScheduleCellRenderer);
+		tcmSchedule.getColumn(1).setCellRenderer(tScheduleCellRenderer);
 		tcmSchedule.getColumn(3).setCellRenderer(tScheduleCellRenderer);
+		tcmSchedule.getColumn(4).setCellRenderer(tScheduleCellRenderer);
 		
 		//mainPane에 add
 		mainPane.add(sp); mainPane.add(delLbl);
 		
-		model.addRow(recoList1);
-		model.addRow(recoList2);
+		msgList(id);
 		
 		// setBounds
 		sp.setBounds(0,0,745,750); delLbl.setBounds(640,750,100,50);
@@ -110,7 +116,11 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 			}else if(value.equals("●")) {
 				table.setValueAt("○", row, col);
 			}else if(col==2) {
-				//학생 메세지쓰기 호출하세욘//
+				int msgNum = (int)table.getValueAt(row, 1);
+				System.out.println(msgNum);
+				//받은메세지 다이어로그 호출
+				//msg_num 구하기
+				new StudenReceiveMsgDialog(idStr, msgNum);
 			}
 		}
 	}
@@ -130,6 +140,17 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	
+	//데이터 핸들링
+	public void msgList(String id) {
+		ConsDAO dao = new ConsDAO();
+		List<ConsVO> lst = dao.studenMsgRec(id);
+		
+		for(int i=0; i<lst.size(); i++) {
+			ConsVO vo = lst.get(i);
+			Object[] data = {"○", vo.getMsg_num(),"<HTML> <U>"+vo.getMsg_title()+"</U></HTML>",vo.getSend(),vo.getSend_time()};
+			model.addRow(data);
+		}
+	}
 }
 
 

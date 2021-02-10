@@ -6,6 +6,7 @@ public class ConsVO {
 	private String send;
 	private String msg_title;
 	private String msg_detail;
+	private String send_time;
 	
 	public ConsVO() {
 	}
@@ -15,6 +16,21 @@ public class ConsVO {
 		this.send = send;
 		this.msg_title = msg_title;
 		this.msg_detail = msg_detail;
+	}
+	//받은메세지 다이어로그
+	public ConsVO(int msg_num, String get, String send, String msg_title, String msg_detail, String send_time) {
+		this.msg_num = msg_num;
+		this.get = get;
+		this.send = send;
+		this.msg_title = msg_title;
+		this.msg_detail = msg_detail;
+		this.send_time = send_time;
+	}
+	public String getSend_time() {
+		return send_time;
+	}
+	public void setSend_time(String send_time) {
+		this.send_time = send_time;
 	}
 	public int getMsg_num() {
 		return msg_num;
