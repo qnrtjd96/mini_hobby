@@ -26,23 +26,27 @@ public class TeachReservationDetail2DialStart extends JDialog implements ActionL
 	JCheckBox box;
 	
 	JDialog dial;
-	String id;
+	String id; String classname; String time;
 	BoardDAO dao = new BoardDAO();
 	List<BoardVO> lst = dao.detailBoard(id);
 	public void dialStart() {}
 	
-	public TeachReservationDetail2DialStart(String id) {
+	public TeachReservationDetail2DialStart(String id, String classname, String time) {
+		this.id=id;
+		this.classname=classname;
+		this.time=time;
+		
 		dial = new JDialog();
 		dial.setSize(340,400);
 		dial.setLocation(200, 200);
 		dial.setVisible(true);
 		JPanel dialPane = new JPanel();
-			JLabel lbl1 = new JLabel("선택한 클래스 : 클래스2");
+			JLabel lbl1 = new JLabel("선택한 클래스 : "+classname);
 			JLabel lbl2 = new JLabel("선택한 일자 : 2021년 2월 2일");
 			JPanel select = new JPanel(new GridLayout(0,2));
-				String time[] = {"09:00~10:00","10:00~11:00","11:00~12:00","12:00~13:00","13:00~14:00","14:00~15:00","15:00~"
+				String timeArr[] = {"09:00~10:00","10:00~11:00","11:00~12:00","12:00~13:00","13:00~14:00","14:00~15:00","15:00~"
 						+ "16:00", "16:00~17:00","17:00~18:00", "18:00~19:00", "19:00~20:00","20:00~21:00","21:00~22:00"};
-				JCheckBox check[] = new JCheckBox[time.length];
+				JCheckBox check[] = new JCheckBox[timeArr.length];
 			JButton btn = new JButton("수정완료");
 			
 		dial.add(dialPane); dialPane.setLayout(null);
@@ -51,8 +55,8 @@ public class TeachReservationDetail2DialStart extends JDialog implements ActionL
 		lbl2.setFont(fn2); lbl2.setBounds(40,50,300,30);
 		btn.setFont(fn2); btn.setBounds(110,300,120,40); btn.setBackground(Color.LIGHT_GRAY);
 		select.setFont(fnt); select.setBounds(50,90,220,200);
-		for (int t=0; t<time.length; t++) {
-			check[t] = new JCheckBox(time[t]);
+		for (int t=0; t<timeArr.length; t++) {
+			check[t] = new JCheckBox(timeArr[t]);
 			check[t].setFont(fn); check[t].setHorizontalAlignment(JCheckBox.CENTER);
 			check[t].addItemListener(this);
 			select.add(check[t]);

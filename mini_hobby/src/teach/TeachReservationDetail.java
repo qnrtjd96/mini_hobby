@@ -87,6 +87,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			
 	String id;
 	String classname;
+	String time;
 
 	public TeachReservationDetail() {}
 	public TeachReservationDetail(String id, String classname) {
@@ -166,7 +167,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		int date = Integer.parseInt(label.getText());
 		lbl1.setText("선택한 클래스 : "+classname);
 		lbl2.setText("선택한 일자 : "+y+"년 "+m+"월 "+date+"일");
-		String time = y+"-"+m+"-"+date;
+		time = y+"-"+m+"-"+date;
 		
 		select.removeAll();
 		BoardDAO dao = new BoardDAO();
@@ -197,7 +198,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		//컴포넌트 읽어오기
 		Object obj = ae.getSource();
 		if(obj==btn) {
-			new TeachReservationDetail2DialStart(id);
+			new TeachReservationDetail2DialStart(id, classname, time);
 		}
 		
 	}
