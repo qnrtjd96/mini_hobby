@@ -31,6 +31,24 @@ public class ConsDAO extends DBConnection{
 		
 		return lst;
 	}
+	//받은메세지 삭제
+	public int msgDelete(int num) {
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from constbl where msg_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
 	//받은메세지 다이어로그
 	public List<ConsVO> studenDiaMsgRec(String id, int msgNum){
 		List<ConsVO> lst = new ArrayList<ConsVO>();
