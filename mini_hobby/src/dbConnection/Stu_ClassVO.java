@@ -11,6 +11,8 @@ public class Stu_ClassVO {
 	private String pay_date;
 	private String classdate;
 	private String classtime;
+	private String teach_id; //BoardTbl 선생님 아이디 조인
+	private String area; //BoardTbl 상세지역 조인
 	
 	public Stu_ClassVO() {
 		
@@ -19,6 +21,15 @@ public class Stu_ClassVO {
 		this.pay_cate = pay_cate;
 		this.sName = sName;
 		this.pay = pay;
+	}
+	//학생예약내역용 ..
+	public Stu_ClassVO(String id,String pay_class, String teach_id, String classdate, String classtime, String area) {
+		this.id = id;
+		this.pay_class = pay_class;
+		this.teach_id = teach_id;
+		this.classdate = classdate;
+		this.classtime = classtime;
+		this.area = area;
 	}
 	public Stu_ClassVO(int class_num, String id, String pay_class, String pay_cate, int pay, String pay_date) {
 		this.class_num=class_num;
@@ -93,6 +104,18 @@ public class Stu_ClassVO {
 
 	public void setPay_date(String pay_date) {
 		this.pay_date = pay_date;
+	}
+	public String getTeach_id() {
+		return teach_id;
+	}
+	public void setTeach_id(String teach_id) {
+		this.teach_id = teach_id;
+	}
+	public String getArea() {
+		return area;
+	}
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 	
