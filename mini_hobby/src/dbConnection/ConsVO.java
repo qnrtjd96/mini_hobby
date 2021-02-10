@@ -7,7 +7,8 @@ public class ConsVO {
 	private String msg_title;
 	private String msg_detail;
 	private String send_time;
-	
+	private int sort;
+
 	public ConsVO() {
 	}
 	public ConsVO(int msg_num, String get, String send, String msg_title, String msg_detail) {
@@ -25,6 +26,21 @@ public class ConsVO {
 		this.msg_title = msg_title;
 		this.msg_detail = msg_detail;
 		this.send_time = send_time;
+	}
+	//관리자 받은메세지
+	public ConsVO(int msg_num, String send, int sort, String msg_title, String msg_detail, String send_time) {
+		this.msg_num = msg_num;
+		this.send = send;
+		this.sort = sort;
+		this.msg_title = msg_title;
+		this.msg_detail = msg_detail;
+		this.send_time = send_time;
+	}
+	public int getSort() {
+		return sort;
+	}
+	public void setSort(int sort) {
+		this.sort = sort;
 	}
 	public String getSend_time() {
 		return send_time;

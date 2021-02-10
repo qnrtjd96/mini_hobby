@@ -3,6 +3,8 @@ package administrator;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -26,7 +28,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
-public class AdminReceiveMsg extends JPanel implements MouseListener {
+import dbConnection.ConsDAO;
+import dbConnection.ConsVO;
+
+public class AdminReceiveMsg extends JPanel implements MouseListener, ActionListener {
 	JPanel mainPane = new JPanel();
 	
 	JLabel sortLbl = new JLabel("정렬하기");
@@ -52,7 +57,7 @@ public class AdminReceiveMsg extends JPanel implements MouseListener {
 	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
 	
-	JLabel delLbl = new JLabel("삭제하기", JLabel.CENTER);
+	JButton delLbl = new JButton("삭제하기");
 	
 	//제약어 추가
 	JLabel consLbl = new JLabel("제약어 추가", JLabel.CENTER);
@@ -124,7 +129,7 @@ public class AdminReceiveMsg extends JPanel implements MouseListener {
 		// 폰트 설정
 		table.getTableHeader().setFont(fntBold15);
 		table.setFont(fntPlain15);
-		delLbl.setFont(fntPlain15);
+		delLbl.setFont(fntBold15);
 		consLbl.setFont(fntBold20); 
 		consListLbl.setFont(fntBold20);
 		consBtn.setFont(fntBold15); clearBtn.setFont(fntBold15);
@@ -134,6 +139,7 @@ public class AdminReceiveMsg extends JPanel implements MouseListener {
 		// 배경색 설정
 		table.getTableHeader().setBackground(Color.lightGray);
 		table.getParent().setBackground(Color.white);
+		delLbl.setBackground(col6);
 		consBtn.setBackground(col6); clearBtn.setBackground(col6);
 		consListPane.setBackground(Color.white);
 		consListChk.setBackground(Color.white);
@@ -161,20 +167,20 @@ public class AdminReceiveMsg extends JPanel implements MouseListener {
 		mainPane.add(consListPane);
 		mainPane.add(clearBtn);
 		
-		model.addRow(recoList1);
-		model.addRow(recoList2);
+		//데이터 호출
+		adminMsgList();
 		
 		// setBounds
 		sortLbl.setBounds(580,0,100,30); sortBox.setBounds(639,0,100,30);
-		sp.setBounds(0,30,745,350); delLbl.setBounds(640,370,100,50);
-		consLbl.setBounds(280,390,200,50);
-		consTf.setBounds(30,440,560,30); consBtn.setBounds(610,440,100,30);
-		consListLbl.setBounds(252,500,250,30); 
+		sp.setBounds(0,30,745,350); delLbl.setBounds(630,390,100,30);
+		consLbl.setBounds(280,410,200,50);
+		consTf.setBounds(30,460,560,30); consBtn.setBounds(610,460,100,30);
+		consListLbl.setBounds(252,510,250,30); 
 		consListPane.setBounds(30,540,680,200);
 		clearBtn.setBounds(610,755,100,30);
 		
 		table.addMouseListener(this);
-		delLbl.addMouseListener(this);
+		delLbl.addActionListener(this);
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -191,25 +197,55 @@ public class AdminReceiveMsg extends JPanel implements MouseListener {
 			}else if(value.equals("●")) {
 				table.setValueAt("○", row, col);
 			}else if(col==2) {
-				titleStr = "<HTML><U style=text-decoration:none>"+((String)model.getValueAt(row, 2)) +"</U></HTML>";
-				sendUserStr = ((String)model.getValueAt(row, 3));
-				new AdminReceiveMsgDialog(titleStr, sendUserStr);
+				int msgNum = (int)table.getValueAt(row, 1);
+				new AdminReceiveMsgDialog("master", msgNum);
 			}
 		}
 	}
 	
-	public void mouseReleased(MouseEvent e) {
-		/* 삭제 구현 못함 .... 
-		  
-		Object delStr = e.getSource();
-		if(delStr == delLbl) {
-			// 데이터 삭제 구현
-			
-		}
-		
-		*/
-	}
+	public void mouseReleased(MouseEvent e) {}
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
+	
+	//데이터 핸들링
+	public void adminMsgList() {
+		ConsDAO dao = new ConsDAO();
+		List<ConsVO> lst = dao.adminMsgRec();
+		
+		for(int i=0; i<lst.size(); i++) {
+			ConsVO vo = lst.get(i);
+			String sort="";
+			if(vo.getSort()==1) {
+				sort = "학생";
+			}else if(vo.getSort()==2) {
+				sort = "선생님";
+			}
+			Object[] data = {"○", vo.getMsg_num(),"<HTML> <U>"+vo.getMsg_title()+"</U></HTML>",vo.getSend(), sort ,vo.getSend_time()};
+
+			model.addRow(data);
+		}
+	}
+	//삭제하기
+	public void actionPerformed(ActionEvent ae) {
+		Object delStr = ae.getSource();
+		if(delStr == delLbl) {
+			int result=0;
+			// 데이터 삭제 구현
+			for(int i=0; i<table.getRowCount(); i++) {
+				if(table.getValueAt(i, 0).equals("●")) {
+					int msgNum = (int)table.getValueAt(i, 1);
+					ConsDAO dao = new ConsDAO();
+					result = dao.msgDelete(msgNum);
+				}
+			}
+			if(result>0) {
+				JOptionPane.showMessageDialog(this, "선택한 메세지가 삭제되었습니다.");
+				model.setRowCount(0);
+				adminMsgList();
+			}else {
+				JOptionPane.showMessageDialog(this, "선택한 메세지가 없습니다....");
+			}
+		}
+	}
 }

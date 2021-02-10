@@ -3,13 +3,17 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,7 +26,7 @@ import javax.swing.table.TableColumnModel;
 import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
 
-public class StudenReceiveMsg extends JPanel implements MouseListener{
+public class StudenReceiveMsg extends JPanel implements MouseListener, ActionListener{
 	JPanel mainPane = new JPanel();
 		JTable table;
 			JScrollPane sp;
@@ -37,7 +41,7 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
 	
-	JLabel delLbl = new JLabel("삭제하기", JLabel.CENTER);
+	JButton delLbl = new JButton("삭제하기");
 	String idStr;
 	
 	public StudenReceiveMsg(String id) {
@@ -79,7 +83,7 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 		// 폰트 설정
 		table.getTableHeader().setFont(fntBold15);
 		table.setFont(fntPlain15);
-		delLbl.setFont(fntPlain15);
+		delLbl.setFont(fntBold15);
 		
 		// 배경색 설정
 		table.getTableHeader().setBackground(Color.lightGray);
@@ -99,9 +103,9 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 		msgList(id);
 		
 		// setBounds
-		sp.setBounds(0,0,745,750); delLbl.setBounds(640,750,100,50);
+		sp.setBounds(0,0,745,770); delLbl.setBounds(620,790,100,30);
 		table.addMouseListener(this);
-		delLbl.addMouseListener(this);
+		delLbl.addActionListener(this);
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -116,29 +120,41 @@ public class StudenReceiveMsg extends JPanel implements MouseListener{
 			}else if(value.equals("●")) {
 				table.setValueAt("○", row, col);
 			}else if(col==2) {
-				int msgNum = (int)table.getValueAt(row, 1);
-				System.out.println(msgNum);
-				//받은메세지 다이어로그 호출
 				//msg_num 구하기
+				int msgNum = (int)table.getValueAt(row, 1);
+				//받은메세지 다이어로그 호출
 				new StudenReceiveMsgDialog(idStr, msgNum);
 			}
 		}
 	}
 	
-	public void mouseReleased(MouseEvent e) {
-		/* 삭제 구현 못함 .... 
-		  
-		Object delStr = e.getSource();
-		if(delStr == delLbl) {
-			// 데이터 삭제 구현
-			
-		}
-		
-		*/
-	}
+	public void mouseReleased(MouseEvent e) {}
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
+	
+	//삭제하기
+	public void actionPerformed(ActionEvent ae) {
+		Object delStr = ae.getSource();
+		if(delStr == delLbl) {
+			int result=0;
+			// 데이터 삭제 구현
+			for(int i=0; i<table.getRowCount(); i++) {
+				if(table.getValueAt(i, 0).equals("●")) {
+					int msgNum = (int)table.getValueAt(i, 1);
+					ConsDAO dao = new ConsDAO();
+					result = dao.msgDelete(msgNum);
+				}
+			}
+			if(result>0) {
+				JOptionPane.showMessageDialog(this, "선택한 메세지가 삭제되었습니다.");
+				model.setRowCount(0);
+				msgList(idStr);
+			}else {
+				JOptionPane.showMessageDialog(this, "선택한 메세지가 없습니다....");
+			}
+		}
+	}
 	
 	//데이터 핸들링
 	public void msgList(String id) {
