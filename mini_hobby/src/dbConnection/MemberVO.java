@@ -11,10 +11,25 @@ public class MemberVO {
 	private String login_date;
 	private int sort;
 	private int payCnt;
-	
+	private String cate;
 
 	public MemberVO() {
 		
+	}
+	//2021-02-08 이강산
+	//관리자 회원출력중 선생님출력부분 : AdminMemberList
+	public MemberVO(String id, String name, String cate) {
+		this.id = id;
+		this.name = name;
+		this.cate = cate;
+	}
+
+	//2021-02-09 이강산
+	//관리자 휴먼계정조회중 필요한 테이블
+	public MemberVO(String id, int sort, String login_date) {
+		this.id=id;
+		this.sort = sort;
+		this.login_date = login_date;
 	}
 	public MemberVO(String mail) {
 		this.mail = mail;
@@ -23,6 +38,7 @@ public class MemberVO {
 		this.id = id;
 		this.mail = mail;
 	}
+	
 	public MemberVO(String id, String name, int payCnt) {
 		this.id = id;
 		this.name = name;
@@ -133,5 +149,13 @@ public class MemberVO {
 	public void setSort(int sort) {
 		this.sort = sort;
 	}
-
+	
+	public String getCate() {
+		return cate;
+	}
+	public void setCate(String cate) {
+		this.cate = cate;
+	}
+	
+	
 }

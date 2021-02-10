@@ -7,6 +7,80 @@ public class MemberDAO extends DBConnection{
 	public MemberDAO() {
 		
 	}
+	//휴먼계정 조회
+	//2020-02-09 이강산
+	public List<MemberVO> sleepingAllSelect() {
+		//선택한 레코드를 보관할 컬렉션
+		List<MemberVO> lst= new ArrayList<MemberVO>();
+		try {
+			getConn(); 
+			sql = "SELECT id, sort, TO_Char(login_date, 'YY/MM/DD') login_date FROM MEMBERTBL WHERE login_date <= TO_CHAR(SYSDATE-365,'YYYYMMDD')";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//레코드를 VO2에 담고 VO2를 List에 담고
+				MemberVO vo2 = new MemberVO(rs.getString(1), rs.getInt(2), rs.getString(3));
+				lst.add(vo2);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;	
+	}
+	
+	//관리자에서 회원조회할떄 필요  AdminMemberList , 선생님부분
+	//2021-02-08 이강산
+	public List<MemberVO> TeacherAllSelect() {
+		//선택한 레코드를 보관할 컬렉션
+		List<MemberVO> lst2= new ArrayList<MemberVO>();
+		try {
+			getConn(); 
+			sql = "select a.id, a.name, b.cate from memberTbl a join mem_teacher b on a.id = b.id where a.sort=2";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//레코드를 VO2에 담고 VO2를 List에 담고
+				MemberVO vo2 = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3));
+				lst2.add(vo2);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst2;
+	}
+		
+	//관리자에서 회원조회할떄 필요 , 회원출력부분  AdminMemberList
+	//2021-02-08 이강산
+	public List<MemberVO> memberSelect() {
+		//선택한 레코드를 보관할 컬렉션
+		List<MemberVO> lst= new ArrayList<MemberVO>();
+		try {
+			getConn(); 
+			sql = "select id, name, TO_Char(birth, 'YY/MM/DD') birth" + 
+				  " from memberTbl where sort=1 order by id asc";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//레코드를 VO에 담고 VO를 List에 담고
+				MemberVO vo = new MemberVO(rs.getString(1), rs.getString(2), rs.getString(3));
+				lst.add(vo);
+			}		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
 	// 레코드 추가 - 회원등록
 	public int memberInsert(MemberVO vo) {
 		int result=0;
@@ -197,6 +271,7 @@ public class MemberDAO extends DBConnection{
 		}
 		return lst;
 	}
+
 	// 내정보 로그인하기
 	public String loginInfo(String id) {
 		String pwd = null;
@@ -225,4 +300,70 @@ public class MemberDAO extends DBConnection{
 		return pwd;
 	}
 
+	
+	//회원정보 받아오기
+	public List<MemberVO> getMemberInfo(String idStr){	//String stuId
+			
+		List<MemberVO> lst = new ArrayList<MemberVO>();
+			
+		try {
+			getConn();
+
+			sql = "select id, pwd, name, to_char(birth, 'YYYY/MM/DD'), mail, tel, addr, sort from membertbl where id=? ";
+				
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+				
+			rs = pstmt.executeQuery();
+				
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				System.out.println("rs.getString(1) : id >>> "+rs.getString(1));
+				vo.setId(rs.getString(1));
+				vo.setPwd(rs.getString(2));
+				vo.setName(rs.getString(3));
+				vo.setBirth(rs.getString(4));
+				vo.setMail(rs.getString(5));
+				vo.setTel(rs.getString(6));
+				vo.setAddr(rs.getString(7));
+				vo.setSort(rs.getInt(8));
+				
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
+		
+	//회원정보 수정
+	public int memberUpdate(MemberVO vo, String idStr){
+			
+		int result=0;
+			
+		try {
+			getConn();
+				
+			sql = "update membertbl set pwd=?, name=?, mail=?, tel=?, addr=? where id=? ";
+				
+			pstmt = conn.prepareStatement(sql);
+				
+			pstmt.setString(1, vo.getPwd());
+			pstmt.setString(2, vo.getName());
+			pstmt.setString(3, vo.getMail());
+			pstmt.setString(4, vo.getTel());
+			pstmt.setString(5, vo.getAddr());
+			pstmt.setString(6, idStr);
+				
+			result=pstmt.executeUpdate();
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+    return result;
+	}
 }
