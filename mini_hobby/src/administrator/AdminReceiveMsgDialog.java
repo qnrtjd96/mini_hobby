@@ -4,11 +4,15 @@ package administrator;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import dbConnection.ConsDAO;
+import dbConnection.ConsVO;
 
 public class AdminReceiveMsgDialog implements MouseListener{
 	JFrame frame = new JFrame();
@@ -19,14 +23,16 @@ public class AdminReceiveMsgDialog implements MouseListener{
 		JLabel msgLbl = new JLabel();
 		JLabel sendLbl = new JLabel("<HTML><U>답장하기</U></HTML>",JLabel.CENTER);
 	public AdminReceiveMsgDialog() {}
-	public AdminReceiveMsgDialog(String title, String sendUser) {
+	public AdminReceiveMsgDialog(String id, int msgNum) {
 		frame.setTitle("메세지 상세내용");
 		mainPane.setLayout(null);
 		
 		//기본 셋팅
-		titleTp = new JLabel("제목", JLabel.CENTER); titleStrTp = new JLabel(title, JLabel.CENTER);
-		recUserTp = new JLabel("보낸사람", JLabel.CENTER); recUserStrTp = new JLabel(sendUser, JLabel.CENTER);
-		msgLbl.setText("<HTML>"+title+"<br>"+"메세지 내용</HTML>");
+		titleTp = new JLabel("제목", JLabel.CENTER);
+		recUserTp = new JLabel("보낸사람", JLabel.CENTER); 
+		
+		//데이터 호출
+		msgDetailList(id, msgNum);
 		
 		//글자색
 		sendLbl.setForeground(Color.blue);
@@ -80,4 +86,18 @@ public class AdminReceiveMsgDialog implements MouseListener{
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
+	//데이터 핸들링
+	public void msgDetailList(String id, int msgNum) {
+		ConsDAO dao = new ConsDAO();
+		List<ConsVO> lst = dao.studenDiaMsgRec(id, msgNum);
+		
+		for(int i=0; i<lst.size(); i++) {
+			ConsVO vo = lst.get(i);
+			Object[] data = {" "+vo.getMsg_title(),vo.getSend(),vo.getMsg_detail()};
+			//데이터 핸들링
+			titleStrTp = new JLabel("  "+(String)data[0],JLabel.LEFT);
+			recUserStrTp = new JLabel("  "+(String)data[1],JLabel.LEFT);
+			msgLbl = new JLabel("  "+(String)data[2],JLabel.LEFT);
+		}
+	}
 }
