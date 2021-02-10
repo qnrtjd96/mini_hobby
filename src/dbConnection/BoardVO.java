@@ -19,6 +19,21 @@ public class BoardVO {
 	public BoardVO() {
 		
 	}
+	//선생님 새글쓰기
+	//2021-02-10 이강산
+	public BoardVO(String id, String classname, String cate, String city, int cost, String intro, String career, String area, String classdate, String classtime) {
+		System.out.println();
+		this.id=id;
+		this.classname=classname;
+		this.cate=cate;
+		this.city=city;
+		this.cost=cost;
+		this.intro = intro;
+		this.career=career;
+		this.area=area;
+		this.classdate = classdate;
+		this.classtime=classtime;
+	}
 	// 관리자 결제 상세내역
 	public BoardVO(int class_num, String id, String name, int cost, String pay_date) {
 		this.class_num = class_num;

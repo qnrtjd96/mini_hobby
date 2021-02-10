@@ -8,14 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,8 +24,8 @@ import javax.swing.border.LineBorder;
 
 import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
+import dbConnection.Mem_teacherDAO;
 import dbConnection.Mem_teacherVO;
-import dbConnection.MemberVO;
 
 public class TeachTextCreate extends JPanel implements ActionListener, ItemListener{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
@@ -36,17 +36,13 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
 	
-	//데이터를 가져오기위해 선언
-	Mem_teacherVO vo2 = new Mem_teacherVO();
-	
-	
 	JPanel main = new JPanel(new BorderLayout());
       JPanel mainPane = new JPanel(new BorderLayout());
 	  JPanel mainCenterPane = new JPanel(new BorderLayout());
 		JPanel  topPane = new JPanel(new BorderLayout());
 	    JPanel topPane1 = new JPanel(new GridLayout(0, 2));
 	    	JLabel cate = new JLabel("카테고리    ");
-	    	JLabel cate2 = new JLabel(vo2.getCate());
+	    	JLabel cate2 = new JLabel();	String catee = "";
 	    	
 	    	JPanel topPane2 = new JPanel(new GridLayout(0, 2, 0, 0));
 	    	JLabel dayLabel = new JLabel("날짜");
@@ -84,12 +80,16 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 			     JButton updateBtn = new JButton("등록");
 	
 	//콤보박스,박스선택에 대한 데이터
+	String id;
 	String date;		     
 	String dbarea;
 	String TeaClasstime[] = new String[12];
 	JCheckBox box[] = new JCheckBox[12]; //checkbox 선언
 	String classtime, classtime2;
-	public TeachTextCreate() {
+	public TeachTextCreate() {}
+	public TeachTextCreate(String id) {
+		this.id= id; //받아온 매개변수 멤버변수에 세팅
+		
 		dayLabel.setFont(fntBold15);
 		cate.setFont(fntBold15);  area.setFont(fntBold15); cate2.setFont(fntBold15); 
 		classname.setFont(fntBold20);classdetail.setFont(fntBold20);total.setFont(fntBold20);
@@ -164,10 +164,30 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 
 		setVisible(true);
 		
+		getTeaInfo(id);
+		
 		//이벤트등록
 		area2.addItemListener(this); //상세지역 이벤트
 		dayLable.addItemListener(this); //날짜 이벤트
 		updateBtn.addActionListener(this); //등록버튼 
+		
+	}
+	//회원정보 세팅
+	public void getTeaInfo(String id) { //회원정보 세팅
+
+		Mem_teacherDAO dao = new Mem_teacherDAO();
+		List<Mem_teacherVO> searchId = dao.getTeaInfo(id);
+		
+		if(searchId.size()==0 ) {
+			System.out.println("아이디를 매치를 못함...");
+		}else {
+			Mem_teacherVO vo = searchId.get(0);
+			
+			if(vo.getId().equals(id)) {
+				catee = vo.getCate();			cate2.setText(catee);
+			}	
+		}
+		
 		
 	}
 	//회원등록
@@ -175,22 +195,33 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 		//폼의 데이터를 VO에 셋팅
 		//아이디, 클래스명,  카테고리, 지역, 쓴날자, 강의시간
 		int cost = Integer.parseInt(pay2.getText());
-		//BoardVO vo = new BoardVO(vo2.getId(), classname2.getText(), vo2.getCate(), dbarea, cost, classdetail2.getText(),total2.getText(), detail2.getText(), date);
+		//						아이디	클래스명				분야				지역		가격		간단한클래스소개			경력				상세지역			  원하는날짜
+		// DB기준				 id		classname			cate			city	cost   	 intro				   career		     area			  classtime
+		BoardVO vo = new BoardVO(id, classname2.getText(), cate2.getText(), dbarea, cost, classdetail2.getText(),total2.getText(), detail2.getText(), date, classtime2);
 		//이름과 연락처가 있을때만 데이터베이스 작업하기
 		if(classname2.getText().equals("") || pay2.getText().equals("") || classdetail2.getText().equals("") || total2.getText().equals("") || detail2.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "모든부분을 입력하셔야 합니다..");
 		}else{
 			BoardDAO dao = new BoardDAO();
-			//int result = dao.insertBoard(vo);
-			//if(result>0) {//회원등록됨
-				JOptionPane.showMessageDialog(this,"회원이 등록되었습니다.");
-				getMember();
-			//}else {//회원등록실패함
-				JOptionPane.showMessageDialog(this,"회원이 실패했습니다.");
+			int result = dao.insertBoard(vo);
+			if(result>0) {//회원등록됨
+				JOptionPane.showMessageDialog(this,"글이 등록되었습니다.");
+				classtime2 = ""; //혹시모르니 classtime 초기화
+				/////////////////세라누나도와줘요!!!!!!!!!!!!!!!!!!!!!/////////////////////////////
+				/*여기이후에 다음페이지로 가야함*/
+				/*String searchTxt = cate2.getText();
+				TeachCateList tcl = new TeachCateList(searchTxt);
+				tcl.searchTf.setText(searchTxt);
+				main.setVisible(false);
+				main.removeAll();
+				main = tcl.mainPane;*/
+				///////////////////////////////////////////////////////////////////////////////
+			}else {//회원등록실패함
+				JOptionPane.showMessageDialog(this,"클래스명이 너무 길어서 글등록에 실패했습니다.");
 			}
 		}
 		
-	//}
+	}
 		
 	@Override
 	public void itemStateChanged(ItemEvent e) {
@@ -271,10 +302,8 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 		   if(e.getStateChange() == ItemEvent.SELECTED) {
 			   System.out.println("11번 눌름");
 			   TeaClasstime[11] = box[11].getText()+ ",";
-			   System.out.println("11번 배열에는 뭐가 들거있을까????????" + TeaClasstime[11]);
 		   }else{
 			   TeaClasstime[11] = " ";
-			   System.out.println("해제했을떈 뭐가 들거있을까????????" + TeaClasstime[11]);
 		   }
 	   }else if(e.getSource() == box[0]){
 		   if(e.getStateChange() == ItemEvent.SELECTED) {
@@ -293,9 +322,7 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 			for(int i=0; i<TeaClasstime.length; i++) {
 				classtime += TeaClasstime[i];
 				classtime2 = classtime.replace("null", "");
-		   	  }
-		
-		
+		   	  }		
 		System.out.println("classtime2 = " + classtime2);
 		getMember();
 		}
