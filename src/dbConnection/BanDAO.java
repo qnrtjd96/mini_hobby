@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package dbConnection;
 public class BanDAO extends DBConnection{
 
@@ -5,3 +6,12 @@ public class BanDAO extends DBConnection{
 	}
 
 }
+=======
+package dbConnection;
+public class BanDAO extends DBConnection{
+
+	public BanDAO() {
+	}
+
+}
+>>>>>>> refs/remotes/origin/master

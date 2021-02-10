@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package dbConnection;
 
 public class BlackListDAO extends DBConnection{
@@ -7,3 +8,14 @@ public class BlackListDAO extends DBConnection{
 	}
 
 }
+=======
+package dbConnection;
+
+public class BlackListDAO extends DBConnection{
+
+	public BlackListDAO() {
+		
+	}
+
+}
+>>>>>>> refs/remotes/origin/master
