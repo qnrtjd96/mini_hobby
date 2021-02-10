@@ -29,7 +29,7 @@ import teach.Teach1JFrameExtends;
 public class Main0Login extends JFrame implements ActionListener, MouseListener{
 	
 	JPanel login = new JPanel();
-		ImageIcon img = new ImageIcon("mini_hobby/img/Biglogo.png");
+		ImageIcon img = new ImageIcon("img/Biglogo.png");
 		JButton logo = new JButton(img);
 		
 		JLabel lblId = new JLabel("아이디");  JLabel lblpwd = new JLabel("비밀번호");

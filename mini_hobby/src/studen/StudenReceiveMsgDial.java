@@ -8,10 +8,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+import dbConnection.ConsDAO;
+import dbConnection.ConsVO;
 
 public class StudenReceiveMsgDial extends JDialog implements ActionListener{
 	
@@ -29,8 +33,12 @@ public class StudenReceiveMsgDial extends JDialog implements ActionListener{
 	JTextArea ta = new JTextArea();
 	JScrollPane sp = new JScrollPane(ta);
 	JButton send = new JButton("보내기");
-
-	public StudenReceiveMsgDial() {
+	String id; int msgNum;
+	public StudenReceiveMsgDial() {}
+	public StudenReceiveMsgDial(String id, int msgNum) {
+		this.id=id;
+		this.msgNum=msgNum;
+		
 		setBackground(Color.white);
 		setLayout(null);
 		
@@ -49,14 +57,19 @@ public class StudenReceiveMsgDial extends JDialog implements ActionListener{
 		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
-		
+		send.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if(obj==send) {
-			
+			ConsVO vo = new ConsVO(receiTf.getText(), id, title.getText(), ta.getText());
+			ConsDAO dao = new ConsDAO();
+			int result = dao.sendMsg(vo);
+			if (result>0) {
+				JOptionPane.showMessageDialog(this, "메시지 전송이 완료되었습니다.");
+			}
 		}
 		
 	}

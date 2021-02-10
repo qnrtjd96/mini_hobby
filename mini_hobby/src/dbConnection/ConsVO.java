@@ -10,6 +10,13 @@ public class ConsVO {
 	
 	public ConsVO() {
 	}
+	// 보낸거 저장
+	public ConsVO(String get, String send, String msg_title, String msg_detail) {
+		this.get = get;
+		this.send = send;
+		this.msg_title = msg_title;
+		this.msg_detail = msg_detail;
+	}
 	public ConsVO(int msg_num, String get, String send, String msg_title, String msg_detail) {
 		this.msg_num = msg_num;
 		this.get = get;
