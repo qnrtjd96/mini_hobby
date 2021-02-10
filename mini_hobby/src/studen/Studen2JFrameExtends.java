@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -24,8 +26,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import dbConnection.Acess_memDAO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
+import main.Main0Login;
 
 public class Studen2JFrameExtends extends JFrame implements ActionListener, MouseListener{
 	JPanel paneTop = new JPanel(new BorderLayout());
@@ -87,6 +91,8 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBackground(Color.white);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		addWindowListener(new AdapterInner());
 	}
 	
   //logo 버튼 이벤트 오버라이딩
@@ -185,15 +191,31 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 				int answer = JOptionPane.showConfirmDialog(this, "로그아웃 하시겠습니까?", "로그아웃 확인", 0);
 				if (answer==0) {
 					this.setVisible(false);
-					System.exit(0);
+					this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+					Acess_memDAO dao = new Acess_memDAO();
+					int result = dao.LogOut(idStr);
+					
+					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
+					new Main0Login();
 				}
-			}/* else if(stuObj==searchTf) {
+			}
+			/* else if(stuObj==searchTf) {
 				System.out.println("텍필 눌림");
 				searchTf.setText("");
 			} */
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			System.out.println("윈도우 이벤트 처리 완료");
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
 		}
 	}
 	public void StudenTopMenu(String idStr) {
