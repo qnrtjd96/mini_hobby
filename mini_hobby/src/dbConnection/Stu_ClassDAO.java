@@ -93,5 +93,31 @@ public class Stu_ClassDAO extends DBConnection{
 		}
 		return lst;
 	}
-
+	//teachincome 리스트
+	public List<Stu_ClassVO> teachIncomeList(String id) {
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql = "select s.pay_cate, m.name, s.pay from stu_class s join membertbl m on s.id = m.id join boardtbl b on s.class_num=b.class_num where b.id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO voClass = new Stu_ClassVO();
+				voClass.setPay_cate(rs.getString(1));
+				voClass.setsName(rs.getString(2));
+				voClass.setPay(rs.getInt(3));
+				
+				lst.add(voClass);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return lst;
+	}
 }

@@ -5,6 +5,8 @@ public class Stu_ClassVO {
 	private String id;
 	private String pay_class;
 	private String pay_cate;
+
+	private String sName;
 	private int pay;
 	private String pay_date;
 	private String classdate;
@@ -13,6 +15,11 @@ public class Stu_ClassVO {
 	public Stu_ClassVO() {
 		
 	}
+	public Stu_ClassVO(String pay_cate, String sName, int pay) {
+		this.pay_cate = pay_cate;
+		this.sName = sName;
+		this.pay = pay;
+	}
 	public Stu_ClassVO(int class_num, String id, String pay_class, String pay_cate, int pay, String pay_date) {
 		this.class_num=class_num;
 		this.id=id;
@@ -20,6 +27,12 @@ public class Stu_ClassVO {
 		this.pay_cate=pay_cate;
 		this.pay=pay;
 		this.pay_date=pay_date;
+	}
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
+	public String getsName() {
+		return sName;
 	}
 	public String getClassdate() {
 		return classdate;

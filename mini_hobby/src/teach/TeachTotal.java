@@ -136,7 +136,7 @@ public class TeachTotal extends JPanel implements MouseListener{
 		Object obj = me.getSource();
 		// TeachIncome으로 넘어가야하는데 이벤트 구현이 잘 안됨
 		if(obj==cal1) {
-			new TeachIncome();
+			//new TeachIncome();
 		}
 	}
 		@Override
