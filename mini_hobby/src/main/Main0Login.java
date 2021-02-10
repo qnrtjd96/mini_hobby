@@ -1,3 +1,4 @@
+package main;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import administrator.Admin0Login;
+import dbConnection.Acess_memDAO;
+import dbConnection.Acess_memVO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 import studen.Studen2JFrameExtends;
@@ -47,7 +50,6 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 	Font fnt3 = new Font("맑은 고딕", Font.BOLD, 25);
 	
 	String idStr, pwdStr;
-	
 	public Main0Login() {
 		login.setBackground(Color.white);
 		add(login); login.setLayout(null);
@@ -119,6 +121,10 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 				JOptionPane.showMessageDialog(this, "일치하는 회원정보가 없습니다.\n 재확인 후 로그인 해주십시오");
 			} else {
 				MemberVO vo = searchList.get(0);
+				//로그인 정보 DB로 넘기기
+				Acess_memVO amVO = new Acess_memVO(vo.getSort(), idStr, vo.getName());
+				Acess_memDAO amDAO = new Acess_memDAO();
+				int result = amDAO.LogIn(amVO);
 				if (vo.getSort()==1) {
 					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
 					this.setVisible(false);

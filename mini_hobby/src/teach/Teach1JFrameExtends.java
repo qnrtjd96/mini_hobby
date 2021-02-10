@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
+import dbConnection.Acess_memDAO;
 import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
 import dbConnection.MemberDAO;
@@ -39,6 +42,7 @@ import dbConnection.MemoDAO;
 import dbConnection.MemoVO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
+import main.Main0Login;
 
 public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener, Runnable{
 	JPanel paneTop = new JPanel(new BorderLayout());
@@ -184,7 +188,12 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 				int answer = JOptionPane.showConfirmDialog(this, "로그아웃 하시겠습니까?", "로그아웃 확인", 0);
 				if (answer==0) {
 					this.setVisible(false);
-					System.exit(0);
+					this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+					Acess_memDAO dao = new Acess_memDAO();
+					int result = dao.LogOut(id);
+					
+					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
+					new Main0Login();
 				}
 			}
 		} catch (Exception e) {
@@ -194,6 +203,16 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			System.out.println("윈도우 이벤트 처리 완료");
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(id);
+			System.exit(0);
+		}
+	}
 	public void mouseClicked(MouseEvent me) {
 		Object obj = me.getSource();
 		JLabel lbl = (JLabel)me.getSource();
