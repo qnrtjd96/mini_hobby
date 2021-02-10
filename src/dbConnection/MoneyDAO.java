@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 package dbConnection;
 
 public class MoneyDAO extends DBConnection{
@@ -7,6 +8,16 @@ public class MoneyDAO extends DBConnection{
 		
 	}
 }
+=======
+package dbConnection;
+
+public class MoneyDAO extends DBConnection{
+
+	public MoneyDAO() {
+		
+	}
+}
+>>>>>>> refs/remotes/origin/master
 =======
 package dbConnection;
 
