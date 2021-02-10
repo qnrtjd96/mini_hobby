@@ -125,8 +125,12 @@ public class TeachMyList extends JPanel implements MouseListener{
 			searchTf.setText("");
 		} else if (obj==table) {
 			int col = table.getSelectedColumn();
+			int row = table.getSelectedRow();
+			String classname = (String)table.getValueAt(row, col);
+			System.out.println(classname);
+			System.out.println(id);
 			if (col==1) {
-				new TeachReservationDetail(id);
+				new TeachReservationDetail(id, classname);
 			}
 		}	
 	}

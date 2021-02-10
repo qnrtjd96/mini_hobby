@@ -8,17 +8,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,7 +26,6 @@ import javax.swing.border.LineBorder;
 
 import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
-import dbConnection.MemberVO;
 
 public class TeachReservationDetail extends JDialog implements ActionListener, MouseListener{
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
@@ -39,16 +37,15 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	JPanel center = new JPanel();
 		JPanel cal = new JPanel();
 		JPanel upperClassPane = new JPanel();
-			JLabel cate = new JLabel("카테고리 : 요리");
+			JLabel cate = new JLabel("카테고리 : ");
 			JLabel city = new JLabel("지역");
 				DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
 				JComboBox<String> box = new JComboBox<String>(model);
 		JPanel classPane = new JPanel();
-			JLabel lbl1 = new JLabel("선택한 클래스 : 클래스2");
-			JLabel lbl2 = new JLabel("선택한 일자 : 2021년 2월 2일");
+			JLabel lbl1 = new JLabel("선택한 클래스 : ");
+			JLabel lbl2 = new JLabel("선택한 일자 : ");
 			JPanel select = new JPanel(new GridLayout(7,0));
-				String time[] = {"13:00~14:00","14:00~15:00","15:00~16:00","16:00~17:00"};
-				JCheckBox check[] = new JCheckBox[time.length];
+				JCheckBox check[] = new JCheckBox[0];
 			JButton btn = new JButton("시간수정");
 			JPanel table = new JPanel(new BorderLayout());
 				JPanel title = new JPanel();
@@ -59,17 +56,17 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 					JLabel li9 = new JLabel("비용(1회)");
 					JLabel li11 = new JLabel("강의가능일자");
 				JPanel content = new JPanel();
-					JLabel li2 = new JLabel("클래스2");
-					JLabel li4 = new JLabel("클래스 소개글");
-					JLabel li6 = new JLabel("한식조리사자격증");
-					JLabel li8 = new JLabel("구로구 오류2동");
-					JLabel li10 = new JLabel("70,000원");
-					JLabel li12 = new JLabel("2021년 2월 2일");
+					JLabel li2 = new JLabel("선택된 강의가 없습니다");
+					JLabel li4 = new JLabel("선택된 강의가 없습니다");
+					JLabel li6 = new JLabel("선택된 강의가 없습니다");
+					JLabel li8 = new JLabel("선택된 강의가 없습니다");
+					JLabel li10 = new JLabel("선택된 강의가 없습니다");
+					JLabel li12 = new JLabel("선택된 강의가 없습니다");
 			JPanel review = new JPanel(new BorderLayout());
 				JLabel re1 = new JLabel("후기글");
 				JPanel rev = new JPanel(new GridLayout(0,1));
-					JLabel re2 = new JLabel("별점 : ★★★★★");
-					JLabel re3 = new JLabel("후기글 내용");
+					JLabel re2 = new JLabel("별점 : ");
+					JLabel re3 = new JLabel("선택된 강의가 없습니다");
 		JPanel detail = new JPanel(new BorderLayout());
 		JScrollPane sp = new JScrollPane(detail);
 		JButton editBtn = new JButton("수정");
@@ -89,12 +86,12 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			JPanel datePane = new JPanel( new GridLayout(0,7,38,25)); // 1~31 날짜 출력 
 			
 	String id;
-	BoardDAO dao = new BoardDAO();
-	List<BoardVO> lst = dao.detailBoard(id);
+	String classname;
 
 	public TeachReservationDetail() {}
-	public TeachReservationDetail(String id) {
+	public TeachReservationDetail(String id, String classname) {
 		this.id=id;
+		this.classname = classname;
 		
 		
 		setBackground(Color.white);
@@ -119,12 +116,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		lbl2.setFont(fn2); lbl2.setBounds(40,50,300,30);
 		btn.setFont(fn2); btn.setBounds(110,250,120,40); btn.setBackground(col6);
 		select.setFont(fnt); select.setBounds(10,90,300,150);
-		for (int t=0; t<time.length; t++) {
-			check[t] = new JCheckBox(time[t]);
-			check[t].setFont(fn); check[t].setHorizontalAlignment(JCheckBox.CENTER);
-			check[t].setBackground(Color.white);
-			select.add(check[t]);
-		}
+		
 		sp.setBounds(20,450,750,350);
 		center.add(editBtn); center.add(deleteBtn);
 		editBtn.setBounds(540,820,100,50); editBtn.setFont(fn2); editBtn.setBackground(col6);
@@ -158,6 +150,8 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		rev.add("North", re2); re2.setFont(fn); re1.setBackground(Color.white);
 		rev.add(re3); re3.setFont(fn); rev.setBackground(Color.white);
 		
+		
+		
 		setSize(800,920);
 		setLocation(50, 100);
 		setVisible(true);
@@ -166,18 +160,30 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		btn.addActionListener(this);
 		editBtn.addActionListener(this);
 		
-		
-		
 	}
 	public void mouseClicked(MouseEvent me) {
-		JLabel lbl = (JLabel)me.getSource();
-		int date = Integer.parseInt(lbl.getText());
+		JLabel label = (JLabel)me.getSource();
+		int date = Integer.parseInt(label.getText());
+		lbl1.setText("선택한 클래스 : "+classname);
 		lbl2.setText("선택한 일자 : "+y+"년 "+m+"월 "+date+"일");
 		String time = y+"-"+m+"-"+date;
+		
+		select.removeAll();
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.detailBoard(classname); 
 		for(int i=0; i<lst.size(); i++) {
 			BoardVO vob = lst.get(i);
 			if (vob.getClassdate().equals(time)) {
-				
+				String classtime = vob.getClasstime();
+				// 여러개의 클래스타임이 존재할시 ,로 나눌거임
+				StringTokenizer st = new StringTokenizer(classtime, ",");
+				while (st.hasMoreTokens()) { // 다음꺼 가지고 있으면
+					String token = st.nextToken(); // 끌어내 (iterator같은느김인가베)
+					check[i] = new JCheckBox(token);
+					check[i].setFont(fn); check[i].setHorizontalAlignment(JCheckBox.CENTER);
+					check[i].setBackground(Color.white);
+					select.add(check[i]);
+				}
 			}
 		}
 		
@@ -233,6 +239,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	}
 		
 	public void calendarSetting(int y, int m) {
+		System.out.println("calendarsetting 시작");
 		int week, lastDay;
 		// 콤보박스에 선택된 년도, 월의 1일로 세팅 
 		now.set(y, m-1, 1); 
@@ -244,29 +251,35 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		for(int space=1; space<week; space++) {
 			datePane.add(new JLabel(""));
 		}
-		// 월의 1일~마지막일 까지 출력 
+		
+		//체크박스 생성
+		
+		
+		// 월의 1일~마지막일 까지 출력 + 체크박스 연동
 		BoardDAO dao = new BoardDAO();
-		List<BoardVO> lst = dao.boardCalendar(id);
+		List<BoardVO> lst = dao.detailBoard(classname);
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
 			now.set(y, m-1, day); //날짜별로 요일을 구해서
 			int colorWeek = now.get(Calendar.DAY_OF_WEEK);
-			for(int i=0; i<lst.size(); i++) {
-				BoardVO vob = lst.get(i);
-				String date = vob.getClassdate();
-				int month = Integer.parseInt(date.substring(5,7));
-				if (month==m) {
-					int da = Integer.parseInt(date.substring(8));
-					if(da>=d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
-						dayOfMonthLbl.setOpaque(true);
-						dayOfMonthLbl.setBackground(col6);
-					} else if(da<d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
-						dayOfMonthLbl.setOpaque(true);
-						dayOfMonthLbl.setBackground(Color.LIGHT_GRAY);
+			if(lst.size()>0) {
+				for(int i=0; i<lst.size(); i++) {
+					BoardVO vob = lst.get(i);
+					String date = vob.getClassdate();
+					int month = Integer.parseInt(date.substring(5,7));
+					if (month==m) {
+						int da = Integer.parseInt(date.substring(8,10));
+						if(da>=d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+							dayOfMonthLbl.setOpaque(true);
+							dayOfMonthLbl.setBackground(col6);
+						} else if(da<d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+							dayOfMonthLbl.setOpaque(true);
+							dayOfMonthLbl.setBackground(Color.LIGHT_GRAY);
+						}
 					}
-				}
-			} 
+				} 
+			}
 			if(colorWeek == 1) { //일요일이면 
 				dayOfMonthLbl.setForeground(Color.RED);
 			}else if(colorWeek == 7) { //토요일이면 
@@ -276,7 +289,28 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			dayOfMonthLbl.setFont(fnt2);
 			dayOfMonthLbl.addMouseListener(this);
 		}
-		
+		// 첫 화면 체크박스 추가
+		select.removeAll();
+		Calendar now = Calendar.getInstance();
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-mm-dd");
+		String nowStr = f.format(now.getTime());
+		if(lst.size()>0) {
+			for(int i=0; i<lst.size(); i++) {
+				BoardVO vob = lst.get(i);
+				if (vob.getClassdate().equals(nowStr)) {
+					String classtime = vob.getClasstime();
+					StringTokenizer st = new StringTokenizer(classtime, ",");
+					while (st.hasMoreTokens()) { // 다음꺼 가지고 있으면
+						String token = st.nextToken(); // 끌어내 (iterator같은느김인가베)
+						check[i] = new JCheckBox(token);
+						check[i].setFont(fn); check[i].setHorizontalAlignment(JCheckBox.CENTER);
+						check[i].setBackground(Color.white);
+						select.add(check[i]);
+					}
+				}
+			}
+		}
+		JLabel label = new JLabel("당일 정보가 없습니다.");
+		select.add(label); label.setFont(fn);
 	}
-
 }

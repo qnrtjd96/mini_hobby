@@ -50,15 +50,15 @@ public class BoardDAO extends DBConnection{
 		return lst;
 	}
 	// 상세정보에서 쓸거
-	public List<BoardVO> detailBoard(String id) {
+	public List<BoardVO> detailBoard(String classname) {
 		List<BoardVO> lst = new ArrayList<BoardVO>();
 		try {
 			getConn();
 			
-			sql = "select b.* from (select * from boardtbl where id=?) b join membertbl m on b.id=m.id";
+			sql = "select * from boardtbl where classname=?";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
+			pstmt.setString(1, classname);
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -73,6 +73,8 @@ public class BoardDAO extends DBConnection{
 				vob.setCareer(rs.getString(9));
 				vob.setArea(rs.getString(10));
 				vob.setWritedate(rs.getString(11));
+				vob.setClassdate(rs.getString(12));
+				vob.setClasstime(rs.getString(13));
 				vob.setReview(rs.getString(5));
 				
 				lst.add(vob);
@@ -137,6 +139,23 @@ public class BoardDAO extends DBConnection{
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
+			dbClose();
+		}
+		return lst;
+	}
+	// 강사 detail에서 쓸거
+	public List<BoardVO> teachDetail(String id) {
+		List<BoardVO> lst = new ArrayList<BoardVO>();
+		try {
+			getConn();
+			
+			sql="select ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+		} catch(Exception e) {
+			
+		}finally {
 			dbClose();
 		}
 		return lst;

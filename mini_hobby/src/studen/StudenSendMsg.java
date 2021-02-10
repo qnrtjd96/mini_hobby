@@ -107,8 +107,9 @@ public class StudenSendMsg extends JPanel implements MouseListener{
             table.setValueAt("●", row, col);
          }else if(value.equals("●")) {
             table.setValueAt("○", row, col);
-         }else if(col==2) {
-            //학생 메세지쓰기 호출하세욘//
+         }else if(col==1) {
+        	 new StudenReceiveMsgDial();
+            
          }
       }
    }
