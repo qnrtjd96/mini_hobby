@@ -21,8 +21,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import dbConnection.ConsDAO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
+import studen.StudenReceiveMsgDialog;
 
 public class AdminSleepUser extends JPanel implements MouseListener, ActionListener{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
@@ -115,30 +117,44 @@ public class AdminSleepUser extends JPanel implements MouseListener, ActionListe
 		
 		//기능추가
 		teaTable.addMouseListener(this);
-		chatt.addMouseListener(this);
+		chatt.addActionListener(this);
 	}
 	public void actionPerformed(ActionEvent ae) {
 		String eventBtn = ae.getActionCommand();
-		System.out.println("eventBtn = " + eventBtn);
 		if(eventBtn.equals("계정삭제")) {
-			//setMemberDelete();
+			int result=0;
+			// 데이터 삭제 구현
+			for(int i=0; i<teaTable.getRowCount(); i++) {
+				if(teaTable.getValueAt(i, 0).equals("●")) {
+					String id = (String)teaTable.getValueAt(i, 2);
+					MemberDAO dao = new MemberDAO();
+					result = dao.memberDelete(id);
+				}
+			}
+			if(result>0) {
+				JOptionPane.showMessageDialog(this, "선택한 계정이 삭제되었습니다.");
+				teaT.setRowCount(0);
+			}else {
+				JOptionPane.showMessageDialog(this, "선택한 계정이 없습니다.");
+			}
 		}
 	}
-	//회원정보삭제
-	/*
-	public void setMemberDelete() {
-		//int num = ; //선택된거 뭔지확인하고 넣기
-		MemberDAO dao = new MemberDAO();
-		int result = dao.memberDelete(num);
-		String msg = "회원정보가 삭제되었습니다.";
-		if(result>0) {//삭제됨
-			getTeacherAll();
-		}else {//삭제안됨
-			msg="회원정보 삭제 실패하였습니다.";
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+		int clickBtn = e.getButton();
+		if(clickBtn==1) {
+			//선택한 컬럼의 데이터 가져오기
+			int row = teaTable.getSelectedRow();
+			int col = teaTable.getSelectedColumn();
+			Object value = teaTable.getValueAt(row, col);
+			if(value.equals("○")) {
+				teaTable.setValueAt("●", row, col);
+			}else if(value.equals("●")) {
+				teaTable.setValueAt("○", row, col);
+			}
 		}
-		JOptionPane.showMessageDialog(this, msg);
 	}
-	*/
 	
 	public void setNewTeacherTableList(List<MemberVO> lst) {
 		teaT.setRowCount(0); //JTable의 레코드 지우기
@@ -146,10 +162,10 @@ public class AdminSleepUser extends JPanel implements MouseListener, ActionListe
 		for(int i=0; i<lst.size(); i++) {
 			MemberVO vo2 = lst.get(i);
 			if(vo2.getSort() == 1) {
-				Object[] teaData = {'○',i+1 ,vo2.getId(), "학생", vo2.getLogin_date()};
+				Object[] teaData = {"○",i+1 ,vo2.getId(), "학생", vo2.getLogin_date()};
 				teaT.addRow(teaData);
 			}else {
-				Object[] teaData = {'○',i+1 ,vo2.getId(), "강사", vo2.getLogin_date()};
+				Object[] teaData = {"○",i+1 ,vo2.getId(), "강사", vo2.getLogin_date()};
 				teaT.addRow(teaData);
 			}
 		}
@@ -166,38 +182,6 @@ public class AdminSleepUser extends JPanel implements MouseListener, ActionListe
 	
 	public static void main(String[] args) {
 		new AdminSleepUser();
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		/*
-		int clickBtn = e.getButton();
-		System.out.println("click btn = "+ clickBtn);
-		if(clickBtn==1) {
-			//선택한 컬럼의 데이터 가져오기
-			int row = teaTable.getSelectedRow();
-			int col = teaTable.getSelectedColumn();
-			System.out.println("row, col = " + row + " , " + col);
-			Object value = teaTable.getValueAt(row, col);
-			System.out.println("value = "+ value);
-			if(value.equals("○")) {
-				teaTable.setValueAt("●", row, col);
-			}else if(value.equals("●")) {
-				teaTable.setValueAt("○", row, col);
-			}else if(col==-1 && row == -1) {
-				Object list = teaTable.getValueAt(row, col);
-				MemberDAO dao = new MemberDAO();
-				int result = dao.memberDelete();
-				String msg = "회원정보가 삭제되었습니다.";
-				if(result>0) {//삭제됨
-					getTeacherAll();
-				}else {//삭제안됨
-					msg="회원정보 삭제 실패하였습니다.";
-				}
-				JOptionPane.showMessageDialog(this, msg);
-			}
-		}
-		*/
 	}
 
 	@Override
