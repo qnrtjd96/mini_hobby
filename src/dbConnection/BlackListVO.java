@@ -2,9 +2,9 @@ package dbConnection;
 
 public class BlackListVO {
 	
-	String id;
-	String why;
-	String black_date;
+	private String id;
+	private String why;
+	private String black_date;
 	
 	public BlackListVO(String id, String why, String black_date) {
 		this.id = id;
