@@ -38,7 +38,13 @@ public class TeachDeleteUser extends JPanel implements ActionListener{
 	JPanel robotSouth = new JPanel();
 		JButton chooBtn = new JButton("선택완료");
 	
+	String id;
+		
 	public TeachDeleteUser() {
+		
+	}
+	
+	public TeachDeleteUser(String id) {
 		add(deletMain);
 		setBackground(Color.white);
 		

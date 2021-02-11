@@ -92,12 +92,14 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	
 	MemberVO vo;
 	String id;
+	
 	public Teach1JFrameExtends() {}
 	public Teach1JFrameExtends(String id) {
 		this.id = id;
+		System.out.println("teach frame id > " + id);
 		
 		
-		TeachTopMenu();
+		TeachTopMenu(id);
 		TeachMain();
 		
 		
@@ -178,7 +180,8 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 				} else if (pwd.equals("master1234")) {
 					center.setVisible(false);
 					center.removeAll();
-					center = new Teach3MyMenu().paneStu;
+					System.out.println("내정보로 넘어가는 > "+id);
+					center = new Teach3MyMenu(id).paneStu;
 					this.setVisible(true);
 					add("Center", center);
 				} else {
@@ -226,7 +229,8 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		}
 		
 	}
-	public void TeachTopMenu() {
+	public void TeachTopMenu(String id) {
+		System.out.println("teachTopMenu id > > >  >"+id);
 		add("North",paneTop);
 		//logoBtn
 		add(Logo);
