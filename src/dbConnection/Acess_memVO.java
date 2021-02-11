@@ -11,6 +11,12 @@ public class Acess_memVO {
 		this.id = id;
 		this.name = name;
 	}
+	//2021.02.11 이강산
+	//실시간채팅
+	public Acess_memVO(String id, String name) {
+		this.id=id;
+		this.name=name;
+	}
 	public int getSort() {
 		return sort;
 	}

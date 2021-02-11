@@ -2,10 +2,16 @@ package studen;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,8 +22,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import dbConnection.Acess_memDAO;
+import dbConnection.Acess_memVO;
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
+import dbConnection.Stu_ClassDAO;
+import dbConnection.Stu_ClassVO;
 
-public class StudenLiveChat extends JPanel{
+public class StudenLiveChat extends JPanel implements MouseListener, ActionListener, Runnable{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntPlain20 = new Font("맑은 고딕", Font.PLAIN, 20);
 	Font fntPlain25 = new Font("맑은 고딕", Font.PLAIN, 25);
@@ -34,7 +46,7 @@ public class StudenLiveChat extends JPanel{
 		//int rows, int cols, int hgap, int vgap)
 		JPanel centerPane = new JPanel(new BorderLayout());
 			JPanel tea = new JPanel(new BorderLayout());
-				JLabel teacher = new JLabel("선 생 님", JLabel.CENTER);
+				JLabel teacher = new JLabel("실시간 선생님 목록", JLabel.CENTER);
 				//임시데이터 teaTable, teatitle, teadata	
 			
 		JPanel bottomPane = new JPanel(new BorderLayout());
@@ -42,17 +54,24 @@ public class StudenLiveChat extends JPanel{
 			JButton admin = new JButton("관리자와 채팅");
 	//선생님테이블 임시데이터
 	//제목
-	String teaTitle[]	= {"접속여부", "아이디"};
+	String teaTitle[]	= {"선택하기", "아이디", "이름"};
 	Object teaData[][]= {
-			{"ㅇ","홍길동"},
-			{"ㅇ","이순신"},
-			{"ㅇ","세종대왕"},
-			{"ㅇ","장영실"},
-			{"ㅇ","유승룡"},	
+			/*	{"ㅇ","홍길동"},
+				{"ㅇ","이순신"},
+				{"ㅇ","세종대왕"},
+				{"ㅇ","장영실"},
+				{"ㅇ","유승룡"},	*/
 	};
 	JScrollPane teaSp;
+	JTable teaTable;
+	DefaultTableModel teaT;
+	
+	//아이디끌어오기
+	String id;
+	public StudenLiveChat() {}
+	public StudenLiveChat(String id) {
+		this.id = id;
 		
-	public StudenLiveChat() {
 		setLayout(new BorderLayout());
 		//배경 변경
 		mainPane.setBackground(Color.WHITE); topPane.setBackground(Color.WHITE);
@@ -77,12 +96,12 @@ public class StudenLiveChat extends JPanel{
 		topPane.add(connList,BorderLayout.CENTER);
 		
 		//중단
-		DefaultTableModel teaT = new DefaultTableModel(teaData, teaTitle) {
+		teaT = new DefaultTableModel(teaData, teaTitle) {
         	public boolean isCellEditable(int rowIndex, int mColIndex) {
                 return false;
             }
         };
-		JTable teaTable = new JTable(teaT);
+		teaTable = new JTable(teaT);
 			teaTable.setRowHeight(30);
 			teaTable.setFont(fntPlain15);
 			teaTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //여러개 클릭못하게막기
@@ -110,8 +129,89 @@ public class StudenLiveChat extends JPanel{
 		add(centerPane, BorderLayout.CENTER);
 		add(bottomPane, BorderLayout.SOUTH);
 		
+		//테이블넣기
+		getTeacherAll();
+		
+		//테이블 계속돌리기(실시간채팅이기떄문에)
+		Thread t = new Thread(this);
+		t.start();
+	}
+	public void run(List<Acess_memVO> lst) {
+		teaT.setRowCount(0);
+		for(int i=0; i<lst.size(); i++) {
+			Acess_memVO vo2 = lst.get(i);
+
+				Object[] teaData = {"○",vo2.getId(), vo2.getName()};
+				teaT.addRow(teaData);
+		}
+	}
+	public void getTeacherAll() {
+		Acess_memDAO dao2 = new Acess_memDAO();
+		List<Acess_memVO> lst = dao2.LiveChattpeople();
+		
+		run(lst);
 	}
 	public static void main(String[] args) {
 		new StudenLiveChat();
+	}
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		String eventBtn = ae.getActionCommand();
+		if(eventBtn.equals("채팅하기")) { //채팅하기 미구현
+			int result=0;
+			
+			for(int i=0; i<teaTable.getRowCount(); i++) {
+				if(teaTable.getValueAt(i, 0).equals("●")) {
+					String id = (String)teaTable.getValueAt(i, 2);
+					MemberDAO dao = new MemberDAO();
+					result = dao.memberDelete(id);
+				}
+			}
+			if(result==0) {
+				JOptionPane.showMessageDialog(this, "선택한 계정이 삭제되었습니다.");
+				getTeacherAll();
+			}else {
+				JOptionPane.showMessageDialog(this, "선택한 계정이 없습니다.");
+			}
+		}else if(eventBtn.equals("관리자와 채팅")){ //미구현
+			
+		}
+		
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int clickBtn = e.getButton();
+		if(clickBtn==1) {
+			//선택한 컬럼의 데이터 가져오기
+			int row = teaTable.getSelectedRow();
+			int col = teaTable.getSelectedColumn();
+			Object value = teaTable.getValueAt(row, col);
+			if(value.equals("○")) {
+				teaTable.setValueAt("●", row, col);
+			}else if(value.equals("●")) {
+				teaTable.setValueAt("○", row, col);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	
+	@Override
+	public void mouseExited(MouseEvent e) {}
+	@Override
+	public void run() {
+		while(true) {
+			try {Thread.sleep(1000);}catch(Exception e) {}
+			getTeacherAll();
+		}
 	}
 }
