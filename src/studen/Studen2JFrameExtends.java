@@ -26,8 +26,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-import com.sun.swing.internal.plaf.metal.resources.metal;
-
 import dbConnection.Acess_memDAO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
@@ -312,13 +310,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
-	public void mouseClicked(MouseEvent mc) {
-		Object tfObj = (JTextField)mc.getSource();
-		
-		if(tfObj==searchTf) {
-			searchTf.setText("");
-		}
-	}
+	public void mouseClicked(MouseEvent mc) {}
 	
 	
 		
