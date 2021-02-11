@@ -109,7 +109,6 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 				
 			}
 			sort(idStr, pwdStr);
-			
 		}
 		
 	}

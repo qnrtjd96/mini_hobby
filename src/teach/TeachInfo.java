@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -12,9 +13,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+import dbConnection.Mem_teacherDAO;
+import dbConnection.Mem_teacherVO;
+import dbConnection.MemberDAO;
+import dbConnection.MemberVO;
 
 public class TeachInfo extends JPanel implements ActionListener {
 	Font westFnt = new Font("맑은 고딕", Font.BOLD, 25);
@@ -28,13 +35,13 @@ public class TeachInfo extends JPanel implements ActionListener {
 			JLabel teaEmail = new JLabel("이메일"); JLabel teaTel = new JLabel("연락처");
 			JLabel teaAddr = new JLabel("주소");
 
-			JLabel teaIdLbl = new JLabel("abcd1234");
-			JTextField teaPwdTf = new JTextField(250);		String pwdTest = "pwd1234";
-			JTextField teaNameTf = new JTextField(250);		String nameTest = "유관순";
-			JLabel teaBirthLbl = new JLabel("2000/12/25");
-			JTextField teaEmailTf = new JTextField(250);	String emailTest = "foofa@naver.com";
-			JTextField teaTelTf = new JTextField(250);		String telTest = "010-1121-1211";
-			JTextField teaAddrTf = new JTextField(250);		String addrTest = "서울시 마포구 연희로 13다 5-25";
+			JTextField teaIdTf = new JTextField();			String idTest = "";
+			JTextField teaPwdTf = new JTextField(250);		String pwdTest = "";
+			JTextField teaNameTf = new JTextField(250);		String nameTest = "";
+			JLabel teaBirthLbl = new JLabel();				String birthTest = "";
+			JTextField teaEmailTf = new JTextField(250);	String emailTest = "";
+			JTextField teaTelTf = new JTextField(250);		String telTest = "";
+			JTextField teaAddrTf = new JTextField(250);		String addrTest = "";
 		
 			JPanel catePane = new JPanel();
 				JLabel cateLbl = new JLabel("분야");
@@ -43,14 +50,21 @@ public class TeachInfo extends JPanel implements ActionListener {
 						String radioName[] = { "음악", "미술", "스포츠", "요리" };
 					JRadioButton cate[] = new JRadioButton[4];//, cate2, cate3, cate4;
 				JLabel careerLbl = new JLabel("경력");
-					JTextArea careerTa = new JTextArea();
+					JTextField careerTf = new JTextField();	String c_yearTest;
 			
 		JPanel InfoSouth = new JPanel();
 			JButton doBtn = new JButton("수정하기");
 			JButton confBtn = new JButton("수정완료");
 			
-			
+		String id;	
+		
 	public TeachInfo() {
+	
+	}
+			
+	public TeachInfo(String id) {
+		this.id = id;
+		System.out.println("Teach info id > > >"+ id);
 		setLayout(new BorderLayout());
 		//패널 기본 설정
 		add("Center", InfoSub);
@@ -74,8 +88,8 @@ public class TeachInfo extends JPanel implements ActionListener {
 		teaAddr.setBounds(30,410, 100,30); teaAddr.setFont(westFnt); InfoCenter.add(teaAddr);
 		
 		//오른쪽 사용자 정보 출력란
-		teaIdLbl.setBounds(150,80, 250,30); teaIdLbl.setFont(centerFnt); InfoCenter.add(teaIdLbl);
-		teaIdLbl.setBorder(new LineBorder(Color.black, 1));
+		teaIdTf.setBounds(150,80, 250,30); teaIdTf.setFont(centerFnt); InfoCenter.add(teaIdTf);
+		teaIdTf.setText(idTest);	teaIdTf.setBorder(new LineBorder(Color.black, 1));
 		teaPwdTf.setBounds(150,135, 250,30); teaPwdTf.setFont(centerFnt); InfoCenter.add(teaPwdTf);
 		teaPwdTf.setText(pwdTest);	teaPwdTf.setBorder(new LineBorder(Color.black, 1));
 		teaNameTf.setBounds(150,190, 250,30); teaNameTf.setFont(centerFnt); InfoCenter.add(teaNameTf);
@@ -92,6 +106,7 @@ public class TeachInfo extends JPanel implements ActionListener {
 		cateLbl.setBounds(30,465, 100,30); cateLbl.setFont(westFnt); InfoCenter.add(cateLbl);
 		radioPane.setBorder(new LineBorder(Color.black, 1)); radioPane.setBackground(Color.white);
 		radioPane.setBounds(150,465, 250,35); InfoCenter.add(radioPane);
+		
 		int i=0;
 		for(i=0; i<radioName.length; i++) {
 			cate[i] = new JRadioButton(radioName[i]);
@@ -104,8 +119,8 @@ public class TeachInfo extends JPanel implements ActionListener {
 		
 		//간단한 기술 경력 또는 경력 연차 아니라 길게 적어야하면 폰트 줄이기!
 		careerLbl.setBounds(30,520, 100,30); careerLbl.setFont(westFnt); InfoCenter.add(careerLbl);
-		careerTa.setBounds(150,520, 250,60); careerTa.setFont(centerFnt); InfoCenter.add(careerTa);
-		careerTa.setBorder(new LineBorder(Color.black,1));
+		careerTf.setBounds(150,520, 250,30); careerTf.setFont(centerFnt); InfoCenter.add(careerTf);
+		careerTf.setText(c_yearTest); careerTf.setBorder(new LineBorder(Color.black,1));
 		//남쪽 패널
 		InfoSouth.add(doBtn); InfoSouth.setBackground(Color.white); doBtn.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		InfoSub.add("South", InfoSouth);
@@ -113,62 +128,140 @@ public class TeachInfo extends JPanel implements ActionListener {
 		//비활성화 상태로 만들기
 		teaPwdTf.setEnabled(false);	teaNameTf.setEnabled(false);
 		teaEmailTf.setEnabled(false); teaTelTf.setEnabled(false);
-		teaAddrTf.setEnabled(false); careerTa.setEnabled(false); 
+		teaAddrTf.setEnabled(false); careerTf.setEnabled(false); 
 		
 		doBtn.addActionListener(this);
 		confBtn.addActionListener(this);
 		
 		setVisible(true);
 		
+		getTeachInfo(id);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		String actionStr = ae.getActionCommand();
-		
+		Mem_teacherVO vo = new Mem_teacherVO();
 		if(actionStr.equals(doBtn.getText())) {
 			System.out.println("수정하기 선택");
 			teaPwdTf.setEnabled(true);	teaNameTf.setEnabled(true);
 			teaEmailTf.setEnabled(true); teaTelTf.setEnabled(true);
-			teaAddrTf.setEnabled(true); careerTa.setEnabled(true);
+			teaAddrTf.setEnabled(true); careerTf.setEnabled(true);
 			cate[0].setEnabled(true); cate[1].setEnabled(true);
 			cate[2].setEnabled(true); cate[3].setEnabled(true);
 			
 			doBtn.setVisible(false);
 			
-			/* 내가 하고싶은것.. 수정하기 누르면 수정완료 버튼으로 바뀌고
-			 * 수정완료 버튼을 누르면 옵션 패널이 떠서 확인 버튼 누르면
-			 * 변경된 데이터 DB에 업데이트!
-			 * 수정완료 버튼을 멤버에두고 여기에다 두고 했는데도 안됨 ㅠㅠ
-			 */
-			//confBtn = new JButton("수정완료");
-			
 			InfoSouth.add(confBtn); confBtn.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-			InfoSub.add("South", InfoSouth); //confBtn.setVisible(false);
+			InfoSub.add("South", InfoSouth); 
 			
 			confBtn.setVisible(true);
-			
-			
-			//syso가 안 뜬다..?
-			//confBtn.addActionListener(this);
-			
 		}else if(actionStr.equals(confBtn.getText())) {
 			System.out.println("수정완료버튼");
-			JOptionPane.showConfirmDialog(this, "수정을 완료하시겠습니까?");
+			
+			sendTeachInfo(id, ae);
 		}
-		
-		//이거를 수정완료나 수정하기 버튼 이벤트 안으로 보낼 수 있나?
-		if(actionStr.equals(cate[0].getText())) {
+		//카테고리 버튼 이벤트 
+/*		if(actionStr.equals(cate[0].getText())) {
 			System.out.println("음악을 선택");
+			vo.setCate(cate[0].getText());
 		}else if(actionStr.equals(cate[1].getText())) {
 			System.out.println("미술을 선택");
+			vo.setCate(cate[1].getText());
 		}else if(actionStr.equals(cate[2].getText())) {
 			System.out.println("스포츠를 선택");
+			vo.setCate(cate[2].getText());
 		}else if(actionStr.equals(cate[3].getText())) {
 			System.out.println("요리를 선택");
-		}	
+			vo.setCate(cate[3].getText());
+		}	*/	
 	}
-
+	
+	//회원정보 세팅
+	public void getTeachInfo(String id) { //회원정보 세팅
+		System.out.println("선생님 정보 세팅용 id--------------------" + id);
+		Mem_teacherDAO dao = new Mem_teacherDAO();
+		List<Mem_teacherVO> searchId = dao.getTeachInfo(id);
+		System.out.println("ssssss ssss  sss "+searchId);
+			
+		if(searchId.size()==0 ) {
+			System.out.println("아이디를 매치를 못함...");
+		}else {
+			Mem_teacherVO vo = searchId.get(0);
+			
+			if(vo.getId().equals(id)) {
+				idTest = vo.getId();			teaIdTf.setText(idTest);	
+				pwdTest = vo.gettPwd();			teaPwdTf.setText(pwdTest);
+				nameTest = vo.gettName();		teaNameTf.setText(nameTest);
+				birthTest = vo.gettBirth();		teaBirthLbl.setText(birthTest);
+				telTest = vo.gettTel();			teaTelTf.setText(telTest);
+				emailTest = vo.gettMail();		teaEmailTf.setText(emailTest);
+				addrTest = vo.gettAddr();		teaAddrTf.setText(addrTest);
+				//카테고리랑 경력 연수 추가
+				if(vo.getCate().equals("음악")) {
+					cate[0].setSelected(true);
+				}else if(vo.getCate().equals("미술")) {
+					cate[1].setSelected(true);
+				}else if(vo.getCate().equals("스포츠")) {
+					cate[2].setSelected(true);
+				}else if(vo.getCate().equals("요리")) {
+					cate[3].setSelected(true);
+				}
+				c_yearTest = String.valueOf(vo.getCareer_year());		careerTf.setText(c_yearTest);
+			}	
+		}
+	}
+	//회원정보 수정
+	public void sendTeachInfo(String id, ActionEvent ae) {
+		
+		Mem_teacherVO vo = new Mem_teacherVO();
+		vo.settPwd(teaPwdTf.getText());		vo.settName(teaNameTf.getText());
+		vo.settMail(teaEmailTf.getText());	vo.settTel(teaTelTf.getText());
+		vo.settAddr(teaAddrTf.getText());	vo.setCareer_year(Integer.parseInt(careerTf.getText()));
+		
+		String test1 = ae.getActionCommand();
+		
+		//카테고리랑 경력 연수 추가
+		if(test1.equals("음악")) {
+			vo.setCate(cate[0].getText());
+			cate[0].setSelected(true);
+		}else if(test1.equals("미술")) {
+			vo.setCate(cate[1].getText());
+			cate[1].setSelected(true);
+		}else if(test1.equals("스포츠")) {
+			vo.setCate("스포츠");
+			cate[2].setSelected(true);
+		}else if(test1.equals("요리")) {
+			vo.setCate("요리");
+			cate[3].setSelected(true);
+		}
+		
+		Mem_teacherDAO dao = new Mem_teacherDAO();
+		
+		int result = dao.teachInfoUpdate(vo, id);
+		int result2 = dao.teachInfoUpdate2(vo, id);
+		
+		System.out.println("카테고리 부분 수정? > > > "+result2);
+		if(result>0 && result2>0) { //수정완료 확인부분
+			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다!");
+			//비활성화 시키기
+			teaPwdTf.setEnabled(false);		teaNameTf.setEnabled(false);	careerTf.setEnabled(false);
+			teaEmailTf.setEnabled(false);	teaTelTf.setEnabled(false);		teaAddrTf.setEnabled(false);
+			
+			for(int i=0; i<radioName.length; i++) {
+				cate[i].setEnabled(false);
+			}
+			
+			confBtn.setVisible(false);
+			doBtn.setVisible(true);
+			
+			getTeachInfo(id);
+		}else {
+			JOptionPane.showMessageDialog(this, "수정이 실패됐습니다, 다시 시도해주세요.");
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		new TeachInfo();
 	}

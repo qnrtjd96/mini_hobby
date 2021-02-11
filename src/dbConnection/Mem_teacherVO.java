@@ -10,6 +10,13 @@ public class Mem_teacherVO {
 	private int cost;
 	private String tName;
 	private String career;
+	//선생님 회원 정보 조회용
+	private String tPwd;
+	private String tBirth;
+	private String tMail;
+	private String tTel;
+	private String tAddr;
+	
 	public Mem_teacherVO() {
 	}
 	public Mem_teacherVO(int career_year, String cate, String id) {
@@ -32,6 +39,18 @@ public class Mem_teacherVO {
 		this.city = city;
 		this.career = career;
 		this.tName = tName;
+	}
+	//강사 회원정보 수정용(TeachInfo) 2021.02.11
+	//id, pwd, name, birth, email, tel, addr, cate, year
+	public Mem_teacherVO(String id, String tPwd, String tBirth, String tMail, String tTel, String tAddr, String cate, int career_year) {
+		this.id = id;
+		this.tPwd = tPwd;
+		this.tBirth = tBirth;
+		this.tMail = tMail;
+		this.tTel = tTel;
+		this.tAddr = tAddr;
+		this.cate = cate;
+		this.career_year = career_year;
 	}
 	public String getCareer() {
 		return career;
@@ -74,12 +93,44 @@ public class Mem_teacherVO {
 	}
 	public void setCate(String cate) {
 		this.cate = cate;
+		System.out.println("음악 카테고리 찍혔는지 확인 "+cate);
 	}
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	//선생님 회원정보 수정용 
+	public String gettPwd() {
+		return tPwd;
+	}
+	public void settPwd(String tPwd) {
+		this.tPwd = tPwd;
+	}
+	public String gettBirth() {
+		return tBirth;
+	}
+	public void settBirth(String tBirth) {
+		this.tBirth = tBirth;
+	}
+	public String gettMail() {
+		return tMail;
+	}
+	public void settMail(String tMail) {
+		this.tMail = tMail;
+	}
+	public String gettTel() {
+		return tTel;
+	}
+	public void settTel(String tTel) {
+		this.tTel = tTel;
+	}
+	public String gettAddr() {
+		return tAddr;
+	}
+	public void settAddr(String tAddr) {
+		this.tAddr = tAddr;
 	}
 
 }
