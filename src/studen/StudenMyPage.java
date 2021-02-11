@@ -7,24 +7,42 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import dbConnection.BoardDAO;
+import dbConnection.BoardVO;
+import dbConnection.Mem_teacherDAO;
+import dbConnection.Mem_teacherVO;
+import dbConnection.MemberVO;
+import dbConnection.MoneyDAO;
+import dbConnection.MoneyVO;
+import dbConnection.Stu_ClassDAO;
+import dbConnection.Stu_ClassVO;
+
 public class StudenMyPage extends JPanel implements MouseListener{
+	//아이디를 가져오기위한값
+	String idStr;
+			
 	Font fntBold50 = new Font("맑은 고딕", Font.BOLD, 60);
 	Font fntBold25 = new Font("맑은 고딕", Font.BOLD, 25);
-		JLabel charge = new JLabel("나의 잔액 : 15,100원");
-		JPanel cal = new JPanel();
-		JLabel ture1 = new JLabel("참여예정"); 
-		JLabel false1 = new JLabel("참여완료");
-		JLabel total = new JLabel("나의 이용횟수");
-		p grap = new p(); //그래프예정
-
-		JLabel red = new JLabel("■");
-		JLabel blue = new JLabel("■");
+	Color col = new Color(204,222,233);
+	
+			JLabel charge = new JLabel("나의 잔액 : ");
+			JLabel charge1 = new JLabel(); String charge2= "";
+			JLabel won = new JLabel("원");
+			JPanel cal = new JPanel();
+			JLabel ture1 = new JLabel("참여예정"); 
+			JLabel false1 = new JLabel("참여완료");
+			JLabel total = new JLabel("나의 이용횟수");
+			p grap = new p(); //그래프예정
+	
+			JLabel red = new JLabel("■");
+			JLabel blue = new JLabel("■");
 		// 달력에 대한 부분
 		Calendar now = Calendar.getInstance();
 		int y,m,d;
@@ -44,13 +62,17 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
 		Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
 		Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
-
-	public StudenMyPage() {
+		
+		//달력에 아이디 넣어줘야대는값
+		MoneyVO vo;
+	public StudenMyPage() {}
+	public StudenMyPage(String idStr) {
+		this.idStr = idStr;
 		setLayout(null);
 
 		//패널에추가
-		add(charge); 
-		add(cal); calendar_Tea();
+		add(charge); add(charge1); add(won);
+		add(cal);
 		add(blue);  add(red);
 		add(ture1); add(false1);
 
@@ -61,6 +83,8 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		//위치잡기 폰트박기
 		//int x, int y, int width, int height						
 		charge.setBounds(290,5,500,70); charge.setFont(fntPlain25);
+		charge1.setBounds(420, 5, 500, 70); charge1.setFont(fntPlain25);
+		won.setBounds(500, 5, 500, 70); won.setFont(fntPlain25);
 		cal.setBounds(27, 75, 500, 400); cal.setFont(fntPlain15); cal.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		blue.setBounds(365, 480, 500, 20);  red.setBounds(455, 480, 500, 20);
 		blue.setForeground(Color.blue);		red.setForeground(Color.red);
@@ -71,10 +95,16 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		total.setFont(fntBold25);			
 		grap.setBounds(27, 580, 500, 200);	
 		/////////////////////////////////						
-
+		System.out.println("id 잘받아오는거 맞니? = " + idStr);
 
 		//마지막 paneRight에 추가
 		setBackground(Color.white);
+		
+		//잔액세팅을 위해 선언
+		getTeaInfo(idStr);
+		
+		//날짜선언
+		calendar_Tea();
 	}	
 	//결과물(그래프)이 나타날 패널
 	public class p extends JPanel{
@@ -115,6 +145,20 @@ public class StudenMyPage extends JPanel implements MouseListener{
 				g.fillRect(105,160-lab1*10, 30, lab1*10);	
 			if(lab2 > 0)
 				g.fillRect(160,160-lab2*10, 30, lab2*10);
+		}
+	}
+	//회원정보 세팅 나의잔액때문에 세팅함
+	public void getTeaInfo(String idStr) { //회원정보 세팅
+		
+		MoneyDAO dao = new MoneyDAO();
+		List<MoneyVO> searchId = dao.getMoneyInfo(idStr);
+		
+		if(searchId.size()==0 ) {
+			System.out.println("아이디를 매치를 못함...");
+		}else {
+			vo = searchId.get(0);
+			charge2 = Integer.toString(vo.getBalance());
+			charge1.setText(charge2);	
 		}
 	}
 
@@ -166,12 +210,31 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		for(int space=1; space<week; space++) {
 			datePane.add(new JLabel(""));
 		}
-		// 월의 1일~마지막일 까지 출력 
+		// 월의 1일~마지막일 까지 출력 (+라벨 배경색 바꾸기 위한 작업)
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> lst = dao.StuCalendar(vo.getId());
+		System.out.println("lst = " + lst.size());
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
 			now.set(y, m-1, day); //날짜별로 요일을 구해서
 			int colorWeek = now.get(Calendar.DAY_OF_WEEK);
+			/*여기는 sysout찍으면 나옴*/
+			for(int i=0; i<lst.size(); i++) {
+				Stu_ClassVO vo1 = lst.get(i);
+				String date = vo1.getClassdate();
+				int month = Integer.parseInt(date.substring(5,7));
+				if (month==m) {
+					int da = Integer.parseInt(date.substring(8));
+					if(da>=d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+						dayOfMonthLbl.setOpaque(true);
+						dayOfMonthLbl.setBackground(col);
+					} else if(da<d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+						dayOfMonthLbl.setOpaque(true);
+						dayOfMonthLbl.setBackground(Color.LIGHT_GRAY);
+					}
+				}
+			} 
 			if(colorWeek == 1) { //일요일이면 
 				dayOfMonthLbl.setForeground(Color.RED);
 			}else if(colorWeek == 7) { //토요일이면 

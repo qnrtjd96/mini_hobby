@@ -8,6 +8,33 @@ public class Stu_ClassDAO extends DBConnection{
 	public Stu_ClassDAO() {
 		
 	}
+	//2021-02-11 이강산
+	//학생내정보메인(StudenMypage) 캘린더 연동
+	public List<Stu_ClassVO> StuCalendar(String id) {
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql="select to_char(classdate, 'yyyy-mm-dd') from stu_class where id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO vob = new Stu_ClassVO();
+				vob.setClassdate(rs.getString(1));
+				System.out.println("vob = " + vob);
+				lst.add(vob);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return lst;
+	}
+	
 	// teachmain에서 목록띄우기
 	public List<Stu_ClassVO> teachReservationList(String id) {
 		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();

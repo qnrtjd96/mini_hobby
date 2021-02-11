@@ -1,11 +1,12 @@
 package dbConnection;
 
 public class MoneyVO {
-	String id;
-	int money_char;
-	String char_date;
-	int balance;
+	private String id;
+	private int money_char;
+	private String char_date;
+	private int balance;
 	
+	public MoneyVO() {}
 	public MoneyVO(String id, int money_char, String char_date, int balance) {
 		this.id = id;
 		this.money_char = money_char;
