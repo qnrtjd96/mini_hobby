@@ -33,7 +33,7 @@ public class Studen3MsgFrame extends JPanel {
 		//쪽지쓰기
 		MsgTab.addTab("쪽지쓰기", new StudenMsgWrite());
 		//실시간 채팅 
-		MsgTab.addTab("실시간채팅", new StudenLiveChat());
+		MsgTab.addTab("실시간채팅", new StudenLiveChat(id));
 		MsgTab.setBackground(Color.white);
 		
 		MsgTab.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
