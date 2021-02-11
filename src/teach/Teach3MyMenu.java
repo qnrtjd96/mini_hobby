@@ -116,7 +116,6 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);
 		}
-
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {}

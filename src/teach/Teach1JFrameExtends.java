@@ -98,7 +98,6 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		this.id = id;
 		System.out.println("teach frame id > " + id);
 		
-		
 		TeachTopMenu(id);
 		TeachMain();
 		

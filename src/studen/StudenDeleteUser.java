@@ -38,7 +38,13 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 	JPanel robotSouth = new JPanel();
 		JButton chooBtn = new JButton("선택완료");
 	
+	String idStr;
+	
 	public StudenDeleteUser() {
+		
+	}
+		
+	public StudenDeleteUser(String idStr) {
 		add(deletMain);
 		setBackground(Color.white);
 		
@@ -75,9 +81,6 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 		gPane.setVisible(true);
 			
 		robotPane.add("Center", gPane);
-		
-		
-		
 		
 		chooBtn.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		robotSouth.add(chooBtn);

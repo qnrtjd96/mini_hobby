@@ -123,7 +123,7 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 		}else if(lbl.equals("탈퇴하기")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new StudenDeleteUser().deletMain;
+			center = new StudenDeleteUser(idStr).deletMain;
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);
