@@ -171,7 +171,7 @@ public class StudenInfo extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다!");
 			getStuInfo(idStr);
 		}else {
-			JOptionPane.showMessageDialog(this, "수정이 실패됐습니다, 다시 시도해주세요");
+			JOptionPane.showMessageDialog(this, "수정이 실패됐습니다, 다시 시도해주세요.");
 		}
 		
 		//비활성화 시키기
