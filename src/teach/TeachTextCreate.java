@@ -248,6 +248,7 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 			   TeaClasstime[3] = box[3].getText()+ ",";
 		   }else{
 			   TeaClasstime[3] = " ";
+			   System.out.println("dd");
 		   }
 	   }else if (e.getSource() == box[4]){
 		   if(e.getStateChange() == ItemEvent.SELECTED) {
