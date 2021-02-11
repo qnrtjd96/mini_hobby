@@ -257,7 +257,7 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 				if(cate==null) {
 					JOptionPane.showMessageDialog(this, "카테고리는 반드시 선택해주셔야합니다.");
 				}else if(tf_carr.getText().equals("")) {
-					JOptionPane.showMessageDialog(this, "경력란에 경력을 입력하셔야합니다.(ex)경력없음, 3년)");
+					JOptionPane.showMessageDialog(this, "경력란에 경력을 입력하셔야합니다.(ex)3,5,9)");
 				}else {
 					int result2 = dao.Mem_teachInsert(mem_teachvo);
 					if (result2>0) {

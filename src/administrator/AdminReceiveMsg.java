@@ -3,6 +3,7 @@ package administrator;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -28,6 +29,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
+import dbConnection.BanDAO;
+import dbConnection.BanVO;
 import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
 
@@ -46,9 +49,6 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		
 	// 테이블 필드명
 	Object headList[] = {"선택","글번호","메세지내용","보낸사람","분류","보낸시간"};
-	// 테이블 레코드 테스트 값
-	Object recoList1[] = {"○","1","<HTML><U> 문의드려요</U></HTML>","adfg1234(홍길동)","학생","2021.02.04 13:55"};
-	Object recoList2[] = {"○","2","<HTML><U> 이거안댐</U></HTML>","ggdg123(감길동)","선생님","2021.02.04 16:11"};
 	
 	DefaultTableCellRenderer tScheduleCellRenderer = new DefaultTableCellRenderer();
 	
@@ -66,12 +66,11 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 	//설정된 제약어 리스트
 	JLabel consListLbl = new JLabel("설정된 제약어 리스트", JLabel.CENTER);
 	LineBorder lineBorder = new LineBorder(Color.black);
-	JPanel consListPane = new JPanel();
-		JCheckBox consListChk, consListChk2;
-		//데이터 테스트
-		String consListStr = ""; 
-		List<String> consList = new ArrayList<String>();
+	JPanel consListPane = new JPanel(new GridLayout(0,4));
+		//체크박스 데이터
 	JButton clearBtn = new JButton("해제");
+	
+	int overlap=0;
 	public AdminReceiveMsg() {
 		mainPane.setLayout(null);
 		mainPane.setBackground(Color.white);
@@ -82,17 +81,8 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		v.add("분류");
 		v.add("수신시간");
 		
+		//정렬박스
 		sortBox = new JComboBox<String>(v);
-		
-
-		//CheckBox
-		//체크박스 데이터 생성 테스트 arrayList, String
-		consList.add("시베리안");
-		consListStr = "파친";
-		
-		//체크박스 데이터 넣기
-		consListChk = new JCheckBox(String.valueOf(consList));
-		consListChk2 = new JCheckBox(consListStr);
 		
 		//JTable
 		// 내용 수정 불가
@@ -133,8 +123,6 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		consLbl.setFont(fntBold20); 
 		consListLbl.setFont(fntBold20);
 		consBtn.setFont(fntBold15); clearBtn.setFont(fntBold15);
-		consListChk.setFont(fntPlain15);
-		consListChk2.setFont(fntPlain15);
 		
 		// 배경색 설정
 		table.getTableHeader().setBackground(Color.lightGray);
@@ -142,8 +130,6 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		delLbl.setBackground(col6);
 		consBtn.setBackground(col6); clearBtn.setBackground(col6);
 		consListPane.setBackground(Color.white);
-		consListChk.setBackground(Color.white);
-		consListChk2.setBackground(Color.white);
 		
 		// 가운데 정렬
 		tScheduleCellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -156,7 +142,6 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		
 		//JCheck패널 설정
 		consListPane.setBorder(lineBorder);
-		consListPane.add(consListChk); consListPane.add(consListChk2);
 		
 		//mainPane에 add
 		mainPane.add(sortLbl);mainPane.add(sortBox);
@@ -169,6 +154,7 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		
 		//데이터 호출
 		adminMsgList();
+		getBanListDef();
 		
 		// setBounds
 		sortLbl.setBounds(580,0,100,30); sortBox.setBounds(639,0,100,30);
@@ -180,13 +166,16 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		clearBtn.setBounds(610,755,100,30);
 		
 		table.addMouseListener(this);
+		consTf.addMouseListener(this);
 		delLbl.addActionListener(this);
+		consBtn.addActionListener(this);
+		
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int clickBtn = e.getButton();
-		String titleStr, sendUserStr;
-		if(clickBtn==1) {
+		Object obj = e.getSource();
+		if(clickBtn==1 && !(obj == consTf)) {
 			//선택한 컬럼의 데이터 가져오기
 			int row = table.getSelectedRow();
 			int col = table.getSelectedColumn();
@@ -200,6 +189,8 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 				int msgNum = (int)table.getValueAt(row, 1);
 				new AdminReceiveMsgDialog("master", msgNum);
 			}
+		}else if(clickBtn==1 && obj == consTf) {
+			consTf.setText("");
 		}
 	}
 	
@@ -226,7 +217,7 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 			model.addRow(data);
 		}
 	}
-	//삭제하기
+	//삭제하기 및 제약어추가
 	public void actionPerformed(ActionEvent ae) {
 		Object delStr = ae.getSource();
 		if(delStr == delLbl) {
@@ -246,6 +237,53 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 			}else {
 				JOptionPane.showMessageDialog(this, "선택한 메세지가 없습니다....");
 			}
+		}else if(delStr == consBtn) { // 체크박스 이벤트
+			consListPane.removeAll();
+			consListPane.setVisible(false);
+			String data = consTf.getText();
+			overlapBan(data);
+			consListPane.setVisible(true);
+			mainPane.add(consListPane);
+		}
+	}
+	//제약어 중복확인
+	public void overlapBan(String searchBan) {
+		BanDAO dao = new BanDAO();
+		List<BanVO> searchList = dao.overlapCheck(searchBan); 
+		if(searchList.size() == 0) {
+			overlap=2;
+			if(searchBan.equals("")) {
+				JOptionPane.showMessageDialog(this, "입력 후 버튼을 눌러주세요.");
+				getBanListDef();
+			}else {
+				getBanList(searchBan); //insert
+				getBanListDef(); //select
+				JOptionPane.showMessageDialog(this, "등록되었습니다.");
+				consTf.setText("");
+			}
+		}else {
+			overlap=1;
+			JOptionPane.showMessageDialog(this, "이미 등록된 제약어입니다. 다시 입력해주세요.");
+			getBanListDef();
+		}
+	}
+	//제약어 추가
+	public void getBanList(String tfStr) {
+		BanVO vo = new BanVO(tfStr);
+		BanDAO dao = new BanDAO();
+		int result = dao.insertBan(vo);
+	}
+	//제약어 리스트
+	public void getBanListDef() {
+		BanDAO dao = new BanDAO();
+		List<BanVO> lst = dao.banList();
+		
+		for(int i=0; i<lst.size(); i++) {
+			BanVO vo = lst.get(i);
+			JCheckBox consListchk = new JCheckBox(vo.getDont());
+			consListchk.setFont(fntPlain15);
+			consListchk.setBackground(Color.white);
+			consListPane.add(consListchk);
 		}
 	}
 }
