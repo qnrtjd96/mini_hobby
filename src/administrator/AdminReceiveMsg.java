@@ -6,9 +6,12 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,7 +37,7 @@ import dbConnection.BanVO;
 import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
 
-public class AdminReceiveMsg extends JPanel implements MouseListener, ActionListener {
+public class AdminReceiveMsg extends JPanel implements MouseListener, ActionListener, ItemListener {
 	JPanel mainPane = new JPanel();
 	
 	JLabel sortLbl = new JLabel("정렬하기");
@@ -70,6 +73,8 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		//체크박스 데이터
 	JButton clearBtn = new JButton("해제");
 	
+	//체크된 체크박스 저장
+	List<String> lst = new ArrayList<String>();
 	int overlap=0;
 	public AdminReceiveMsg() {
 		mainPane.setLayout(null);
@@ -169,7 +174,7 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		consTf.addMouseListener(this);
 		delLbl.addActionListener(this);
 		consBtn.addActionListener(this);
-		
+		clearBtn.addActionListener(this);
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -237,11 +242,17 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 			}else {
 				JOptionPane.showMessageDialog(this, "선택한 메세지가 없습니다....");
 			}
-		}else if(delStr == consBtn) { // 체크박스 이벤트
+		}else if(delStr == consBtn) { //체크박스 추가 이벤트
 			consListPane.removeAll();
 			consListPane.setVisible(false);
 			String data = consTf.getText();
 			overlapBan(data);
+			consListPane.setVisible(true);
+			mainPane.add(consListPane);
+		}else if(delStr == clearBtn) { //체크박스 해제 이벤트
+			consListPane.removeAll();
+			consListPane.setVisible(false);
+			deleteItem();
 			consListPane.setVisible(true);
 			mainPane.add(consListPane);
 		}
@@ -254,13 +265,12 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 			overlap=2;
 			if(searchBan.equals("")) {
 				JOptionPane.showMessageDialog(this, "입력 후 버튼을 눌러주세요.");
-				getBanListDef();
 			}else {
 				getBanList(searchBan); //insert
-				getBanListDef(); //select
 				JOptionPane.showMessageDialog(this, "등록되었습니다.");
 				consTf.setText("");
 			}
+			getBanListDef();
 		}else {
 			overlap=1;
 			JOptionPane.showMessageDialog(this, "이미 등록된 제약어입니다. 다시 입력해주세요.");
@@ -281,9 +291,35 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		for(int i=0; i<lst.size(); i++) {
 			BanVO vo = lst.get(i);
 			JCheckBox consListchk = new JCheckBox(vo.getDont());
+			consListchk.addItemListener(this);
 			consListchk.setFont(fntPlain15);
 			consListchk.setBackground(Color.white);
 			consListPane.add(consListchk);
 		}
+	}
+	//제약어 선택/해제 데이터 핸들링
+	public void itemStateChanged(ItemEvent ie) {
+		JCheckBox obj = (JCheckBox)ie.getItem();
+		if(ie.getStateChange() == ItemEvent.SELECTED) {
+			lst.add(obj.getText());
+		}else if(ie.getStateChange() == ItemEvent.DESELECTED){
+			lst.remove(obj.getText());
+		}
+	}
+	//제약어 삭제
+	public void deleteItem() {
+		int result = 0;
+		if(lst.size()>0) {
+			BanDAO dao = new BanDAO();
+			for(int i=0; i<lst.size(); i++) {
+				result = dao.banDelete(lst.get(i));
+			}
+			if(result>0) {
+				JOptionPane.showMessageDialog(this, "선택된 제약어가 삭제되었습니다.");
+			}
+		}else {
+			JOptionPane.showMessageDialog(this, "선택된 제약어가 없습니다.");
+		}
+		getBanListDef();
 	}
 }

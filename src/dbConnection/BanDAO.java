@@ -75,4 +75,22 @@ public class BanDAO extends DBConnection{
 		}
 		return lst;	
 	}
+	//제약어 삭제하기
+	public int banDelete(String select) {
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from bantbl where dont=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, select);
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
 }
