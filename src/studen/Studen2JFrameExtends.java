@@ -26,6 +26,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import com.sun.swing.internal.plaf.metal.resources.metal;
+
 import dbConnection.Acess_memDAO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
@@ -158,8 +160,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		JLabel obj = (JLabel)me.getSource();
 		Object lbl = obj.getText();
 		
-		//JTextField stuObj = (JTextField)me.getSource(); textfield nono textarea
-		
 		try {
 			if(lbl.equals("이전으로")) {
 				////// 구현해서 객체 호출하세요 //////
@@ -199,11 +199,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 					new Main0Login();
 				}
 			}
-			/* else if(stuObj==searchTf) {
-				System.out.println("텍필 눌림");
-				searchTf.setText("");
-			} */
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -270,7 +265,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		};
 		back.setBackground(Color.white);
 		back.setBounds(0,65, 1000,500);
-		//center.add(back);
 		
 		searchTf.setText(defWord);
 		searchTf.setBorder(new LineBorder(Color.black, 2));
@@ -303,6 +297,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		musicBtn.addActionListener(this);	artBtn.addActionListener(this);
 		sportBtn.addActionListener(this);	cookBtn.addActionListener(this);
 		
+		searchTf.addMouseListener(this);
 		
 		
 	}
@@ -318,6 +313,11 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	public void mouseClicked(MouseEvent mc) {
+		Object tfObj = (JTextField)mc.getSource();
+		
+		if(tfObj==searchTf) {
+			searchTf.setText("");
+		}
 	}
 	
 	
