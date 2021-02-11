@@ -14,11 +14,14 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 public class Studen4MyMenu extends JPanel implements MouseListener{
+	//아이디값 가져오기
+	String idStr;
 	
 	JPanel paneStu = new JPanel(new BorderLayout(20,20));
 		JPanel paneLeft = new JPanel();
 			//왼쪽 메뉴 라벨 입력
-		JPanel center = new StudenMyPage();
+//		JPanel center = new StudenMyPage(idStr);
+		JPanel center = new JPanel();
 			//각 메뉴별 기능 구현
 			LineBorder lineBorder = new LineBorder(Color.black, 1);
 	JPanel paneBottom = new JPanel();
@@ -33,8 +36,6 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
-	
-	String idStr;
 	
 	public Studen4MyMenu() {
 		
@@ -93,7 +94,8 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 		if(lbl.equals("My Page")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new StudenMyPage();
+			center = new StudenMyPage(idStr);
+			center.setBorder(new LineBorder(Color.black, 1));
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);

@@ -133,7 +133,7 @@ public class AdminSleepUser extends JPanel implements MouseListener, ActionListe
 			}
 			if(result>0) {
 				JOptionPane.showMessageDialog(this, "선택한 계정이 삭제되었습니다.");
-				teaT.setRowCount(0);
+				getTeacherAll();
 			}else {
 				JOptionPane.showMessageDialog(this, "선택한 계정이 없습니다.");
 			}
