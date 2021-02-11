@@ -338,6 +338,23 @@ public class MemberDAO extends DBConnection{
 			
 		return result;
 	}
+	public int memberDelete(String id) {
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from membertbl where id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
 
 
 }
