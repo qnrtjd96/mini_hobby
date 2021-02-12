@@ -109,6 +109,7 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 			center.setVisible(false);
 			center.removeAll();
 			center = new TeachTotal(id);
+			center.setBorder(new LineBorder(Color.black, 1));
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);
