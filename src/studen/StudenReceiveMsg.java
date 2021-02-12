@@ -151,7 +151,7 @@ public class StudenReceiveMsg extends JPanel implements MouseListener, ActionLis
 				model.setRowCount(0);
 				msgList(idStr);
 			}else {
-				JOptionPane.showMessageDialog(this, "선택한 메세지가 없습니다....");
+				JOptionPane.showMessageDialog(this, "선택한 메세지가 없습니다.");
 			}
 		}
 	}

@@ -27,8 +27,9 @@ public class StudenMsgWrite extends JPanel {
 	JScrollPane sp = new JScrollPane(ta);
 	JButton send = new JButton("보내기");
 	
+	public StudenMsgWrite() {}
 
-	public StudenMsgWrite() {
+	public StudenMsgWrite(String id) {
 		setBackground(Color.white);
 		setLayout(null);
 		
