@@ -8,9 +8,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -26,7 +31,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class StudenReservationDetail extends JDialog implements ActionListener, MouseListener{
+import dbConnection.BoardDAO;
+import dbConnection.BoardVO;
+import dbConnection.MoneyDAO;
+import dbConnection.MoneyVO;
+import dbConnection.Stu_ClassDAO;
+import dbConnection.Stu_ClassVO;
+
+public class StudenReservationDetail extends JDialog implements ActionListener, MouseListener, ItemListener{
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
@@ -36,15 +48,15 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 	JPanel center = new JPanel();
 		JPanel cal = new JPanel();
 		JPanel upperClassPane = new JPanel();
-			JLabel cate = new JLabel("카테고리 : 요리");
+			JLabel cate = new JLabel("카테고리 : ");
 			JLabel city = new JLabel("지역");
 				DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>();
 				JComboBox<String> box = new JComboBox<String>(model);
 		JPanel classPane = new JPanel();
-			JLabel lbl1 = new JLabel("선택한 클래스 : 클래스2");
-			JLabel lbl2 = new JLabel("선택한 일자 : 2021년 2월 2일");
-			JPanel select = new JPanel(new GridLayout(0,1));
-				String time[] = {"13:00~14:00","14:00~15:00","15:00~16:00","16:00~17:00"}; 
+			JLabel lbl1 = new JLabel("선택한 클래스 : ");
+			JLabel lbl2 = new JLabel("선택한 일자 : ");
+			JPanel select = new JPanel(new GridLayout(7,0));
+				JCheckBox check[];
 			JButton btn = new JButton("예약하기");
 			JPanel table = new JPanel(new BorderLayout());
 				JPanel title = new JPanel();
@@ -53,19 +65,19 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 					JLabel li5 = new JLabel("경력사항");
 					JLabel li7 = new JLabel("상세지역");
 					JLabel li9 = new JLabel("비용(1회)");
-					JLabel li11 = new JLabel("강의가능일자");
+					JLabel li11 = new JLabel("강의가능시간");
 				JPanel content = new JPanel();
-					JLabel li2 = new JLabel("클래스2");
-					JLabel li4 = new JLabel("클래스 소개글");
-					JLabel li6 = new JLabel("한식조리사자격증");
-					JLabel li8 = new JLabel("구로구 오류2동");
-					JLabel li10 = new JLabel("70,000원");
-					JLabel li12 = new JLabel("2021년 2월 2일");
+				JLabel li2 = new JLabel("선택된 강의가 없습니다");
+				JLabel li4 = new JLabel("선택된 강의가 없습니다");
+				JLabel li6 = new JLabel("선택된 강의가 없습니다");
+				JLabel li8 = new JLabel("선택된 강의가 없습니다");
+				JLabel li10 = new JLabel("0");
+				JLabel li12 = new JLabel("선택된 강의가 없습니다");
 			JPanel review = new JPanel(new BorderLayout());
 				JLabel re1 = new JLabel("후기글");
 				JPanel rev = new JPanel(new GridLayout(0,1));
-					JLabel re2 = new JLabel("별점 : ★★★★★");
-					JLabel re3 = new JLabel("후기글 내용");
+					JLabel re2 = new JLabel("별점 : ");
+					JLabel re3 = new JLabel("등록된 후기가 없습니다.");
 		JPanel detail = new JPanel(new BorderLayout());
 		JScrollPane sp = new JScrollPane(detail);
 		
@@ -81,8 +93,139 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 			JPanel dayPane = new JPanel(new GridLayout(1,7,40,40)); //일 ~월 글자출력 
 			String days[] = {"일", "월", "화", "수", "목", "금", "토"}; 
 			JPanel datePane = new JPanel( new GridLayout(0,7,38,25)); // 1~31 날짜 출력 
+			
+	String id; int class_num; String classname;
+	String time; String category; int costInt;
+	String classtime; String stuTime; int rest;
 
-	public StudenReservationDetail() {
+	public StudenReservationDetail() {}
+	public StudenReservationDetail(String id, int class_num, String classname) {
+		this.id=id;
+		this.class_num=class_num;
+		
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.studenInfo(class_num);
+		BoardVO vo = lst.get(0);
+		time = vo.getClassdate();
+		classtime = vo.getClasstime();
+		this.classname = vo.getClassname();
+		
+		mainStart();
+		tableSetting();
+		
+		lbl1.setText("선택한 클래스 : "+this.classname);
+		lbl2.setText("선택한 일자 : "+time);
+		
+		setSize(800,920);
+		setLocation(50, 100);
+		setVisible(true);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+	}
+	public void mouseClicked(MouseEvent me) {
+		JLabel lbl = (JLabel)me.getSource();
+		int date = Integer.parseInt(lbl.getText());
+		time = y+"-"+m+"-"+date;
+		
+		tableSetting();
+		
+	}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	
+	public void actionPerformed(ActionEvent ae) {
+		//컴포넌트 읽어오기
+		Object obj = ae.getSource();
+		
+		if(obj==btn) {
+			System.out.println("classtime="+classtime);
+			System.out.println("stuTime="+stuTime);
+			if (stuTime.length()>11) {
+				JOptionPane.showMessageDialog(this, "시간은 중복선택이 불가능합니다. 다시 확인해주세요");
+			} else {
+				MoneyDAO dao = new MoneyDAO();
+				List<MoneyVO> lst = dao.getMoneyInfo(id);
+				classtime.replaceAll(stuTime+",", "");
+				if(lst.size()>0) {
+					MoneyVO vo = lst.get(0);
+					this.rest = vo.getBalance();
+					int rest2 = rest-costInt;
+					if (rest2>=0) {
+						BoardDAO daob = new BoardDAO();
+						int resul = daob.updateTime(class_num, classtime);
+						if(resul>0) {
+							// stu_class 등록
+							Stu_ClassDAO daos = new Stu_ClassDAO();
+							Stu_ClassVO vos = new Stu_ClassVO(class_num, id, classname, category, costInt, time, classtime);
+							int result = daos.insertPay(vos);
+							if (result>0) {
+								String text = "결제가 완료되었습니다.\n결제금액 : "+costInt+"원\n잔액 : "+rest2+"원";
+								JOptionPane.showMessageDialog(this, text);
+							}
+						}
+					} else {
+						String text = "충전금액이 부족합니다. 충전 후 예약진행이 가능합니다.";
+						JOptionPane.showMessageDialog(this, text);
+						this.setVisible(false);
+					}
+				}
+			}
+		}
+	}
+	public void tableSetting() {
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.detailTable(classname, time);
+		if (lst.size()>0) {
+			BoardVO vo = lst.get(0);
+			this.class_num = vo.getClass_num();
+			box.setSelectedItem(vo.getCity());
+			this.category=vo.getCate();
+			cate.setText("카테고리 : "+vo.getCate());
+			li2.setText(vo.getClassname());
+			li4.setText(vo.getIntro());
+			li6.setText(vo.getCareer());
+			li8.setText(vo.getArea());
+			li10.setText(vo.getCost()+"원");
+			costInt = vo.getCost();
+			li12.setText(vo.getClasstime());
+			this.time = vo.getClassdate();
+		}
+		checkBoxStart();
+		
+	}
+	public void checkBoxStart() {
+		// 첫 화면 체크박스 추가
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.detailBoard(class_num);
+		select.removeAll();
+		if (lst.size()>0) {
+			BoardVO vob = lst.get(0);
+			classtime = vob.getClasstime();
+				// 여러개의 클래스타임이 존재할시 ,로 나눌거임
+			StringTokenizer st = new StringTokenizer(classtime, "[,]");
+			check = new JCheckBox[st.countTokens()];
+			int i=0;
+			while (st.hasMoreTokens()) { // 다음꺼 가지고 있으면
+				String token = st.nextToken(); // 끌어내 (iterator같은느김인가베)
+				if (token.equals("") || token==null) {
+						
+				} else {
+					check[i] = new JCheckBox(token);
+					check[i].setFont(fn); check[i].setHorizontalAlignment(JCheckBox.CENTER);
+					check[i].setBackground(Color.white);
+					select.add(check[i]);
+					i++;
+				}
+			}
+		} else {
+			JLabel label = new JLabel("해당하는 일자의 정보가 없습니다.");
+			select.add(label); label.setFont(fn);
+		}
+		
+	}
+	public void mainStart() {
 		setBackground(Color.white);
 		add("Center", center); center.setBackground(Color.white);
 		center.setLayout(null);
@@ -103,17 +246,11 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 		cal.setBounds(20,20,400,400); calendar_Reser(); cal.setBorder(new LineBorder(Color.LIGHT_GRAY));
 		classPane.setBounds(430,120,340,300); cal.setBackground(Color.white);
 		classPane.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		lbl1.setFont(fn2); lbl1.setBounds(70,20,300,30);
+		lbl1.setFont(fn2); lbl1.setBounds(10,20,300,30);
 		lbl2.setFont(fn2); lbl2.setBounds(40,50,300,30);
 		btn.setFont(fn2); btn.setBounds(110,250,120,40); btn.setBackground(col6);
 		select.setFont(fnt); select.setBounds(70,90,200,150); select.setBackground(Color.white);
-		for (int t=0; t<time.length; t++) {
-			String str = time[t];
-			JCheckBox box = new JCheckBox(str);
-			box.setFont(fn); box.setHorizontalAlignment(JCheckBox.CENTER);
-			box.setBackground(Color.white);
-			select.add(box);
-		}
+		
 		sp.setBounds(20,450,750,400);
 		detail.add("Center",table); detail.add("South", review);
 		table.add("West",title); title.setPreferredSize(li3_size); title.setLayout(null); 
@@ -144,7 +281,6 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 		li8.setBounds(0,450,600,50);
 		li10.setBounds(0,500,600,50);
 		li12.setBounds(0,550,600,50);
-		
         
 		review.add("North", re1); re1.setFont(fnt);
 		review.add(rev);
@@ -152,39 +288,12 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 		rev.add(re3); re3.setFont(fn);
 		rev.setBackground(Color.white); review.setBackground(Color.white);
 		
-		setSize(800,920);
-		setLocation(50, 100);
-		setVisible(true);
-		
 		btn.addActionListener(this);
-		
-		
-	}
-	public void mouseClicked(MouseEvent me) {
-		Object obj = me.getSource();
-		JLabel lbl = (JLabel)me.getSource();
-		int date = Integer.parseInt(lbl.getText());
-		lbl2.setText("선택한 일자 : "+y+"년 "+m+"월 "+date+"일");
-		
-	}
-	public void mousePressed(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
-	
-	public void actionPerformed(ActionEvent ae) {
-		//컴포넌트 읽어오기
-		Object obj = ae.getSource();
-		if(obj==btn) {
-			// 잔액여부에 따른 if문은 추후 추가
-			JOptionPane.showMessageDialog(this, "결제가 완료되었습니다.\n결제금액 : 70,000원\n잔액 : 100,100원");
-		}
-		
 	}
 	public void calendar_Reser() {
 		//맨위 년도, 월 선택 패널 
 		cal.setLayout(null);
-		
+		cal.setBackground(Color.white);
 		cal.add(selectPane); selectPane.setBounds(1,1,398,40);
 		selectPane.add(dateLbl);
 		
@@ -194,13 +303,13 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 		dateLbl.setText(y+"년 "+m+"월 "+d+"일");
 		
 		dateLbl.setFont(fnt);
-		selectPane.setBackground(new Color(121,191,192));
+		selectPane.setBackground(col6);
 		
 		cal.add(calPane); calPane.setBounds(5,40,390,350);
-		calPane.setLayout(null);
+		calPane.setLayout(null); calPane.setBackground(Color.white);
 		calPane.add(dayPane); calPane.add(datePane);
-		dayPane.setBounds(5,0,370,50);
-		datePane.setBounds(5,50,370,300);
+		dayPane.setBounds(5,0,370,50); dayPane.setBackground(Color.white);
+		datePane.setBounds(5,50,370,300); datePane.setBackground(Color.white);
 		
 		calendarSetting(y,m);
 		
@@ -230,12 +339,31 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 		for(int space=1; space<week; space++) {
 			datePane.add(new JLabel(""));
 		}
-		// 월의 1일~마지막일 까지 출력 
+		// 월의 1일~마지막일 까지 출력 + 체크박스 연동
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.detailBoard(class_num);
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
 			now.set(y, m-1, day); //날짜별로 요일을 구해서
 			int colorWeek = now.get(Calendar.DAY_OF_WEEK);
+			if(lst.size()>0) {
+				for(int i=0; i<lst.size(); i++) {
+					BoardVO vob = lst.get(i);
+					String date = vob.getClassdate();
+					int month = Integer.parseInt(date.substring(5,7));
+					if (month==m) {
+						int da = Integer.parseInt(date.substring(8,10));
+						if(da>=d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+							dayOfMonthLbl.setOpaque(true);
+							dayOfMonthLbl.setBackground(col6);
+						} else if(da<d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+							dayOfMonthLbl.setOpaque(true);
+							dayOfMonthLbl.setBackground(Color.LIGHT_GRAY);
+						}
+					}
+				} 
+			}
 			if(colorWeek == 1) { //일요일이면 
 				dayOfMonthLbl.setForeground(Color.RED);
 			}else if(colorWeek == 7) { //토요일이면 
@@ -245,58 +373,18 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 			dayOfMonthLbl.setFont(fnt2);
 			dayOfMonthLbl.addMouseListener(this);
 		}
-		
 	}
-	
-
-	public static void main(String[] args) {
-		new StudenReservationDetail();
-
+	@Override
+	public void itemStateChanged(ItemEvent ie) {
+		JCheckBox che = (JCheckBox)ie.getItem();
+		if (che.isSelected()) {
+			if (stuTime.equals("")) {
+				stuTime = che.getText();
+			} else {
+				JOptionPane.showMessageDialog(this, "예약은 1시간(1회)분만 가능합니다.");
+			}
+			
+		}
 	}
-
 }
-/*
- * table.setLayout(grid);
-		gbc.fill=GridBagConstraints.BOTH;
-gbc.weightx = 1.0;
-GridBagLayout grid = new GridBagLayout();
-			GridBagConstraints gbc=new GridBagConstraints();
-				
-			DefaultTableModel model = new DefaultTableModel(data, col);
-			JTable tbl = new JTable(model);
-			
-gbc.weighty = 1.0;
-make(li1,0,0,1,1); make(li2,1,0,2,1);
-make(li3,0,1,1,1); make(li4,1,1,2,1);
-make(li5,0,2,1,1); make(li6,1,2,2,1);
-make(li7,0,3,1,1); make(li8,1,3,2,1);
-make(li9,0,4,1,1); make(li10,1,4,2,1);
-make(li11,0,5,1,1); make(li12,1,5,2,1);
-public void make(JLabel c, int x, int y, int w, int h) {
-		
-		int i = Integer.parseInt(c.getName().substring(2));
-		if (i%2==1) {
-			gbc.weightx = 1.0;
-		} else {
-			gbc.weightx = 2.0;
-		}
-		
-		System.out.println(c.getName());
-		if(c==li1 || c==li1 || c==li1 || c==li1 || c==li1 || c==li1) {
-			
-		} else {
-			gbc.weightx = 0.2;
-		}
-		
-        
-        gbc.gridx = x;
-        gbc.gridy = y;
-        gbc.gridwidth = w;
-        gbc.gridheight = h;
 
-        grid.setConstraints(c, gbc);
-        // GridBagLayout의 GridBagConstraints의 set하는 방법
-        
-        table.add(c);
-	}
-*/

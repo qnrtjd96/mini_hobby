@@ -259,7 +259,7 @@ public class BoardDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql="select classname from boardtbl b join stu_class s using (class_num) where classname=?";
+			sql="select classname from boardtbl b join stu_class s using (class_num) where class_num=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, class_num);
@@ -276,5 +276,52 @@ public class BoardDAO extends DBConnection{
 			dbClose();
 		}
 		return lst;
+	}
+	// 학생상세정보 - 클래스정보 얻어오기
+	public List<BoardVO> studenInfo(int class_num) {
+		List<BoardVO> lst = new ArrayList<BoardVO>();
+		try {
+			getConn();
+			
+			sql="select cate, to_char(s.classdate, 'yyyy-mm-dd'), b.classtime, b.classname from boardtbl b join stu_class s "
+					+ " using (class_num) where class_num=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, class_num);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardVO vo = new BoardVO();
+				vo.setCate(rs.getString(1));
+				vo.setClassdate(rs.getString(2));
+				vo.setClasstime(rs.getString(3));
+				vo.setClassname(rs.getString(4));
+				lst.add(vo);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
+	// 학생 - 예약완료시 클래스정보시간update
+	public int updateTime(int class_num, String classtime) {
+		int result = 0;
+		try {
+			getConn();
+			
+			sql="update boardtbl set classtime=?, where class_num=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, classtime);
+			pstmt.setInt(2, class_num);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return result;
 	}
 }

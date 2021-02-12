@@ -277,6 +277,30 @@ public class Stu_ClassDAO extends DBConnection{
 			dbClose();  
 		}
 		return lst;
-		
+	}
+	public int insertPay(Stu_ClassVO vo) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql="insert into stu_class (class_num, id, pay_class, pay_cate, pay, pay_date, classdate, classtime "
+					+ " values(?, ?, ?, ?, ?, sysdate, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getClass_num());
+			pstmt.setString(2, vo.getId());
+			pstmt.setString(3, vo.getPay_class());
+			pstmt.setString(4, vo.getPay_cate());
+			pstmt.setInt(5, vo.getPay());
+			pstmt.setString(6, vo.getClassdate());
+			pstmt.setString(7, vo.getClasstime());
+			
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return result;
 	}
 }

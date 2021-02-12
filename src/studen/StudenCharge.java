@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,13 +15,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import dbConnection.Acess_memDAO;
+import dbConnection.MoneyDAO;
+import dbConnection.MoneyVO;
 
 public class StudenCharge extends JPanel implements ActionListener {
-	Font fn = new Font("맑은 고딕",Font.PLAIN, 25);
+	Font fn = new Font("맑은 고딕",Font.PLAIN, 20);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 28);
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
@@ -33,24 +38,38 @@ public class StudenCharge extends JPanel implements ActionListener {
 				JLabel title = new JLabel("충전하기");
 				JPanel charge = new JPanel();
 					JLabel nowLbl = new JLabel("현재잔액");
-					JTextField nowTa = new JTextField("16,800");
+					JTextField nowTa = new JTextField();
 					JLabel wonLbl = new JLabel("원");
-					JLabel chargeLbl = new JLabel("충전하기");
-					JTextField chargeTf = new JTextField("50,000");
+					JLabel chargeLbl = new JLabel("충전금액");
+					JTextField chargeTf = new JTextField();
 					JLabel wonLbl2 = new JLabel("원");
 					JButton btn = new JButton("충전하기");
 				JLabel title2 = new JLabel("전체 충전 내역");
 				
-				String col[] = {"번호", "충전금액","일시"};
+				String col[] = {"No", "충전금액","일시"};
 				String data[][];
 				DefaultTableModel model = new DefaultTableModel(data, col);
 				JTable table = new JTable(model);
 				JScrollPane sp = new JScrollPane(table);
 	
 	String idStr;
+	int money_char; int rest=0;
 	public StudenCharge() {}
 	public StudenCharge(String id) {
 		idStr = id;
+		MoneyDAO dao = new MoneyDAO();
+		List<MoneyVO> lst = dao.getMoneyInfo(id);
+		if(lst.size()>0) {
+			MoneyVO vo = lst.get(0);
+			this.rest = vo.getBalance();
+			for (int i=0; i<lst.size(); i++) {
+				MoneyVO vom = lst.get(i);
+				Object dataVO[] = {i+1, vom.getMoney_char()+"원", vom.getChar_date()};
+				model.addRow(dataVO);
+			}
+		}
+		nowTa.setText(rest+"");
+		
 		add(big); big.setBackground(Color.white);
 		big.add("Center", pane); pane.setBackground(Color.white);
 		pane.add(start); start.setBorder(new LineBorder(Color.black)); start.setBackground(Color.white);
@@ -72,10 +91,17 @@ public class StudenCharge extends JPanel implements ActionListener {
 		title2.setBounds(10,420,300,40); title2.setFont(fnt);
 		sp.setBounds(10,470,550,310); sp.setBackground(Color.white);
 		
+		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+		dtcr.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		table.getParent().setBackground(Color.white);
-		table.getParent().setFont(fn);
+		table.setFont(fn);
+		table.setRowHeight(40);
 		table.getTableHeader().setBackground(col6);
 		table.getTableHeader().setFont(fnt3);
+		table.getColumn("No").setPreferredWidth(60); table.getColumn("No").setCellRenderer(dtcr);
+		table.getColumn("충전금액").setPreferredWidth(100); table.getColumn("충전금액").setCellRenderer(dtcr);
+		table.getColumn("일시").setPreferredWidth(130); table.getColumn("일시").setCellRenderer(dtcr);
 		
 		btn.addActionListener(this);
 		
@@ -87,7 +113,14 @@ public class StudenCharge extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if(obj==btn) {
-			JOptionPane.showMessageDialog(this, "충전이 완료되었습니다.");
+			MoneyDAO dao = new MoneyDAO();
+			int moneyChar = Integer.parseInt(chargeTf.getText());
+			rest = rest + moneyChar;
+			int result = dao.insertMoney(idStr, moneyChar, rest);
+			if (result>0) {
+				String text = "충전이 완료되었습니다.\n충전금액: "+moneyChar+"\n현재잔액: "+rest;
+				JOptionPane.showMessageDialog(this, text);
+			}
 		}
 		
 	}
@@ -100,11 +133,4 @@ public class StudenCharge extends JPanel implements ActionListener {
 			System.exit(0);
 		}
 	}
-	public static void main(String[] args) {
-		new StudenCharge();
-
-	}
-
-	
-
 }
