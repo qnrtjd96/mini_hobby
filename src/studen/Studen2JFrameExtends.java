@@ -214,12 +214,12 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	public void StudenTopMenu(String idStr) {
 		
 		//paneLabel 간격조정
-		GridLayout grid = new GridLayout(0,4);
+		GridLayout grid = new GridLayout(0,3);
 		paneLabel.setLayout(grid);
 		grid.setHgap(10);
 		
 		//paneLabel 패널에 대입할 라벨
-		String topLblStr[] = {"이전으로","메세지함","내정보","로그아웃"};
+		String topLblStr[] = {"메세지함","내정보","로그아웃"};
 		
 		for(int i=0; i<topLblStr.length; i++) {
 			JLabel topLbl = new JLabel(topLblStr[i], JLabel.CENTER);
