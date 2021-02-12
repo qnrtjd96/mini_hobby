@@ -17,6 +17,7 @@ public class Studen3MsgFrame extends JPanel {
 	
 	Font TabFnt = new Font("돋움체", Font.BOLD, 20);
 	Font fnt = new Font("돋움체", Font.BOLD, 18);
+	
 	public Studen3MsgFrame() {}
 	public Studen3MsgFrame(String id) {
 		setLayout(new BorderLayout());
@@ -24,14 +25,12 @@ public class Studen3MsgFrame extends JPanel {
 		
 		add("Center", tabBack);
 		
-		
-		
 		//받은 쪽지함
 		MsgTab.addTab("받은쪽지", new StudenReceiveMsg(id).mainPane);
 		//보낸쪽지함
-		MsgTab.addTab("보낸쪽지", new StudenSendMsg().mainPane);
+		MsgTab.addTab("보낸쪽지", new StudenSendMsg(id).mainPane);
 		//쪽지쓰기
-		MsgTab.addTab("쪽지쓰기", new StudenMsgWrite());
+		MsgTab.addTab("쪽지쓰기", new StudenMsgWrite(id));
 		//실시간 채팅 
 		MsgTab.addTab("실시간채팅", new StudenLiveChat(id));
 		MsgTab.setBackground(Color.white);

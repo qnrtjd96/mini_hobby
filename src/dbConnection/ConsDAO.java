@@ -55,9 +55,7 @@ public class ConsDAO extends DBConnection{
 		
 		try {
 			getConn();
-			//select msg_num, get, send, msg_title, msg_detail, send_time from constbl where send='hyunjay52' and msg_num='5';			
 			sql = "select msg_num, get, send, msg_title, msg_detail, to_char(send_time, 'YYYY/MM/DD HH:MI') from constbl where get = ? and msg_num = ?";
-			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setInt(2, msgNum);
@@ -84,12 +82,20 @@ public class ConsDAO extends DBConnection{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setInt(2, msgNum);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ConsVO sendVo = new ConsVO(
+							rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)
+						);
+				lst.add(sendVo);
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
 			dbClose();
 		}
-		
 		return lst;
 	}
 	//관리자 받은메세지
