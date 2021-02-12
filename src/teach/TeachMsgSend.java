@@ -27,7 +27,6 @@ import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
 
 public class TeachMsgSend extends JPanel implements ActionListener, MouseListener{
-   //다이얼로그 잘 되는지 다시 확인해보기...!
 	JPanel mainPane = new JPanel();
       JTable table;
          JScrollPane sp;
@@ -47,12 +46,11 @@ public class TeachMsgSend extends JPanel implements ActionListener, MouseListene
    String id;
    
    public TeachMsgSend() {
-	   
    }
    public TeachMsgSend(String id) {
 	  this.id = id;
-	  System.out.println("보낸 메시지함 id > > > "+id);
-      mainPane.setLayout(null);
+
+	  mainPane.setLayout(null);
       mainPane.setBackground(Color.white);
 
       //JTable
@@ -109,9 +107,9 @@ public class TeachMsgSend extends JPanel implements ActionListener, MouseListene
       sendMsgLst(id);
       
       // setBounds
-      sp.setBounds(0,0,745,770); delBtn.setBounds(620,790,100,30);
+      sp.setBounds(0,0,745,770); delBtn.setBounds(640,750,100,50);
       table.addMouseListener(this);
-      delBtn.addMouseListener(this);
+      delBtn.addActionListener(this);
    }
    @Override
    public void mouseClicked(MouseEvent e) {
@@ -127,7 +125,7 @@ public class TeachMsgSend extends JPanel implements ActionListener, MouseListene
             table.setValueAt("○", row, col);
          }else if(col==2) {
             int sendMsgNum = (int)table.getValueAt(row, 1);
-            new TeachMsgSendDialog(id, sendMsgNum);
+            new TeachMsgSendDialog(id, sendMsgNum); //디이얼로그 클래스
          }
       }
    }
@@ -157,7 +155,7 @@ public class TeachMsgSend extends JPanel implements ActionListener, MouseListene
    //보낸 메시지 받아오기 
 	public void sendMsgLst(String id) {
 		ConsDAO dao = new ConsDAO();
-		List<ConsVO> lst = dao.studenMsgRec(id);
+		List<ConsVO> lst = dao.userSendMsgRec(id);
 		
 		for(int i=0; i<lst.size(); i++) {
 			ConsVO vo = lst.get(i);
