@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -92,6 +94,8 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	
 	MemberVO vo;
 	String id;
+	JPanel[] paneArr;
+	int p;
 	
 	public Teach1JFrameExtends() {}
 	public Teach1JFrameExtends(String id) {
@@ -163,7 +167,11 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		Object lbl = obj.getText();
 		try {
 			if(lbl.equals("이전으로")) {
-				JOptionPane.showMessageDialog(this, "구현중입니다.");
+				center.setVisible(false);
+				center.removeAll();
+				center=paneArr[p-1];
+				center.setVisible(true);
+				add("Center", center);
 			}else if(lbl.equals("메세지함")) {
 				center.setVisible(false);
 				center.removeAll();
@@ -265,6 +273,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		this.vo = lst.get(0);
 		login = new JLabel(vo.getName()+"님 로그인 완료");
 		
+		table.removeAll();
 		center.removeAll();
 		add("Center", center);
 		center.setBackground(Color.white);
