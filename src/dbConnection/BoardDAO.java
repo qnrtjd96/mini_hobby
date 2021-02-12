@@ -50,15 +50,15 @@ public class BoardDAO extends DBConnection{
 		return lst;
 	}
 	// 상세정보에서 쓸거
-	public List<BoardVO> detailBoard(String classname) {
+	public List<BoardVO> detailBoard(int class_num) {
 		List<BoardVO> lst = new ArrayList<BoardVO>();
 		try {
 			getConn();
 			
-			sql = "select cate, classdate, classtime from boardtbl where classname=?";
+			sql = "select cate, to_char(classdate, 'yyyy-mm-dd'), classtime from boardtbl where class_num=?";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, classname);
+			pstmt.setInt(1, class_num);
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -78,16 +78,16 @@ public class BoardDAO extends DBConnection{
 		return lst;
 	}
 	// 테이블세팅
-	public List<BoardVO> detailTable(String classname, String classdate) {
+	public List<BoardVO> detailTable(String classname, String time) {
 		List<BoardVO> lst = new ArrayList<BoardVO>();
 		try {
 			getConn();
 			
-			sql = "select * from boardtbl where classname=? and classdate=?";
+			sql = "select * from boardtbl where classname=? and classdate=to_date(?, 'yyyy-mm-dd')";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, classname);
-			pstmt.setString(2, classdate);
+			pstmt.setString(2, time);
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -96,15 +96,14 @@ public class BoardDAO extends DBConnection{
 				vob.setId(rs.getString(2));
 				vob.setClassname(rs.getString(3));
 				vob.setCate(rs.getString(4));
-				vob.setCity(rs.getString(6));
-				vob.setCost(rs.getInt(7));
-				vob.setIntro(rs.getString(8));
-				vob.setCareer(rs.getString(9));
-				vob.setArea(rs.getString(10));
-				vob.setWritedate(rs.getString(11));
-				vob.setClassdate(rs.getString(12));
-				vob.setClasstime(rs.getString(13));
-				vob.setReview(rs.getString(5));
+				vob.setCity(rs.getString(5));
+				vob.setCost(rs.getInt(6));
+				vob.setIntro(rs.getString(7));
+				vob.setCareer(rs.getString(8));
+				vob.setArea(rs.getString(9));
+				vob.setWritedate(rs.getString(10));
+				vob.setClassdate(rs.getString(11));
+				vob.setClasstime(rs.getString(12));
 				
 				lst.add(vob);
 				
@@ -172,21 +171,45 @@ public class BoardDAO extends DBConnection{
 		}
 		return lst;
 	}
-	// 강사 detail에서 쓸거
-	public List<BoardVO> teachDetail(String id) {
-		List<BoardVO> lst = new ArrayList<BoardVO>();
+	// 강사 detail - 시간 수정 dialog
+	public int updateTime(String selStr, String id, String classname, String time) {
+		int result=0;
 		try {
 			getConn();
 			
-			sql="select ";
+			sql="update boardtbl set classtime=? where id=? and classname=? and classdate=to_date(?, 'yyyy-mm-dd') ";
 			
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, selStr);
+			pstmt.setString(2, id);
+			pstmt.setString(3, classname);
+			pstmt.setString(4, time);
 			
+			result = pstmt.executeUpdate();
 		} catch(Exception e) {
 			
 		}finally {
 			dbClose();
 		}
-		return lst;
+		return result;
+	}
+	// 강사 detail - 정보 수정 dialog
+	public int updateDetail(int class_num, String id) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql="";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			
+		}finally {
+			dbClose();
+		}
+		return result;
 	}
 }

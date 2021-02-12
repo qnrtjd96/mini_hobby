@@ -127,10 +127,10 @@ public class TeachMyList extends JPanel implements MouseListener{
 			int col = table.getSelectedColumn();
 			int row = table.getSelectedRow();
 			String classname = (String)table.getValueAt(row, col);
-			System.out.println(classname);
-			System.out.println(id);
+			int class_num = (int) table.getValueAt(row, 0);
+			String classdate = (String)table.getValueAt(row, 3);
 			if (col==1) {
-				new TeachReservationDetail(id, classname);
+				new TeachReservationDetail(id, classname, class_num, classdate);
 			}
 		}	
 	}
