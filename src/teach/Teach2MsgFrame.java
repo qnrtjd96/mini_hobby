@@ -39,7 +39,7 @@ public class Teach2MsgFrame extends JPanel {
 		MsgTab.addTab("쪽지쓰기", new TeachMsgWrite());
 		
 		//실시간 채팅 
-		MsgTab.addTab("실시간채팅", new TeachLiveChat());
+		MsgTab.addTab("실시간채팅", new TeachLiveChat(id));
 		MsgTab.setBackground(Color.white);
 		
 		MsgTab.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));

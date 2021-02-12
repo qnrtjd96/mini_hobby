@@ -26,8 +26,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-import com.sun.swing.internal.plaf.metal.resources.metal;
-
 import dbConnection.Acess_memDAO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
