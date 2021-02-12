@@ -17,6 +17,10 @@ public class Stu_ClassVO {
 	public Stu_ClassVO() {
 		
 	}
+	//관리자 총수익
+	public Stu_ClassVO(int pay) {
+		this.pay = pay;
+	}
 	public Stu_ClassVO(String pay_cate, String sName, int pay) {
 		this.pay_cate = pay_cate;
 		this.sName = sName;

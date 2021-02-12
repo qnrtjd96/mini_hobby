@@ -3,10 +3,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,8 +24,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import dbConnection.Acess_memDAO;
+import dbConnection.Acess_memVO;
 
-public class TeachLiveChat extends JPanel{
+
+public class TeachLiveChat extends JPanel implements MouseListener, ActionListener, Runnable{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntPlain20 = new Font("맑은 고딕", Font.PLAIN, 20);
 	Font fntPlain25 = new Font("맑은 고딕", Font.PLAIN, 25);
@@ -46,28 +57,26 @@ public class TeachLiveChat extends JPanel{
 		
 	//제목
 	String stuTitle[]	= {"접속여부", "이름"};
-	Object stuData[][]= {
-			{"ㅇ","홍길동"},
-			{"ㅇ","이순신"},
-			{"ㅇ","세종대왕"},
-			{"ㅇ","장영실"},
-			{"ㅇ","유승룡"},	
-	};
+	Object stuData[][]= {};
 	JScrollPane stuSp;
+	JTable stuTable;
+	DefaultTableModel stuT;
 	
 	//제목
 	String teaTitle[]	= {"접속여부", "아이디"};
-	Object teaData[][]= {
-			{"ㅇ","홍길동"},
-			{"ㅇ","이순신"},
-			{"ㅇ","세종대왕"},
-			{"ㅇ","장영실"},
-			{"ㅇ","유승룡"},	
-	};
+	Object teaData[][]= {};
 	
 	JScrollPane teaSp;
+	JTable teaTable;
+	DefaultTableModel teaT;
 		
-	public TeachLiveChat() {
+	//아이디끌어오기
+	String id;
+	
+	public TeachLiveChat() {}
+	public TeachLiveChat(String id) {
+		this.id = id;
+		
 		setLayout(new BorderLayout());
         
 		//배경 변경
@@ -75,11 +84,8 @@ public class TeachLiveChat extends JPanel{
 		connList.setBackground(Color.WHITE); centerPane.setBackground(Color.WHITE);
 		stu.setBackground(Color.WHITE); student.setBackground(Color.WHITE);
 		tea.setBackground(Color.WHITE); teacher.setBackground(Color.WHITE);
-		bottomPane.setBackground(Color.WHITE); //chatt.setBackground(Color.WHITE);
-//		stuTable.setBackground(Color.WHITE); teaTable.setBackground(Color.WHITE);
-//		stuSp.setBackground(Color.WHITE);	teaSp.setBackground(Color.WHITE);
-//		stuSp.getViewport().setBackground(Color.WHITE);
-//		teaSp.getViewport().setBackground(Color.WHITE);
+		bottomPane.setBackground(Color.WHITE); 
+		
 		//폰트변경
 		connList.setFont(fntBold30); student.setFont(fntBold20); teacher.setFont(fntBold20);
 		chatt.setFont(fntBold20); admin.setFont(fntBold20);
@@ -94,12 +100,12 @@ public class TeachLiveChat extends JPanel{
 		
 		//중단
 		// 내용 수정 불가 시작 // 학생
-        DefaultTableModel stuT = new DefaultTableModel(stuData, stuTitle) {
+        stuT = new DefaultTableModel(stuData, stuTitle) {
         	public boolean isCellEditable(int rowIndex, int mColIndex) {
                 return false;
             }
         };
-		JTable stuTable = new JTable(stuT);
+		stuTable = new JTable(stuT);
 			stuTable.setRowHeight(30);
 			stuTable.setFont(fntPlain15);
 			stuTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //여러개 클릭못하게막기
@@ -108,12 +114,12 @@ public class TeachLiveChat extends JPanel{
 		stuTable.getTableHeader().setFont(fntBold15);
 		
 		//내용 수정 불가 시작// 선생님
-	    DefaultTableModel teaT = new DefaultTableModel(teaData, teaTitle) {
+	    teaT = new DefaultTableModel(teaData, teaTitle) {
         	public boolean isCellEditable(int rowIndex, int mColIndex) {
                 return false;
             }
         };
-		JTable teaTable = new JTable(teaT);
+		teaTable = new JTable(teaT);
 			teaTable.setRowHeight(30);
 			teaTable.setFont(fntPlain15);
 			teaTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); //여러개 클릭못하게막기
@@ -135,11 +141,6 @@ public class TeachLiveChat extends JPanel{
 				tcmSchedule1.getColumn(i).setCellRenderer(center1);
 		}
 		
-//		listTbl.getParent().setFont(fn15);
-//		listTbl.getTableHeader().setBackground(col6);
-//		listTbl.getTableHeader().setFont(fnt20);
-//		table.getColumn("○").setPreferredWidth(50);
-		
 		stu.add(student,BorderLayout.NORTH); stu.add(stuSp);
 		tea.add(teacher,BorderLayout.NORTH); tea.add(teaSp);
 		
@@ -155,8 +156,120 @@ public class TeachLiveChat extends JPanel{
 		add(centerPane, BorderLayout.CENTER);
 		add(bottomPane, BorderLayout.SOUTH);
 		
+		//테이블넣기
+		getMemberAll();
+		getTeacherAll();
+		
+		//테이블 계속돌리기(실시간채팅이기떄문에)
+		Thread t = new Thread(this);
+		t.start();
+		
+		//이벤트 주입
+		stuTable.addMouseListener(this);
+		teaTable.addMouseListener(this);
+		chatt.addActionListener(this);
+		admin.addActionListener(this);
+		
 	}
+	//학생 레코드넣기
+		public void setNewTableList(List<Acess_memVO> lst) {
+			stuT.setRowCount(0); //JTable의 레코드 지우기
+			
+			for(int i=0; i<lst.size(); i++) {
+				Acess_memVO vo = lst.get(i);
+				Object[] stuData = {"○", vo.getId(), vo.getId()};
+				stuT.addRow(stuData);
+			}
+		}
+		public void setNewTeacherTableList(List<Acess_memVO> lst2) {
+			teaT.setRowCount(0); //JTable의 레코드 지우기
+			
+			for(int i=0; i<lst2.size(); i++) {
+				Acess_memVO vo2 = lst2.get(i);
+				Object[] teaData = {"○", vo2.getId(), vo2.getName()};
+				
+				teaT.addRow(teaData);
+			}
+		}
+		//회원선택
+		public void getMemberAll() {
+			//데이터베이스의 모든 회원을 선택해서 JTable에 표시한다
+			Acess_memDAO dao = new Acess_memDAO();
+			List<Acess_memVO> lst = dao.LiveChattStu();
+			
+			setNewTableList(lst);
+		}
+		//선생님선택
+		public void getTeacherAll() {
+			//데이터베이스의 모든 회원을 선택해서 JTable에 표시한다
+			Acess_memDAO dao2 = new Acess_memDAO();
+			List<Acess_memVO> lst2 = dao2.LiveChattpeople();
+			
+			setNewTeacherTableList(lst2);
+		}
+		//프레임 X 눌렀을때의 이벤트
+		class AdapterInner extends WindowAdapter{
+			//다시 오버라이딩
+			public void windowClosing(WindowEvent we) {
+				Acess_memDAO dao = new Acess_memDAO();
+				int result = dao.LogOut(id);
+				System.exit(0);
+			}
+		}
 	public static void main(String[] args) {
 		new TeachLiveChat();
 	}
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		String eventBtn = ae.getActionCommand();
+		if(eventBtn.equals("채팅하기")) { //채팅하기 선택다중으로됐을때, 채팅불가능하게바꾸기
+			for(int i=0; i<teaTable.getRowCount(); i++) {
+				if(teaTable.getValueAt(i, 0).equals("●")) {
+					JOptionPane.showMessageDialog(this, "선택한 선생님과 채팅이 연결됩니다.");
+					new main.Main4ChatClient(id);
+				}
+			}
+			for(int i=0; i<stuTable.getRowCount(); i++) {
+				if(stuTable.getValueAt(i, 0).equals("●")) {
+					JOptionPane.showMessageDialog(this, "선택한 선생님과 채팅이 연결됩니다.");
+					new main.Main4ChatClient(id);
+				}
+			}
+		}else if(eventBtn.equals("관리자와 채팅")){ //미구현
+			new main.Main4ChatClient(id);
+		}
+		
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int clickBtn = e.getButton();
+		if(clickBtn==1) {
+			//선택한 컬럼의 데이터 가져오기
+			int row = teaTable.getSelectedRow();
+			int col = teaTable.getSelectedColumn();
+			Object value = teaTable.getValueAt(row, col);
+			if(value.equals("○")) {
+				teaTable.setValueAt("●", row, col);
+			}else if(value.equals("●")) {
+				teaTable.setValueAt("○", row, col);
+			}
+		}
+	}
+	@Override
+	public void run() {
+		while(true) {
+			try {Thread.sleep(3000);}catch(Exception e) {}
+			getTeacherAll();
+			getMemberAll();
+		}
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }

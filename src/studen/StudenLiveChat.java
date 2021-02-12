@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -17,17 +19,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import dbConnection.Acess_memDAO;
 import dbConnection.Acess_memVO;
-import dbConnection.MemberDAO;
-import dbConnection.MemberVO;
-import dbConnection.Stu_ClassDAO;
-import dbConnection.Stu_ClassVO;
 
 public class StudenLiveChat extends JPanel implements MouseListener, ActionListener, Runnable{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
@@ -55,13 +52,7 @@ public class StudenLiveChat extends JPanel implements MouseListener, ActionListe
 	//선생님테이블 임시데이터
 	//제목
 	String teaTitle[]	= {"선택하기", "아이디", "이름"};
-	Object teaData[][]= {
-			/*	{"ㅇ","홍길동"},
-				{"ㅇ","이순신"},
-				{"ㅇ","세종대왕"},
-				{"ㅇ","장영실"},
-				{"ㅇ","유승룡"},	*/
-	};
+	Object teaData[][]= {};
 	JScrollPane teaSp;
 	JTable teaTable;
 	DefaultTableModel teaT;
@@ -77,17 +68,13 @@ public class StudenLiveChat extends JPanel implements MouseListener, ActionListe
 		mainPane.setBackground(Color.WHITE); topPane.setBackground(Color.WHITE);
 		connList.setBackground(Color.WHITE); centerPane.setBackground(Color.WHITE);
 		tea.setBackground(Color.WHITE); teacher.setBackground(Color.WHITE);
-		bottomPane.setBackground(Color.WHITE); //chatt.setBackground(Color.WHITE);
-//		stuTable.setBackground(Color.WHITE); teaTable.setBackground(Color.WHITE);
-//		stuSp.setBackground(Color.WHITE);	teaSp.setBackground(Color.WHITE);
-//		stuSp.getViewport().setBackground(Color.WHITE);
-//		teaSp.getViewport().setBackground(Color.WHITE);
+		bottomPane.setBackground(Color.WHITE);
+		
 		//폰트변경
 		connList.setFont(fntBold30); teacher.setFont(fntBold20);
 		chatt.setFont(fntBold20); admin.setFont(fntBold20);
 		
 		//여백주기
-		//int top, int left, int bottom, int right)
 		centerPane.setBorder(BorderFactory.createEmptyBorder(10,100,10,100));
 		bottomPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		
@@ -135,6 +122,11 @@ public class StudenLiveChat extends JPanel implements MouseListener, ActionListe
 		//테이블 계속돌리기(실시간채팅이기떄문에)
 		Thread t = new Thread(this);
 		t.start();
+		
+		//이벤트 주입
+		teaTable.addMouseListener(this);
+		chatt.addActionListener(this);
+		admin.addActionListener(this);
 	}
 	public void run(List<Acess_memVO> lst) {
 		teaT.setRowCount(0);
@@ -157,24 +149,15 @@ public class StudenLiveChat extends JPanel implements MouseListener, ActionListe
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		String eventBtn = ae.getActionCommand();
-		if(eventBtn.equals("채팅하기")) { //채팅하기 미구현
-			int result=0;
-			
+		if(eventBtn.equals("채팅하기")) { //채팅하기 선택다중으로됐을때, 채팅불가능하게바꾸기
 			for(int i=0; i<teaTable.getRowCount(); i++) {
 				if(teaTable.getValueAt(i, 0).equals("●")) {
-					String id = (String)teaTable.getValueAt(i, 2);
-					MemberDAO dao = new MemberDAO();
-					result = dao.memberDelete(id);
+					JOptionPane.showMessageDialog(this, "선택한 선생님과 채팅이 연결됩니다.");
+					new main.Main4ChatClient(id);
 				}
 			}
-			if(result==0) {
-				JOptionPane.showMessageDialog(this, "선택한 계정이 삭제되었습니다.");
-				getTeacherAll();
-			}else {
-				JOptionPane.showMessageDialog(this, "선택한 계정이 없습니다.");
-			}
 		}else if(eventBtn.equals("관리자와 채팅")){ //미구현
-			
+			new main.Main4ChatClient(id);
 		}
 		
 	}
@@ -210,8 +193,17 @@ public class StudenLiveChat extends JPanel implements MouseListener, ActionListe
 	@Override
 	public void run() {
 		while(true) {
-			try {Thread.sleep(1000);}catch(Exception e) {}
+			try {Thread.sleep(3000);}catch(Exception e) {}
 			getTeacherAll();
+		}
+	}
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(id);
+			System.exit(0);
 		}
 	}
 }

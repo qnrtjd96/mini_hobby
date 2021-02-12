@@ -1,6 +1,6 @@
 package administrator;
 
-//브런치생성
+//구현완료
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
 import administrator.Admin1Main;
+import main.Main3ChatServer;
 
 public class Admin0Login extends JFrame implements ActionListener{
 	JPanel login = new JPanel();
@@ -63,6 +64,8 @@ public class Admin0Login extends JFrame implements ActionListener{
 	
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
+		//아이디 넘겨주기
+		String id = "master";
 		if(obj==loginBtn) {
 			char pwdSet[] = pwdTf.getPassword();
 			String pwdStr = "";
@@ -76,6 +79,7 @@ public class Admin0Login extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(this, "관리자 페이지에 접속합니다.");
 				this.setVisible(false);
 				new Admin1Main();
+				new Main3ChatServer(id);
 			} else {
 				JOptionPane.showMessageDialog(this, "로그인에 실패하였습니다. \n 아이디 또는 비밀번호가 기억나지 않으시면 관리자 문의해주십시오.");
 				idTf.setText(""); pwdTf.setText("");

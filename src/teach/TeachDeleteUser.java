@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -14,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
+
+import dbConnection.Acess_memDAO;
 
 public class TeachDeleteUser extends JPanel implements ActionListener{
 	JPanel deletMain = new JPanel(null);
@@ -125,6 +129,14 @@ public class TeachDeleteUser extends JPanel implements ActionListener{
 			System.out.println("회원탈퇴실패^^");
 		} 
 	}
-
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(id);
+			System.exit(0);
+		}
+	}
 
 }
