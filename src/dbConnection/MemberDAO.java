@@ -376,5 +376,27 @@ public class MemberDAO extends DBConnection{
 		}
 		return result;
 	}
-
+	//adminMain 총 이용자 수
+	public List<MemberVO> allUserCnt() {
+		List<MemberVO> lst = new ArrayList<MemberVO>();
+		try {
+			getConn();
+			sql = "select count(id) from membertbl";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setUserCnt(rs.getInt(1));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		
+		return lst;
+	}
 }

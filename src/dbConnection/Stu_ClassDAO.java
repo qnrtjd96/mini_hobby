@@ -229,4 +229,54 @@ public class Stu_ClassDAO extends DBConnection{
 		return allLst;
 		
 	}
+	// 관리자 월별 수익
+	public List<Stu_ClassVO> paySum(String date){
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql = "select sum(pay) from stu_class where substr(pay_date, 0,5) = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO vo = new Stu_ClassVO();
+				vo.setPay(rs.getInt(1));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();  
+		}
+		return lst;
+		
+	}
+	// 관리자 월별 실결제건수
+	public List<Stu_ClassVO> payCount(String date){
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql = "select count(class_num) from stu_class where substr(pay_date, 0,5) = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO vo = new Stu_ClassVO();
+				vo.setPay(rs.getInt(1));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();  
+		}
+		return lst;
+		
+	}
 }

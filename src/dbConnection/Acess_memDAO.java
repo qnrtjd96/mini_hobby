@@ -69,5 +69,28 @@ public class Acess_memDAO extends DBConnection {
 		}
 		return result;
 	}
-
+	// adminMain 현재 이용자 수
+	public List<Acess_memVO> liveUserList(){
+		List<Acess_memVO> lst = new ArrayList<Acess_memVO>();
+		try {
+			getConn();
+			
+			sql = "select count(id) from accessmemtbl";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Acess_memVO vo = new Acess_memVO();
+				vo.setUserCnt(rs.getInt(1));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();  
+		}
+		return lst;
+		
+	}
 }
