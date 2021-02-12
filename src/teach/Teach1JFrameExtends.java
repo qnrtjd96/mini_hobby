@@ -31,7 +31,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
 
 import dbConnection.Acess_memDAO;
 import dbConnection.BoardDAO;
@@ -100,7 +99,6 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		
 		TeachTopMenu(id);
 		TeachMain();
-		
 		
 		setSize(800,1000);
 		setVisible(true);

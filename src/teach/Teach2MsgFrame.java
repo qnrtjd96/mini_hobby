@@ -33,7 +33,7 @@ public class Teach2MsgFrame extends JPanel {
 		getMsgPane.setBackground(Color.white);
 		
 		//보낸쪽지함
-		MsgTab.addTab("보낸쪽지", new TeachMsgSend().mainPane);
+		MsgTab.addTab("보낸쪽지", new TeachMsgSend(id).mainPane);
 		
 		//쪽지쓰기
 		MsgTab.addTab("쪽지쓰기", new TeachMsgWrite());
