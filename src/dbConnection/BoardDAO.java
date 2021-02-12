@@ -9,68 +9,68 @@ public class BoardDAO extends DBConnection{
 		
 	}
 	//2021-02-13 이강산
-	//선생님 새글쓰기(TeachTextCreate) 안돼서 다시만듬
-	public int insertTeaBoard(BoardVO vo) {
-		int result = 0;
-		try {
-			getConn();
-			sql="insert into boardtbl (class_num, id, classname, cate, city, cost, intro, "
-					+ " career, area, writedate, classdate, classtime) values (classnum.nextval, ?,?,?,?,?,?,?,?,sysdate,?,?)";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getId());
-			pstmt.setString(2, vo.getClassname());
-			pstmt.setString(3, vo.getCate());
-			pstmt.setString(4, vo.getCity());
-			pstmt.setInt(5, vo.getCost());
-			pstmt.setString(6, vo.getIntro());
-			pstmt.setString(7, vo.getCareer());
-			pstmt.setString(8, vo.getArea());
-			pstmt.setString(9, vo.getClassdate());
-			pstmt.setString(10, vo.getClasstime());
-			
-			result = pstmt.executeUpdate();
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			dbClose();
+		//선생님 새글쓰기(TeachTextCreate) 안돼서 다시만듬
+		public int insertTeaBoard(BoardVO vo) {
+			int result = 0;
+			try {
+				getConn();
+				sql="insert into boardtbl (class_num, id, classname, cate, city, cost, intro, "
+						+ " career, area, writedate, classdate, classtime) values (classnum.nextval, ?,?,?,?,?,?,?,?,sysdate,?,?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, vo.getId());
+				pstmt.setString(2, vo.getClassname());
+				pstmt.setString(3, vo.getCate());
+				pstmt.setString(4, vo.getCity());
+				pstmt.setInt(5, vo.getCost());
+				pstmt.setString(6, vo.getIntro());
+				pstmt.setString(7, vo.getCareer());
+				pstmt.setString(8, vo.getArea());
+				pstmt.setString(9, vo.getClassdate());
+				pstmt.setString(10, vo.getClasstime());
+				
+				result = pstmt.executeUpdate();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				dbClose();
+			}
+			return result;
 		}
-		return result;
-	}
 	// 새글쓰기 insert
-	public int insertBoard(BoardVO vo) {
-		int result = 0;
-		try {
-			getConn();
-			////int class_num, String id, String classname, String cate, String review,
-			//String city, int cost, String intro, String career, String area, String writedate, classtime
-			sql="insert into boardtbl (class_num, id, classname, cate, review ,city, cost, intro, "
-					+ " career, area, writedate, classdate, classtime) values (classnum.nextval, ?,?,?,'',?,?,?,?,?,sysdate,?,?)";
-			
-			//vo2.getId(), classname2.getText(), vo2.getCate(), dbarea, cost, 
-			//classdetail2.getText(),total2.getText(), detail2.getText(), date
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, vo.getId());
-			pstmt.setString(2, vo.getClassname());
-			pstmt.setString(3, vo.getCate());
-			pstmt.setString(4, vo.getCity());
-			pstmt.setInt(5, vo.getCost());
-			pstmt.setString(6, vo.getIntro());
-			pstmt.setString(7, vo.getCareer());
-			pstmt.setString(8, vo.getArea());
-			pstmt.setString(9, vo.getClassdate());
-			pstmt.setString(10, vo.getClasstime());
-			
-			result = pstmt.executeUpdate();
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			dbClose();
+		public int insertBoard(BoardVO vo) {
+			int result = 0;
+			try {
+				getConn();
+				////int class_num, String id, String classname, String cate, String review,
+				//String city, int cost, String intro, String career, String area, String writedate, classtime
+				sql="insert into boardtbl (class_num, id, classname, cate, review ,city, cost, intro, "
+						+ " career, area, writedate, classdate, classtime) values (classnum.nextval, ?,?,?,'',?,?,?,?,?,sysdate,?,?)";
+				
+				//vo2.getId(), classname2.getText(), vo2.getCate(), dbarea, cost, 
+				//classdetail2.getText(),total2.getText(), detail2.getText(), date
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, vo.getId());
+				pstmt.setString(2, vo.getClassname());
+				pstmt.setString(3, vo.getCate());
+				pstmt.setString(4, vo.getCity());
+				pstmt.setInt(5, vo.getCost());
+				pstmt.setString(6, vo.getIntro());
+				pstmt.setString(7, vo.getCareer());
+				pstmt.setString(8, vo.getArea());
+				pstmt.setString(9, vo.getClassdate());
+				pstmt.setString(10, vo.getClasstime());
+				
+				result = pstmt.executeUpdate();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				dbClose();
+			}
+			return result;
 		}
-		return result;
-	}
 	// 관리자 결제관리 상세내역
 	public List<BoardVO> PaymentSelect(String searchId) {
 		//선택한 레코드를 보관할 컬렉션
