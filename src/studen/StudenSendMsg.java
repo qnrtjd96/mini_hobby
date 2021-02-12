@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -20,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
+import dbConnection.Acess_memDAO;
 import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
 
@@ -168,5 +171,14 @@ public class StudenSendMsg extends JPanel implements ActionListener, MouseListen
    public void mouseEntered(MouseEvent e) {}
    public void mouseExited(MouseEvent e) {}
    public void mouseReleased(MouseEvent e) {}
+   //프레임 X 눌렀을때의 이벤트
+   class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
+	}
    
 }

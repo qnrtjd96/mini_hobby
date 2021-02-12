@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -12,6 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import dbConnection.Acess_memDAO;
 
 public class Teach3MyMenu extends JPanel implements MouseListener{
 
@@ -97,14 +101,14 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 		}else if(lbl.equals("예약내역 및 리뷰확인")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new TeachClassList().start;
+			center = new TeachClassList(id).start;
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);
 		}else if(lbl.equals("수입확인")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new TeachTotal();
+			center = new TeachTotal(id);
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);
@@ -125,5 +129,14 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 	public void mouseExited(MouseEvent e) {}
 	@Override
 	public void mouseClicked(MouseEvent me) {}
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(id);
+			System.exit(0);
+		}
+	}
 
 }

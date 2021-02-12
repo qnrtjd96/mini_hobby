@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +16,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+
+import dbConnection.Acess_memDAO;
 
 public class StudenCharge extends JPanel implements ActionListener {
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 25);
@@ -43,8 +47,10 @@ public class StudenCharge extends JPanel implements ActionListener {
 				JTable table = new JTable(model);
 				JScrollPane sp = new JScrollPane(table);
 	
-
-	public StudenCharge() {
+	String idStr;
+	public StudenCharge() {}
+	public StudenCharge(String id) {
+		idStr = id;
 		add(big); big.setBackground(Color.white);
 		big.add("Center", pane); pane.setBackground(Color.white);
 		pane.add(start); start.setBorder(new LineBorder(Color.black)); start.setBackground(Color.white);
@@ -85,7 +91,15 @@ public class StudenCharge extends JPanel implements ActionListener {
 		}
 		
 	}
-
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
+	}
 	public static void main(String[] args) {
 		new StudenCharge();
 

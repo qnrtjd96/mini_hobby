@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -14,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import dbConnection.Acess_memDAO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 
@@ -180,6 +183,15 @@ public class StudenInfo extends JPanel implements ActionListener {
 		
 		confBtn.setVisible(false);
 		doBtn.setVisible(true);
+	}
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
 	}
 
 }

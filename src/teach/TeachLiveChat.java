@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,6 +17,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+
+import dbConnection.Acess_memDAO;
 
 
 public class TeachLiveChat extends JPanel{
@@ -66,8 +70,10 @@ public class TeachLiveChat extends JPanel{
 	};
 	
 	JScrollPane teaSp;
-		
-	public TeachLiveChat() {
+	String idStr;
+	public TeachLiveChat() {};
+	public TeachLiveChat(String id) {
+		idStr = id;
 		setLayout(new BorderLayout());
         
 		//배경 변경
@@ -155,6 +161,15 @@ public class TeachLiveChat extends JPanel{
 		add(centerPane, BorderLayout.CENTER);
 		add(bottomPane, BorderLayout.SOUTH);
 		
+	}
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
 	}
 	public static void main(String[] args) {
 		new TeachLiveChat();

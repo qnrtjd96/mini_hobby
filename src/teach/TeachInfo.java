@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
@@ -18,6 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import dbConnection.Acess_memDAO;
 import dbConnection.Mem_teacherDAO;
 import dbConnection.Mem_teacherVO;
 import dbConnection.MemberDAO;
@@ -260,7 +263,15 @@ public class TeachInfo extends JPanel implements ActionListener {
 			JOptionPane.showMessageDialog(this, "수정이 실패됐습니다, 다시 시도해주세요.");
 		}
 	}
-	
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(id);
+			System.exit(0);
+		}
+	}
 	
 	public static void main(String[] args) {
 		new TeachInfo();

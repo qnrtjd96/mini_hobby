@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -23,6 +25,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 import administrator.AdminReceiveMsgDialog;
+import dbConnection.Acess_memDAO;
 import dbConnection.Mem_teacherDAO;
 import dbConnection.Mem_teacherVO;
 
@@ -47,7 +50,7 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
     	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
     	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
     	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
-
+    String idStr;
     public StudenCateList() {}
 	public StudenCateList(String cate) {
 
@@ -122,6 +125,10 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 		mainPane.add(sp);
 		
 	}
+	//id 받아오기
+	public void getId(String id) {
+		idStr = id;
+	}
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if(obj == searchBtn) {
@@ -167,5 +174,14 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
+	}
 	
 }

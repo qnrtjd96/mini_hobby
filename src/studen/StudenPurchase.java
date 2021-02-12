@@ -11,6 +11,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Calendar;
 import java.util.List;
 
@@ -28,6 +30,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import dbConnection.Acess_memDAO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
 
@@ -307,7 +310,15 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	public void mouseExited(MouseEvent e) {}
 	@Override
 	public void mouseClicked(MouseEvent me) {}
-	
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
+	}
 }
 
 

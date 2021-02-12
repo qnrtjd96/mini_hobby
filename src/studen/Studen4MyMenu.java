@@ -6,12 +6,16 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import dbConnection.Acess_memDAO;
 
 public class Studen4MyMenu extends JPanel implements MouseListener{
 	//아이디값 가져오기
@@ -109,7 +113,7 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 		}else if(lbl.equals("충전하기")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new StudenCharge().start;
+			center = new StudenCharge(idStr).start;
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);
@@ -138,6 +142,14 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 	public void mouseExited(MouseEvent e) {}
 	@Override
 	public void mouseClicked(MouseEvent me) {}
-	
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
+	}
 	
 }

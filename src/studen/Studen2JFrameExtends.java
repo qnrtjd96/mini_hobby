@@ -150,6 +150,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center.setVisible(true);
 			add("Center", center);
 		}
+		new StudenCateList().getId(idStr);
 	}
 	//label 이벤트 오버라이딩
 	@Override
