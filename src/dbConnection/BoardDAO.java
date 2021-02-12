@@ -8,6 +8,36 @@ public class BoardDAO extends DBConnection{
 	public BoardDAO() {
 		
 	}
+	//2021-02-13 이강산
+		//선생님 새글쓰기(TeachTextCreate) 안돼서 다시만듬
+		public int insertTeaBoard(BoardVO vo) {
+			int result = 0;
+			try {
+				getConn();
+				sql="insert into boardtbl (class_num, id, classname, cate, city, cost, intro, "
+						+ " career, area, writedate, classdate, classtime) values (classnum.nextval, ?,?,?,?,?,?,?,?,sysdate,?,?)";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, vo.getId());
+				pstmt.setString(2, vo.getClassname());
+				pstmt.setString(3, vo.getCate());
+				pstmt.setString(4, vo.getCity());
+				pstmt.setInt(5, vo.getCost());
+				pstmt.setString(6, vo.getIntro());
+				pstmt.setString(7, vo.getCareer());
+				pstmt.setString(8, vo.getArea());
+				pstmt.setString(9, vo.getClassdate());
+				pstmt.setString(10, vo.getClasstime());
+				
+				result = pstmt.executeUpdate();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				dbClose();
+			}
+			return result;
+		}
 	// 새글쓰기 insert
 		public int insertBoard(BoardVO vo) {
 			int result = 0;

@@ -18,6 +18,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ import dbConnection.BoardVO;
 import dbConnection.Mem_teacherDAO;
 import dbConnection.Mem_teacherVO;
 
-public class TeachTextCreate extends JPanel implements ActionListener, ItemListener{
+public class TeachTextCreate extends JDialog implements ActionListener, ItemListener{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntPlain20 = new Font("맑은 고딕", Font.PLAIN, 20);
 	Font fntPlain25 = new Font("맑은 고딕", Font.PLAIN, 25);
@@ -174,6 +175,11 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 		dayLable.addItemListener(this); //날짜 이벤트
 		updateBtn.addActionListener(this); //등록버튼 
 		
+		setSize(800,920);
+		setLocation(50, 100);
+		setVisible(true);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
 	}
 	//회원정보 세팅
 	public void getTeaInfo(String id) { //회원정보 세팅
@@ -206,19 +212,15 @@ public class TeachTextCreate extends JPanel implements ActionListener, ItemListe
 			JOptionPane.showMessageDialog(this, "모든부분을 입력하셔야 합니다..");
 		}else{
 			BoardDAO dao = new BoardDAO();
-			int result = dao.insertBoard(vo);
+			int result = dao.insertTeaBoard(vo);
 			if(result>0) {//회원등록됨
 				JOptionPane.showMessageDialog(this,"글이 등록되었습니다.");
-				classtime2 = ""; //혹시모르니 classtime 초기화
-				/////////////////세라누나도와줘요!!!!!!!!!!!!!!!!!!!!!/////////////////////////////
-				/*여기이후에 다음페이지로 가야함*/
-				/*String searchTxt = cate2.getText();
-				TeachCateList tcl = new TeachCateList(searchTxt);
-				tcl.searchTf.setText(searchTxt);
-				main.setVisible(false);
-				main.removeAll();
-				main = tcl.mainPane;*/
-				///////////////////////////////////////////////////////////////////////////////
+				for(int i=0; i<TeaClasstime.length; i++) {
+					TeaClasstime[i] = null;
+			   	  }
+				
+				classtime2 = ""; 
+				dispose();
 			}else {//회원등록실패함
 				JOptionPane.showMessageDialog(this,"클래스명이 너무 길어서 글등록에 실패했습니다.");
 			}
