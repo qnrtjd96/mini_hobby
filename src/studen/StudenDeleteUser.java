@@ -80,7 +80,7 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 		gPane.removeAll();
 			
 		for(int i=0; i<gBtn.length; i++) {
-				gPane.add(gBtn[i]);
+			gPane.add(gBtn[i]);
 		}
 		gPane.setVisible(true);
 			
