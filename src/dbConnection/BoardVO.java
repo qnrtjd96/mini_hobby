@@ -7,7 +7,6 @@ public class BoardVO {
 	private String name; //membertbl 강사이름 조인
 	private String pay_date; // stu_class 결제일자 조인
 	private String cate;
-	private String review;
 	private String city;
 	private int cost;
 	private String intro;
@@ -42,13 +41,25 @@ public class BoardVO {
 		this.cost = cost;
 		this.pay_date = pay_date;
 	}
-	public BoardVO(int class_num, String id, String classname, String cate, String review,
-			String city, int cost, String intro, String career, String area, String writedate) {
+	// 수정
+	public BoardVO(int class_num, String id, String classname, String cate, String city,
+			int cost, String intro, String career, String area) {
 		this.class_num = class_num;
 		this.id=id;
 		this.classname=classname;
 		this.cate=cate;
-		this.review=review;
+		this.city=city;
+		this.cost=cost;
+		this.intro=intro;
+		this.career=career;
+		this.area=area;
+	}
+	public BoardVO(int class_num, String id, String classname, String cate, String city,
+			int cost, String intro, String career, String area, String writedate) {
+		this.class_num = class_num;
+		this.id=id;
+		this.classname=classname;
+		this.cate=cate;
 		this.city=city;
 		this.cost=cost;
 		this.intro=intro;
@@ -114,14 +125,6 @@ public class BoardVO {
 
 	public void setCate(String cate) {
 		this.cate = cate;
-	}
-
-	public String getReview() {
-		return review;
-	}
-
-	public void setReview(String review) {
-		this.review = review;
 	}
 
 	public String getCity() {
