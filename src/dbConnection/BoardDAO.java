@@ -15,8 +15,8 @@ public class BoardDAO extends DBConnection{
 				getConn();
 				////int class_num, String id, String classname, String cate, String review,
 				//String city, int cost, String intro, String career, String area, String writedate, classtime
-				sql="insert into boardtbl (class_num, id, classname, cate, review ,city, cost, intro, "
-						+ " career, area, writedate, classdate, classtime) values (classnum.nextval, ?,?,?,'',?,?,?,?,?,sysdate,?,?)";
+				sql="insert into boardtbl (class_num, id, classname, cate, city, cost, intro, "
+						+ " career, area, writedate, classdate, classtime) values (classnum.nextval, ?,?,?,?,?,?,?,?,sysdate,?,?)";
 				
 				//vo2.getId(), classname2.getText(), vo2.getCate(), dbarea, cost, 
 				//classdetail2.getText(),total2.getText(), detail2.getText(), date
@@ -210,14 +210,21 @@ public class BoardDAO extends DBConnection{
 		return result;
 	}
 	// 강사 detail - 정보 수정 dialog
-	public int updateDetail(int class_num, String id) {
+	public int updateDetail(BoardVO vo) {
 		int result=0;
 		try {
 			getConn();
 			
-			sql="";
+			sql="update boardtbl set classname=?, city=?, cost=?, intro=?, career=?, area=? where class_num=?";
 			
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getClassname());
+			pstmt.setString(2, vo.getCity());
+			pstmt.setInt(3, vo.getCost());
+			pstmt.setString(4, vo.getIntro());
+			pstmt.setString(5, vo.getCareer());
+			pstmt.setString(6, vo.getArea());
+			pstmt.setInt(7, vo.getClass_num());
 			
 			
 			result = pstmt.executeUpdate();
@@ -227,5 +234,47 @@ public class BoardDAO extends DBConnection{
 			dbClose();
 		}
 		return result;
+	}
+	// detail - delete
+	public int deleteDetail(int class_num) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql="delete from boardtbl where class_num=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, class_num);
+			
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
+	public List<BoardVO> deleteConfirm(int class_num) {
+		List<BoardVO> lst = new ArrayList<BoardVO>();
+		try {
+			getConn();
+			
+			sql="select classname from boardtbl b join stu_class s using (class_num) where classname=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, class_num);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardVO vo = new BoardVO();
+				vo.setClassname(rs.getString(1));
+				lst.add(vo);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
 	}
 }

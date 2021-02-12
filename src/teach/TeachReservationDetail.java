@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
@@ -61,7 +62,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 					JLabel li4 = new JLabel("선택된 강의가 없습니다");
 					JLabel li6 = new JLabel("선택된 강의가 없습니다");
 					JLabel li8 = new JLabel("선택된 강의가 없습니다");
-					JLabel li10 = new JLabel("선택된 강의가 없습니다");
+					JLabel li10 = new JLabel("0");
 					JLabel li12 = new JLabel("선택된 강의가 없습니다");
 			JPanel review = new JPanel(new BorderLayout());
 				JLabel re1 = new JLabel("후기글");
@@ -70,7 +71,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 					JLabel re3 = new JLabel("선택된 강의가 없습니다");
 		JPanel detail = new JPanel(new BorderLayout());
 		JScrollPane sp = new JScrollPane(detail);
-		JButton editBtn = new JButton("수정");
+		JButton editBtn = new JButton("내용수정");
 		JButton deleteBtn = new JButton("삭제");
 		
 		Dimension li3_size = new Dimension(150, 600);
@@ -90,7 +91,8 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	String classname;
 	String time;
 	String selStr;
-	int class_num;
+	String category;
+	int class_num; int costInt;
 
 	public TeachReservationDetail() {}
 	public TeachReservationDetail(String selStr, String id, String classname, String time) {
@@ -98,8 +100,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		this.id=id;
 		this.classname=classname;
 		this.time=time;
-		System.out.println("selStr="+selStr);
-		System.out.println("id="+id+", 클래스명="+classname+", 시간="+time);
+		
 		BoardDAO dao = new BoardDAO();
 		int result = dao.updateTime(selStr, id, classname, time);
 		if (result>0) {
@@ -125,7 +126,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		this.time = classdate;
 		
 		lbl1.setText("선택한 클래스 : "+classname);
-		lbl2.setText("선택한 일자 : "+time);
+		lbl2.setText("선택한 일자 : "+classdate);
 		
 		mainStart();		
 		tableSetting();
@@ -154,11 +155,26 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			this.setVisible(false);
 			new TeachReservationDetail2DialStart(id, classname, time, class_num);
 		} else if (obj==editBtn) { // 수정 버튼 눌렀을 때
-			
+			String selCity = (String)box.getSelectedItem();
+			BoardVO vo = new BoardVO(class_num, id, classname, category, selCity,
+					costInt, li4.getText(), li6.getText(), li8.getText());
+			this.setVisible(false);
+			new TeachTextUpdateDelete(vo);
 		} else if (obj==deleteBtn) { // 삭제 버튼 눌렀을 때
-			
+			int confirm = JOptionPane.showConfirmDialog(this, "해당 클래스에 대한 글을 전부 삭제하시겠습니까?", "삭제 확인", 0);
+			if (confirm==0) {
+				BoardDAO dao = new BoardDAO();
+				List<BoardVO> lst = dao.deleteConfirm(class_num);
+				if (lst.size()>0) {
+					JOptionPane.showMessageDialog(this, "해당 클래스의 수강생이 존재합니다. 삭제가 불가능합니다.");
+				} else {
+					int result = dao.deleteDetail(class_num);
+					if (result>0) {
+						JOptionPane.showMessageDialog(this, "삭제가 완료되었습니다.");
+					}
+				}
+			}
 		}
-		
 	}
 	public void tableSetting() {
 		BoardDAO dao = new BoardDAO();
@@ -167,12 +183,14 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			BoardVO vo = lst.get(0);
 			this.class_num = vo.getClass_num();
 			box.setSelectedItem(vo.getCity());
+			this.category=vo.getCate();
 			cate.setText("카테고리 : "+vo.getCate());
 			li2.setText(vo.getClassname());
 			li4.setText(vo.getIntro());
 			li6.setText(vo.getCareer());
 			li8.setText(vo.getArea());
 			li10.setText(vo.getCost()+"원");
+			costInt = vo.getCost();
 			li12.setText(vo.getClasstime());
 		}
 		checkBoxStart();
@@ -236,7 +254,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		
 		sp.setBounds(20,450,750,350);
 		center.add(editBtn); center.add(deleteBtn);
-		editBtn.setBounds(540,820,100,50); editBtn.setFont(fn2); editBtn.setBackground(col6);
+		editBtn.setBounds(490,820,150,50); editBtn.setFont(fn2); editBtn.setBackground(col6);
 		deleteBtn.setBounds(660,820,100,50); deleteBtn.setFont(fn2); deleteBtn.setBackground(col6);
 		detail.add("Center",table); detail.add("South", review);
 		table.add("West",title); title.setPreferredSize(li3_size); title.setLayout(null); title.setBackground(Color.white);
