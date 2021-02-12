@@ -67,7 +67,7 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 		signIn.setBounds(530,600,100,40); signIn.setFont(fnt2);
 		
 		login.add(adminLogin);
-		adminLogin.setBounds(540,880,200,40); adminLogin.setFont(fnt);
+		adminLogin.setBounds(600,900,200,40); adminLogin.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		
 		setSize(800,1000);
 		setVisible(true);
