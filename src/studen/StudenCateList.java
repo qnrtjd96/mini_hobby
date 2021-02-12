@@ -27,7 +27,7 @@ import dbConnection.Mem_teacherDAO;
 import dbConnection.Mem_teacherVO;
 
 public class StudenCateList extends JPanel implements ActionListener, MouseListener{
-	JPanel mainPane = new JPanel();
+	public JPanel mainPane = new JPanel();
 		JTextField searchTf = new JTextField(20);
 		JButton searchBtn = new JButton("검색");
 		// 테이블 필드명

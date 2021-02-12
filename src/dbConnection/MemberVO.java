@@ -12,9 +12,14 @@ public class MemberVO {
 	private int sort;
 	private int payCnt;
 	private String cate;
+	int userCnt;
 
 	public MemberVO() {
 		
+	}
+	//관리자 총 이용자 수
+	public MemberVO(int userCnt) {
+		this.userCnt = userCnt;
 	}
 	//2021-02-08 이강산
 	//관리자 회원출력중 선생님출력부분 : AdminMemberList
@@ -61,6 +66,12 @@ public class MemberVO {
 	}
 
 
+	public int getUserCnt() {
+		return userCnt;
+	}
+	public void setUserCnt(int userCnt) {
+		this.userCnt = userCnt;
+	}
 	public String getId() {
 		return id;
 	}
