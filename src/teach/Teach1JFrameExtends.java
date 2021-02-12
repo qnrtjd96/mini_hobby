@@ -134,11 +134,12 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 			add(center);
 			center.setVisible(true);
 		} else if(obj==btn_new) { // 새글쓰기
-			center.setVisible(false);
-			center.removeAll();
-			center = new TeachTextCreate(id).main;
-			add(center);
-			center.setVisible(true);
+			//center.setVisible(false);
+			//center.removeAll();
+			new TeachTextCreate(id);
+			//center = new TeachTextCreate(id).main;
+			//add(center);
+			//center.setVisible(true);
 			
 		} else if(obj==btn_save) { // 메모저장
 			MemoVO vom = new MemoVO(ta.getText().substring(0, 10), ta.getText().substring(11), vo.getId());
