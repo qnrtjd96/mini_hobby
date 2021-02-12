@@ -42,6 +42,7 @@ import dbConnection.MemoVO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
 import main.Main0Login;
+import studen.StudenCateList;
 
 public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener, Runnable{
 	JPanel paneTop = new JPanel(new BorderLayout());
@@ -152,9 +153,8 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 				JOptionPane.showMessageDialog(this, "메모가 삭제되었습니다.");
 				ta.setText(vom.getMemo_date());
 			}
-			
-			
 		}
+		new TeachCateList().getId(id);
 	}
 	//label 이벤트 오버라이딩
 	@Override

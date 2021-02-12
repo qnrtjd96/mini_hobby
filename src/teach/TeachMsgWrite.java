@@ -2,6 +2,8 @@ package teach;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.TextField;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -10,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+import dbConnection.Acess_memDAO;
 
 public class TeachMsgWrite extends JPanel {
 	Color col = new Color(204,222,233);
@@ -27,8 +31,9 @@ public class TeachMsgWrite extends JPanel {
 	JScrollPane sp = new JScrollPane(ta);
 	JButton send = new JButton("보내기");
 	
-
-	public TeachMsgWrite() {
+	String idStr;
+	public TeachMsgWrite(String id) {
+		idStr = id;
 		setBackground(Color.white);
 		setLayout(null);
 		
@@ -42,6 +47,15 @@ public class TeachMsgWrite extends JPanel {
 		sp.setBounds(0,101,740,600); ta.setFont(fn);
 		send.setBounds(500,720,200,50); send.setBackground(col); send.setFont(fn2);
 		
+	}
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
 	}
 
 }

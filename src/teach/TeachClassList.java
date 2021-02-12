@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -12,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+
+import dbConnection.Acess_memDAO;
 
 public class TeachClassList extends JPanel{
 	
@@ -47,8 +51,10 @@ public class TeachClassList extends JPanel{
 	Font fnt25 = new Font("맑은 고딕", Font.BOLD, 25);
 	
 	Dimension lblsize = new Dimension(70, 30);
-
-	public TeachClassList() {
+	String idStr;
+	public TeachClassList() {};
+	public TeachClassList(String id) {
+		idStr = id;
 		setBackground(Color.white);
 		add(start); start.setBackground(Color.white);
 		start.setBorder(new LineBorder(Color.black)); start.setLayout(null);
@@ -74,7 +80,15 @@ public class TeachClassList extends JPanel{
 		
 		setVisible(true);
 	}
-
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
+	}
 	public static void main(String[] args) {
 		new TeachClassList();
 	}
