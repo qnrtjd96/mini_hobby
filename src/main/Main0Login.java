@@ -27,9 +27,6 @@ import studen.Studen2JFrameExtends;
 import teach.Teach1JFrameExtends;
 
 public class Main0Login extends JFrame implements ActionListener, MouseListener{
-	
-	//깃 이그노어 되는지 테스트 해보겠습니다 ... 
-	
 	JPanel login = new JPanel();
 		ImageIcon img = new ImageIcon("mini_hobby/img/Biglogo.png");
 		JButton logo = new JButton(img);

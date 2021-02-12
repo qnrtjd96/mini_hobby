@@ -98,7 +98,7 @@ public class StudenSendMsg extends JPanel implements ActionListener, MouseListen
       TableColumnModel tcmSchedule = table.getColumnModel();
       tcmSchedule.getColumn(0).setCellRenderer(tScheduleCellRenderer);
       tcmSchedule.getColumn(1).setCellRenderer(tScheduleCellRenderer);
-      tcmSchedule.getColumn(4).setCellRenderer(tScheduleCellRenderer);
+      tcmSchedule.getColumn(3).setCellRenderer(tScheduleCellRenderer);
       tcmSchedule.getColumn(4).setCellRenderer(tScheduleCellRenderer);
       
       //mainPane에 add
@@ -109,7 +109,7 @@ public class StudenSendMsg extends JPanel implements ActionListener, MouseListen
       // setBounds
       sp.setBounds(0,0,745,750); delBtn.setBounds(640,750,100,50);
       table.addMouseListener(this);
-      delBtn.addMouseListener(this);
+      delBtn.addActionListener(this);
    }
    @Override
    public void mouseClicked(MouseEvent e) {
@@ -124,11 +124,9 @@ public class StudenSendMsg extends JPanel implements ActionListener, MouseListen
          }else if(value.equals("●")) {
             table.setValueAt("○", row, col);
          }else if(col==2) {
-            //학생 메세지쓰기 호출하세욘//
         	 int sendMsgNum = (int)table.getValueAt(row, 1);
         	 //다이얼로그 불러오기
         	 new StudenSendMsgDialog(idStr, sendMsgNum);
-        	 System.out.println("쪽지쓰기에 아이디 받아오는지.... "+idStr+", 쪽지번호 읽히는지.... "+sendMsgNum);
          }
       }
    }
@@ -157,8 +155,8 @@ public class StudenSendMsg extends JPanel implements ActionListener, MouseListen
    }
    //보낸 메시지 받아오기 
    public void sendMsgLst(String idStr) {
-	   ConsDAO dao = new ConsDAO();
-	   List<ConsVO> lst = dao.studenMsgRec(idStr);
+	   ConsDAO dao = new ConsDAO(); 
+	   List<ConsVO> lst = dao.userSendMsgRec(idStr);
 	   
 	   for(int i=0; i<lst.size(); i++) {
 		   ConsVO vo = lst.get(i);
