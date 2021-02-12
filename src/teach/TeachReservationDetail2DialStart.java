@@ -7,7 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,19 +27,22 @@ public class TeachReservationDetail2DialStart extends JDialog implements ActionL
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
 	JCheckBox box;
-	List<String> select = new ArrayList<String>();
+	TreeSet<String> select = new TreeSet<String>();
 	String selStr;
+	String selectStr;
 	
 	JDialog dial;
-	String id; String classname; String time;
+	String id; String classname; String time; String SelectStr;
+	int class_num;
 	BoardDAO dao = new BoardDAO();
-	List<BoardVO> lst = dao.detailBoard(id);
+	List<BoardVO> lst = dao.detailBoard(class_num);
 	public void dialStart() {}
 	
-	public TeachReservationDetail2DialStart(String id, String classname, String time) {
+	public TeachReservationDetail2DialStart(String id, String classname, String time, int class_num) {
 		this.id=id;
 		this.classname=classname;
 		this.time=time;
+		this.class_num=class_num;
 		
 		dial = new JDialog();
 		dial.setSize(340,400);
@@ -72,9 +77,9 @@ public class TeachReservationDetail2DialStart extends JDialog implements ActionL
 		if(str.equals("수정완료")) {
 			setVisible(false);
 			dial.setVisible(false);
-			JOptionPane.showMessageDialog(this, "수정완료 되었습니다.");
 			selStr = select.toString();
-			new TeachReservationDetail(selStr, id, classname, time);
+			selectStr = selStr.substring(1, selStr.length()-1);
+			new TeachReservationDetail(selectStr, id, classname, time);
 		}
 	}
 
@@ -83,13 +88,13 @@ public class TeachReservationDetail2DialStart extends JDialog implements ActionL
 		JCheckBox che = (JCheckBox)ie.getItem();
 		String str = che.getText();
 		if (che.isSelected()) {
-			int i = select.size();
 			select.add(str);
 		} else {
-			for(int s=0; s<select.size(); s++) {
-				String str2 = select.get(s);
+			Iterator<String> st = select.iterator();
+			while(st.hasNext()) {
+				String str2 = st.next();
 				if (str2.equals(str)) {
-					select.remove(s); break;
+					select.remove(str2); break;
 				}
 			}
 		}

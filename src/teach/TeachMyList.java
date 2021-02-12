@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -19,6 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import dbConnection.Acess_memDAO;
 import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
 import dbConnection.MemberDAO;
@@ -127,10 +130,10 @@ public class TeachMyList extends JPanel implements MouseListener{
 			int col = table.getSelectedColumn();
 			int row = table.getSelectedRow();
 			String classname = (String)table.getValueAt(row, col);
-			System.out.println(classname);
-			System.out.println(id);
+			int class_num = (int) table.getValueAt(row, 0);
+			String classdate = (String)table.getValueAt(row, 3);
 			if (col==1) {
-				new TeachReservationDetail(id, classname);
+				new TeachReservationDetail(id, classname, class_num, classdate);
 			}
 		}	
 	}
@@ -138,6 +141,14 @@ public class TeachMyList extends JPanel implements MouseListener{
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
-	
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(id);
+			System.exit(0);
+		}
+	}
 
 }

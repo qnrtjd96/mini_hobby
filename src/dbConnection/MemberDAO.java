@@ -338,6 +338,8 @@ public class MemberDAO extends DBConnection{
 			
 		return result;
 	}
+	//2021.02.11 이강산
+	//휴면계정 admin sleep user
 	public int memberDelete(String id) {
 		int result = 0;
 		try {
@@ -355,6 +357,46 @@ public class MemberDAO extends DBConnection{
 		}
 		return result;
 	}
-
-
+	//학생 계정 탈퇴
+	public int stuDelete(String idStr) {
+		System.out.println("delete dao > > > "+idStr);
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from membertbl where id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
+	//adminMain 총 이용자 수
+	public List<MemberVO> allUserCnt() {
+		List<MemberVO> lst = new ArrayList<MemberVO>();
+		try {
+			getConn();
+			sql = "select count(id) from membertbl";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setUserCnt(rs.getInt(1));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		
+		return lst;
+	}
 }

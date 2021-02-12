@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -24,8 +26,6 @@ import javax.swing.table.TableColumnModel;
 
 import dbConnection.Acess_memDAO;
 import dbConnection.Acess_memVO;
-import dbConnection.MemberDAO;
-import dbConnection.MemberVO;
 
 
 public class TeachLiveChat extends JPanel implements MouseListener, ActionListener, Runnable{
@@ -206,6 +206,15 @@ public class TeachLiveChat extends JPanel implements MouseListener, ActionListen
 			List<Acess_memVO> lst2 = dao2.LiveChattpeople();
 			
 			setNewTeacherTableList(lst2);
+		}
+		//프레임 X 눌렀을때의 이벤트
+		class AdapterInner extends WindowAdapter{
+			//다시 오버라이딩
+			public void windowClosing(WindowEvent we) {
+				Acess_memDAO dao = new Acess_memDAO();
+				int result = dao.LogOut(id);
+				System.exit(0);
+			}
 		}
 	public static void main(String[] args) {
 		new TeachLiveChat();

@@ -150,6 +150,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center.setVisible(true);
 			add("Center", center);
 		}
+		new StudenCateList().getId(idStr);
 	}
 	//label 이벤트 오버라이딩
 	@Override
@@ -310,13 +311,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
-	public void mouseClicked(MouseEvent mc) {
-		Object tfObj = (JTextField)mc.getSource();
-		
-		if(tfObj==searchTf) {
-			searchTf.setText("");
-		}
-	}
+	public void mouseClicked(MouseEvent mc) {}
 	
 	
 		

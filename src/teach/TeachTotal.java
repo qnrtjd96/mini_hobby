@@ -4,10 +4,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
+
+import dbConnection.Acess_memDAO;
 
 public class TeachTotal extends JPanel implements MouseListener{
 	Font fntBold50 = new Font("맑은 고딕", Font.BOLD, 40);
@@ -32,8 +36,9 @@ public class TeachTotal extends JPanel implements MouseListener{
 	JLabel totalwon = new JLabel("2,745,200원");
 	JLabel soontotal = new JLabel("순 수입");
 	JLabel soontotalwon = new JLabel("2,470,680원");
-		
-	public TeachTotal(){
+	String idStr;
+	public TeachTotal(String id){
+		idStr = id;
 		setLayout(null);
 		
 		//백그라운드 변경
@@ -139,12 +144,23 @@ public class TeachTotal extends JPanel implements MouseListener{
 			//new TeachIncome();
 		}
 	}
-		@Override
-		public void mousePressed(MouseEvent e) {}
-		@Override
-		public void mouseEntered(MouseEvent e) {}
-		@Override
-		public void mouseExited(MouseEvent e) {}
-		@Override
-		public void mouseClicked(MouseEvent me) {}
+	@Override
+	public void mousePressed(MouseEvent e) {}
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
+	@Override
+	public void mouseClicked(MouseEvent me) {}
+		
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(idStr);
+			System.exit(0);
+		}
+	}
+		
 }

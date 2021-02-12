@@ -1,6 +1,6 @@
 package administrator;
 
-//브런치생성
+//구현완료
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
