@@ -381,7 +381,7 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 			if (stuTime.equals("")) {
 				stuTime = che.getText();
 			} else {
-				JOptionPane.showMessageDialog(this, "예약은 1시간(1회)분만 가능합니다.");
+				JOptionPane.showMessageDialog(this, "예약은 1시간씩만 가능합니다.");
 			}
 			
 		}
