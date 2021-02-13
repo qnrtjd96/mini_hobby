@@ -134,7 +134,7 @@ public class ConsDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.get=m.id where get = 'master'";
+			sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.send=m.id where get = 'master'";
 			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -150,7 +150,38 @@ public class ConsDAO extends DBConnection{
 		
 		return lst;
 	}
-	
+	//관리자 받은메세지 정렬하기
+	public List<ConsVO> adminMsgSort(String sort){
+		List<ConsVO> lst = new ArrayList<ConsVO>();
+		
+		try {
+			getConn();
+			if(sort.equals("글번호")) {
+				sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.send=m.id where get = 'master' order by c.msg_num";
+			}else if(sort.equals("보낸사람")) {
+				sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.send=m.id where get = 'master' order by c.send";
+			}else if(sort.equals("분류")) {
+				sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.send=m.id where get = 'master' order by m.sort";
+			}else if(sort.equals("수신시간")) {
+				sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.send=m.id where get = 'master' order by c.send_time";
+			}else {
+				sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.send=m.id where get = 'master'";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ConsVO vo = new ConsVO(rs.getInt(1),rs.getString(2), rs.getInt(3),rs.getString(4), rs.getString(5), rs.getString(6));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		
+		return lst;
+	}
 	// Teach 답장하기
 	public List<ConsVO> replyInfo(int msgNum) {
 		List<ConsVO> lst = new ArrayList<ConsVO>();

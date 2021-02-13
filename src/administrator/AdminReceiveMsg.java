@@ -175,6 +175,7 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 		delLbl.addActionListener(this);
 		consBtn.addActionListener(this);
 		clearBtn.addActionListener(this);
+		sortBox.addActionListener(this);
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -255,6 +256,31 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 			deleteItem();
 			consListPane.setVisible(true);
 			mainPane.add(consListPane);
+		}else if(delStr == sortBox) {
+			String sortStr = sortBox.getSelectedItem().toString();
+			model.setRowCount(0);
+			msgSort(sortStr);
+		}
+	}
+	//정렬 메소드
+	public void msgSort(String sortStr) {
+		ConsDAO dao = new ConsDAO();
+		List<ConsVO> lst = dao.adminMsgSort(sortStr);
+		if(lst.size() == 0) {
+			JOptionPane.showMessageDialog(this, "받은 메세지가 없습니다.");
+		}else {
+			for(int i=0; i<lst.size(); i++) {
+				ConsVO vo = lst.get(i);
+				String sort="";
+				if(vo.getSort()==1) {
+					sort = "학생";
+				}else if(vo.getSort()==2) {
+					sort = "선생님";
+				}
+				Object[] data = {"○", vo.getMsg_num(),"<HTML> <U>"+vo.getMsg_title()+"</U></HTML>",vo.getSend(), sort ,vo.getSend_time()};
+				
+				model.addRow(data);
+			}
 		}
 	}
 	//제약어 중복확인
