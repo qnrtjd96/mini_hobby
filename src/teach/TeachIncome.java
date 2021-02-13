@@ -97,6 +97,7 @@ public class TeachIncome extends JDialog{
 	public void incomeList(String id, String date) {
 		Stu_ClassDAO dao = new Stu_ClassDAO();
 		List<Stu_ClassVO> lst = dao.teachIncomeList(id, date);
+		
 		int cnt5 = 0; // 최근수입
 		int cntAll = 0; // 총수입
 		int lstCnt = lst.size();
