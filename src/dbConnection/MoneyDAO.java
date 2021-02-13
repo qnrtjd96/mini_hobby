@@ -40,7 +40,7 @@ public class MoneyDAO extends DBConnection{
 			pstmt.setString(1, idStr);
 				
 			rs = pstmt.executeQuery();
-				
+			
 			while(rs.next()) {
 				MoneyVO vo = new MoneyVO();
 				vo.setId(rs.getString(1));
@@ -49,9 +49,10 @@ public class MoneyDAO extends DBConnection{
 				vo.setBalance(Integer.parseInt(rs.getString(4)));
 				
 				lst.add(vo);
+				
 			}
 		}catch(Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}finally {
 			dbClose();
 		}
