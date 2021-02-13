@@ -3,14 +3,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -19,7 +17,7 @@ import dbConnection.Acess_memDAO;
 
 public class Studen4MyMenu extends JPanel implements MouseListener{
 	//아이디값 가져오기
-	String idStr;
+	String idStr, pwdStr;
 	
 	JPanel paneStu = new JPanel(new BorderLayout(20,20));
 		JPanel paneLeft = new JPanel();
@@ -44,8 +42,9 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 	public Studen4MyMenu() {
 		
 	}
-	public Studen4MyMenu(String idStr) {
+	public Studen4MyMenu(String idStr, String pwdStr) {
 		this.idStr = idStr;
+		this.pwdStr = pwdStr;
 		
 		add("Center", paneStu);
 		
@@ -127,7 +126,7 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 		}else if(lbl.equals("탈퇴하기")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new StudenDeleteUser(idStr).deletMain;
+			center = new StudenDeleteUser(idStr, pwdStr).deletMain;
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);

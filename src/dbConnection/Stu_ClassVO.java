@@ -43,6 +43,15 @@ public class Stu_ClassVO {
 		this.pay=pay;
 		this.pay_date=pay_date;
 	}
+	public Stu_ClassVO(int class_num, String id, String pay_class, String pay_cate, int pay, String classdate, String classtime) {
+		this.class_num=class_num;
+		this.id=id;
+		this.pay_class=pay_class;
+		this.pay_cate=pay_cate;
+		this.pay=pay;
+		this.classdate = classdate;
+		this.classtime = classtime;
+	}
 	public void setsName(String sName) {
 		this.sName = sName;
 	}

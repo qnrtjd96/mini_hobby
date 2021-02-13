@@ -21,15 +21,14 @@ import javax.swing.border.LineBorder;
 import administrator.Admin0Login;
 import dbConnection.Acess_memDAO;
 import dbConnection.Acess_memVO;
+import dbConnection.BlackListDAO;
+import dbConnection.BlackListVO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 import studen.Studen2JFrameExtends;
 import teach.Teach1JFrameExtends;
 
 public class Main0Login extends JFrame implements ActionListener, MouseListener{
-	
-	//깃 이그노어 되는지 테스트 해보겠습니다 ... 
-	
 	JPanel login = new JPanel();
 		ImageIcon img = new ImageIcon("mini_hobby/img/Biglogo.png");
 		JButton logo = new JButton(img);
@@ -70,7 +69,7 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 		signIn.setBounds(530,600,100,40); signIn.setFont(fnt2);
 		
 		login.add(adminLogin);
-		adminLogin.setBounds(540,880,200,40); adminLogin.setFont(fnt);
+		adminLogin.setBounds(600,900,200,40); adminLogin.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		
 		setSize(800,1000);
 		setVisible(true);
@@ -125,19 +124,31 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 				//로그인 정보 DB로 넘기기
 				Acess_memVO amVO = new Acess_memVO(vo.getSort(), idStr, vo.getName());
 				Acess_memDAO amDAO = new Acess_memDAO();
-				int result = amDAO.LogIn(amVO);
-				if (vo.getSort()==1) {
-					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
-					this.setVisible(false);
-					new Studen2JFrameExtends(idStr, pwdStr);
-					new Main3ChatServer(vo.getId());
-				} else if(vo.getSort()==2) {
-					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
-					this.setVisible(false);
-					new Teach1JFrameExtends(vo.getId());
-					new Main3ChatServer(vo.getId());
-				} else if(vo.getSort()==3) {
-					JOptionPane.showMessageDialog(this, "관리자님께서는 로그인페이지 하단의 Administrator Login을 이용해주십시오");
+				if(vo.getBlack()==1) {
+					if (vo.getSort()==1) {
+						int result = amDAO.LogIn(amVO);
+System.out.println("로그인?"+result);
+						JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
+						this.setVisible(false);
+						new Studen2JFrameExtends(idStr, pwdStr);
+						new Main3ChatServer(vo.getId());
+					} else if(vo.getSort()==2) {
+						int result = amDAO.LogIn(amVO);
+System.out.println("로그인?"+result);
+						JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
+						this.setVisible(false);
+						new Teach1JFrameExtends(vo.getId());
+						new Main3ChatServer(vo.getId());
+					} else if(vo.getSort()==3) {
+						JOptionPane.showMessageDialog(this, "관리자님께서는 로그인페이지 하단의 Administrator Login을 이용해주십시오");
+					}
+				} else if(vo.getBlack()==2) {
+					BlackListDAO daob = new BlackListDAO();
+					List<BlackListVO> lst = daob.searchList(idStr);
+					if (lst.size()>0) {
+						BlackListVO volst = lst.get(0);
+						JOptionPane.showMessageDialog(this, volst.getId()+"님은 "+volst.getWhy()+"사유로 로그인이 불가능한 회원입니다. 관리자측 문의 부탁드립니다.");
+					}
 				}
 			}
 		}

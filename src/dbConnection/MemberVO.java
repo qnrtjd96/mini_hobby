@@ -13,6 +13,7 @@ public class MemberVO {
 	private int payCnt;
 	private String cate;
 	int userCnt;
+	int black;
 
 	public MemberVO() {
 		
@@ -55,7 +56,7 @@ public class MemberVO {
 	public void setPayCnt(int payCnt) {
 		this.payCnt = payCnt;
 	}
-	public MemberVO(String id, String pwd, String name, String birth, String mail, String tel, String addr, int sort) {
+	public MemberVO(String id, String pwd, String name, String birth, String mail, String tel, String addr, int sort, int black) {
 		this(id, mail);
 		this.pwd = pwd;
 		this.name = name;
@@ -63,9 +64,15 @@ public class MemberVO {
 		this.tel = tel;
 		this.addr = addr;
 		this.sort = sort;
+		this.black=black;
 	}
 
-
+	public int getBlack() {
+		return black;
+	}
+	public void setBlack(int black) {
+		this.black = black;
+	}
 	public int getUserCnt() {
 		return userCnt;
 	}

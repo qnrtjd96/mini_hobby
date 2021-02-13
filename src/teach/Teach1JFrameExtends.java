@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
@@ -42,7 +44,6 @@ import dbConnection.MemoVO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
 import main.Main0Login;
-import studen.StudenCateList;
 
 public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener, Runnable{
 	JPanel paneTop = new JPanel(new BorderLayout());
@@ -92,6 +93,8 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	
 	MemberVO vo;
 	String id;
+	JPanel[] paneArr;
+	int p;
 	
 	public Teach1JFrameExtends() {}
 	public Teach1JFrameExtends(String id) {
@@ -107,6 +110,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		setBackground(Color.white);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		addWindowListener(new AdapterInner());
 	}
 	//logo 버튼 이벤트 오버라이딩
 	public void actionPerformed(ActionEvent ae) {
@@ -134,11 +138,12 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 			add(center);
 			center.setVisible(true);
 		} else if(obj==btn_new) { // 새글쓰기
-			center.setVisible(false);
-			center.removeAll();
-			center = new TeachTextCreate(id).main;
-			add(center);
-			center.setVisible(true);
+			//center.setVisible(false);
+			//center.removeAll();
+			new TeachTextCreate(id);
+			//center = new TeachTextCreate(id).main;
+			//add(center);
+			//center.setVisible(true);
 			
 		} else if(obj==btn_save) { // 메모저장
 			MemoVO vom = new MemoVO(ta.getText().substring(0, 10), ta.getText().substring(11), vo.getId());
@@ -163,7 +168,11 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		Object lbl = obj.getText();
 		try {
 			if(lbl.equals("이전으로")) {
-				JOptionPane.showMessageDialog(this, "구현중입니다.");
+				center.setVisible(false);
+				center.removeAll();
+				center=paneArr[p-1];
+				center.setVisible(true);
+				add("Center", center);
 			}else if(lbl.equals("메세지함")) {
 				center.setVisible(false);
 				center.removeAll();
@@ -171,18 +180,22 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 				center.setVisible(true);
 				add("Center", center);
 			}else if(lbl.equals("내정보")) {
+				///////////수정금지/////////////////
+				MemberDAO dao = new MemberDAO();
+				List<MemberVO> lst = dao.getMemberInfo(id);
+				MemberVO vo = lst.get(0);
+				String pwdRe = vo.getPwd();
 				String pwd = JOptionPane.showInputDialog("비밀번호를 입력하세요.");
 				if (pwd==null) {
 					
-				} else if (pwd.equals("master1234")) {
+				} else if (pwd.equals(pwdRe)) {
 					center.setVisible(false);
 					center.removeAll();
-					System.out.println("내정보로 넘어가는 > "+id);
 					center = new Teach3MyMenu(id).paneStu;
 					this.setVisible(true);
 					add("Center", center);
 				} else {
-					JOptionPane.showMessageDialog(this, "접속에 실패하셨습니다.");
+					JOptionPane.showMessageDialog(this, "비밀번호를 다시 확인해주세요");
 				}
 			}else if(lbl.equals("로그아웃")) {
 				int answer = JOptionPane.showConfirmDialog(this, "로그아웃 하시겠습니까?", "로그아웃 확인", 0);
@@ -191,7 +204,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 					this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 					Acess_memDAO dao = new Acess_memDAO();
 					int result = dao.LogOut(id);
-					
+System.out.println("로그아웃?"+result);
 					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
 					new Main0Login();
 				}
@@ -209,6 +222,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		public void windowClosing(WindowEvent we) {
 			Acess_memDAO dao = new Acess_memDAO();
 			int result = dao.LogOut(id);
+System.out.println("로그아웃?"+result);
 			System.exit(0);
 		}
 	}
@@ -265,6 +279,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		this.vo = lst.get(0);
 		login = new JLabel(vo.getName()+"님 로그인 완료");
 		
+		table.removeAll();
 		center.removeAll();
 		add("Center", center);
 		center.setBackground(Color.white);

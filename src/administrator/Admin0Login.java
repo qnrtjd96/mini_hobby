@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,9 +19,10 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
 import administrator.Admin1Main;
+import main.Main0Login;
 import main.Main3ChatServer;
 
-public class Admin0Login extends JFrame implements ActionListener{
+public class Admin0Login extends JFrame implements ActionListener, MouseListener{
 	JPanel login = new JPanel();
 	ImageIcon img = new ImageIcon("img/Biglogo.png");
 	JButton logo = new JButton(img);
@@ -31,6 +34,8 @@ public class Admin0Login extends JFrame implements ActionListener{
 	
 	JLabel askCompany = new JLabel("문의하기 02-1234-1234 / miniHobby@minicom.net");
 
+	JLabel userLogin = new JLabel("User Login");
+	
 	Color col6 = new Color(204,222,233);
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 20);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
@@ -54,12 +59,17 @@ public class Admin0Login extends JFrame implements ActionListener{
 		login.add(askCompany);
 		askCompany.setBounds(180,590,450,40); askCompany.setFont(fnt2);
 		
+		login.add(userLogin);
+		userLogin.setBounds(600,900,200,40); userLogin.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+		
 		setSize(800,1000);
 		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		loginBtn.addActionListener(this);
+		
+		userLogin.addMouseListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent ae) {
@@ -89,7 +99,11 @@ public class Admin0Login extends JFrame implements ActionListener{
 		
 	}
 	public void mouseReleased(MouseEvent me) {
-		
+		Object obj = me.getSource();
+			if(obj.equals(userLogin)) {
+					this.setVisible(false);
+					new Main0Login();
+			}
 	}
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}

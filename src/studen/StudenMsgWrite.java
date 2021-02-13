@@ -2,11 +2,14 @@ package studen;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -14,10 +17,12 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import dbConnection.Acess_memDAO;
+import dbConnection.ConsDAO;
+import dbConnection.ConsVO;
 
-public class StudenMsgWrite extends JPanel {
+public class StudenMsgWrite extends JPanel implements ActionListener{
 	Color col = new Color(204,222,233);
-	Font fn = new Font("맑은 고딕",Font.PLAIN, 25);
+	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 28);
 	Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
@@ -57,5 +62,17 @@ public class StudenMsgWrite extends JPanel {
 			int result = dao.LogOut(idStr);
 			System.exit(0);
 		}
+	}
+	public void actionPerformed(ActionEvent ae) {
+		Object obj = ae.getSource();
+		if(obj==send) {
+			ConsVO vo = new ConsVO(receiTf.getText(),idStr,titleTf.getText(),ta.getText());
+			ConsDAO dao = new ConsDAO();
+			int result = dao.insertReply(vo);
+			if (result>0) {
+				JOptionPane.showMessageDialog(this, "메시지 전송이 완료되었습니다.");
+			}
+		}
+		
 	}
 }

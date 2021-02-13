@@ -146,10 +146,9 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 	public void getCateList(String cate) {
 		Mem_teacherDAO dao = new Mem_teacherDAO();
 		List<Mem_teacherVO> lst = dao.cateList(cate);
-		
 		for(int i=0; i<lst.size(); i++) {
 			Mem_teacherVO vo = lst.get(i);
-			Object[] data = {i+1,"<HTML><U>"+vo.getClassName()+"</U></HTML>",vo.getCity(),vo.getCost(),vo.gettName()};
+			Object[] data = {vo.getClass_num(),"<HTML><U>"+vo.getClassName()+"</U></HTML>",vo.getCity(),vo.getCost(),vo.gettName()};
 			model.addRow(data);
 		}
 	}
@@ -162,11 +161,10 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 			//선택한 컬럼의 데이터 가져오기
 			int row = table.getSelectedRow();
 			int col = table.getSelectedColumn();
-			int colCount = table.getColumnCount();
-			Object value = table.getValueAt(row, col);
 			if(col==1) {
-				title = (String)model.getValueAt(row, 2); // 클래스명 가져오기 (혹시몰라서)
-				StudenReservationDetail srvd = new StudenReservationDetail();
+				title = (String)model.getValueAt(row, 1); // 클래스명 가져오기 (혹시몰라서)
+				int class_num = (int)model.getValueAt(row, 0);
+				new StudenReservationDetail(idStr, class_num, title);
 			}
 		}
 	}

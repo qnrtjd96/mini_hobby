@@ -68,7 +68,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 				JLabel re1 = new JLabel("후기글");
 				JPanel rev = new JPanel(new GridLayout(0,1));
 					JLabel re2 = new JLabel("별점 : ");
-					JLabel re3 = new JLabel("선택된 강의가 없습니다");
+					JLabel re3 = new JLabel("등록된 후기가 없습니다.");
 		JPanel detail = new JPanel(new BorderLayout());
 		JScrollPane sp = new JScrollPane(detail);
 		JButton editBtn = new JButton("내용수정");
@@ -121,9 +121,13 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	}
 	public TeachReservationDetail(String id, String classname, int class_num, String classdate) {
 		this.id=id;
-		this.classname = classname;
 		this.class_num = class_num;
-		this.time = classdate;
+		
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.studenInfo(class_num);
+		BoardVO vo = lst.get(0);
+		this.classname = vo.getClassname();
+		time = vo.getClassdate();
 		
 		lbl1.setText("선택한 클래스 : "+classname);
 		lbl2.setText("선택한 일자 : "+classdate);
@@ -337,8 +341,6 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		for(int space=1; space<week; space++) {
 			datePane.add(new JLabel(""));
 		}
-		
-		//체크박스 생성
 		
 		
 		// 월의 1일~마지막일 까지 출력 + 체크박스 연동

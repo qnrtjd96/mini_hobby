@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -10,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import dbConnection.Acess_memDAO;
 
 public class Teach2MsgFrame extends JPanel {
 	//탭 배경설정을 위한 부모 패널 
@@ -21,8 +25,10 @@ public class Teach2MsgFrame extends JPanel {
 	
 	Font TabFnt = new Font("돋움체", Font.BOLD, 20);
 	Font fnt = new Font("돋움체", Font.BOLD, 18);
+	String id;
 	public Teach2MsgFrame() {}
 	public Teach2MsgFrame(String id) {
+		this.id=id;
 		setLayout(new BorderLayout());
 		setBackground(Color.white);
 		
@@ -53,11 +59,18 @@ public class Teach2MsgFrame extends JPanel {
 		setVisible(true);
 		
 	}
-
+	//프레임 X 눌렀을때의 이벤트
+	class AdapterInner extends WindowAdapter{
+		//다시 오버라이딩
+		public void windowClosing(WindowEvent we) {
+			Acess_memDAO dao = new Acess_memDAO();
+			int result = dao.LogOut(id);
+			System.exit(0);
+		}
+	}
 	public static void main(String[] args) {
 		new Teach2MsgFrame();
 		
 		
 	}
-
 }

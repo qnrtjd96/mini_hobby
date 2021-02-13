@@ -151,7 +151,7 @@ public class TeachCateList extends JPanel implements ActionListener, MouseListen
 		
 		for(int i=0; i<lst.size(); i++) {
 			Mem_teacherVO vo = lst.get(i);
-			Object[] data = {i+1,"<HTML><U>"+vo.getClassName()+"</U></HTML>",vo.getCity(),vo.gettName(),vo.getCareer()};
+			Object[] data = {vo.getClass_num(),"<HTML><U>"+vo.getClassName()+"</U></HTML>",vo.getCity(),vo.gettName(),vo.getCareer()};
 			model.addRow(data);
 		}
 	}
@@ -168,7 +168,9 @@ public class TeachCateList extends JPanel implements ActionListener, MouseListen
 			Object value = table.getValueAt(row, col);
 			if(col==1) {
 				title = (String)model.getValueAt(row, 2); // 클래스명 가져오기 (혹시몰라서)
-				TeachReservationDetail trvd = new TeachReservationDetail();
+				int class_num = (int)model.getValueAt(row,0);
+				String classdate = (String)model.getValueAt(row,3);
+				new TeachReservationDetail(idStr, title, class_num, classdate);
 			}
 		}
 	}

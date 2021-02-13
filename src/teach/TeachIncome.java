@@ -32,9 +32,14 @@ public class TeachIncome extends JDialog{
 	List<String/*TeachVO*/> dbTp = null;
 	// 직선 패널 생성
 	JPanel linePane[] = {new JPanel(), new JPanel(), new JPanel(), new JPanel(), new JPanel()};
-
-	public TeachIncome(String id) {
-
+	
+	String id;
+	String date;
+	public TeachIncome() {}
+	public TeachIncome(String id, String date) {
+		this.id=id;
+		this.date=date;
+		
 		setSize(570,800);
 		setVisible(true);
 		setLocation(190, 100);
@@ -42,7 +47,7 @@ public class TeachIncome extends JDialog{
 		topLbl.setText("수입확인");
 		
 		//데이터 호출
-		incomeList(id);
+		incomeList(id, date);
 		
 		//오른쪽 패널에 add
 		for(int i=0; i<tp.length; i++) {
@@ -89,9 +94,10 @@ public class TeachIncome extends JDialog{
 		tp[0].setEditable(false);
 	}
 	//데이터 메소드
-	public void incomeList(String id) {
+	public void incomeList(String id, String date) {
 		Stu_ClassDAO dao = new Stu_ClassDAO();
-		List<Stu_ClassVO> lst = dao.teachIncomeList(id);
+		List<Stu_ClassVO> lst = dao.teachIncomeList(id, date);
+		
 		int cnt5 = 0; // 최근수입
 		int cntAll = 0; // 총수입
 		int lstCnt = lst.size();

@@ -5,6 +5,7 @@ public class Mem_teacherVO {
 	private String cate;
 	private String id;
 	//학생 클래스 검색(studenCateList.java)
+	private int class_num;
 	private String className;
 	private String city;
 	private int cost;
@@ -51,6 +52,12 @@ public class Mem_teacherVO {
 		this.tAddr = tAddr;
 		this.cate = cate;
 		this.career_year = career_year;
+	}
+	public int getClass_num() {
+		return class_num;
+	}
+	public void setClass_num(int class_num) {
+		this.class_num = class_num;
 	}
 	public String getCareer() {
 		return career;

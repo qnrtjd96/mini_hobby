@@ -240,7 +240,7 @@ public class AdminReceiveMsg extends JPanel implements MouseListener, ActionList
 				model.setRowCount(0);
 				adminMsgList();
 			}else {
-				JOptionPane.showMessageDialog(this, "선택한 메세지가 없습니다....");
+				JOptionPane.showMessageDialog(this, "선택한 메세지가 없습니다.");
 			}
 		}else if(delStr == consBtn) { //체크박스 추가 이벤트
 			consListPane.removeAll();

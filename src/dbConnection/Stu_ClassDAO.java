@@ -8,6 +8,86 @@ public class Stu_ClassDAO extends DBConnection{
 	public Stu_ClassDAO() {
 		
 	}
+	//2021-02-12 이강산
+	//학생 결제내역(마이페이지)(StudenMyPage)
+	public List<Stu_ClassVO> payStuSum(String date, String idStr) {
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql="select count(class_num) from STU_CLASS where substr(pay_date, 0,5) = ? and id = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			pstmt.setString(2, idStr);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO vo = new Stu_ClassVO();
+				vo.setPay(rs.getInt(1));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();  
+		}
+		return lst;
+	}
+	
+	//2021-02-12 이강산
+	//선생님 총수익(TeachTotal)
+	public List<Stu_ClassVO> paytotalSum(String date, String idStr) {
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql="select sum(a.pay) from stu_class a join BOARDTBL b on a.pay_class=b.classname where substr(a.pay_date, 0,5) = ? and b.id= ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			pstmt.setString(2, idStr);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO vo = new Stu_ClassVO();
+				vo.setPay(rs.getInt(1));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();  
+		}
+		return lst;
+		
+	}
+	//2021-02-12 이강산
+	//선생님 총수익(TeachTotal)
+	public List<Stu_ClassVO> payTeaSum(String idStr) {
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql="select sum(a.pay) from stu_class a join BOARDTBL b on a.pay_class=b.classname where b.id= ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO vob = new Stu_ClassVO();
+				vob.setPay(Integer.parseInt(rs.getString(1)));
+				lst.add(vob);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return lst;
+	}
+	
 	//2021-02-11 이강산
 	//학생내정보메인(StudenMypage) 캘린더 연동
 	public List<Stu_ClassVO> StuCalendar(String id) {
@@ -24,7 +104,6 @@ public class Stu_ClassDAO extends DBConnection{
 			while(rs.next()) {
 				Stu_ClassVO vob = new Stu_ClassVO();
 				vob.setClassdate(rs.getString(1));
-				System.out.println("vob = " + vob);
 				lst.add(vob);
 			}
 		} catch(Exception e) {
@@ -121,15 +200,16 @@ public class Stu_ClassDAO extends DBConnection{
 		return lst;
 	}
 	//teachincome 리스트
-	public List<Stu_ClassVO> teachIncomeList(String id) {
+	public List<Stu_ClassVO> teachIncomeList(String id, String date) {
 		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
 		try {
 			getConn();
 			
-			sql = "select s.pay_cate, m.name, s.pay from stu_class s join membertbl m on s.id = m.id join boardtbl b on s.class_num=b.class_num where b.id = ?";
+			sql = "select s.pay_cate, m.name, s.pay from stu_class s join membertbl m on s.id = m.id join boardtbl b on s.pay_class = b.classname where b.id = ? and substr(s.pay_date, 0,5) = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
+			pstmt.setString(2, date);
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -277,6 +357,30 @@ public class Stu_ClassDAO extends DBConnection{
 			dbClose();  
 		}
 		return lst;
-		
+	}
+	public int insertPay(Stu_ClassVO vo) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql="insert into stu_class (class_num, id, pay_class, pay_cate, pay, pay_date, classdate, classtime "
+					+ " values(?, ?, ?, ?, ?, sysdate, ?, ?)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getClass_num());
+			pstmt.setString(2, vo.getId());
+			pstmt.setString(3, vo.getPay_class());
+			pstmt.setString(4, vo.getPay_cate());
+			pstmt.setInt(5, vo.getPay());
+			pstmt.setString(6, vo.getClassdate());
+			pstmt.setString(7, vo.getClasstime());
+			
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return result;
 	}
 }

@@ -247,7 +247,7 @@ public class MemberDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql = "select id, pwd, name, sort from membertbl where id=? and pwd=?";
+			sql = "select id, pwd, name, sort, black from membertbl where id=? and pwd=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, searchId);
@@ -261,6 +261,7 @@ public class MemberDAO extends DBConnection{
 				vo.setPwd(rs.getString(2));
 				vo.setName(rs.getString(3));
 				vo.setSort(rs.getInt(4));
+				vo.setBlack(rs.getInt(5));
 				
 				lst.add(vo);
 			}
@@ -341,13 +342,14 @@ public class MemberDAO extends DBConnection{
 	//2021.02.11 이강산
 	//휴면계정 admin sleep user
 	public int memberDelete(String id) {
+		System.out.println("dao id ? ? ? "+id);
 		int result = 0;
 		try {
 			getConn();
-			sql = "delete from membertbl where id=?";
+			sql = "delete from membertbl where id=? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
-			
+			System.out.println("dao id ? ? ? "+id);
 			result = pstmt.executeUpdate();
 			
 		}catch(Exception e) {
@@ -355,6 +357,7 @@ public class MemberDAO extends DBConnection{
 		}finally {
 			dbClose();
 		}
+		System.out.println("result? ? ? "+result);
 		return result;
 	}
 	//학생 계정 탈퇴
@@ -399,4 +402,65 @@ public class MemberDAO extends DBConnection{
 		
 		return lst;
 	}
+	// blacklist update
+	public int blackUpdate(String id) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql="update membertbl set black=2 where id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			dbClose();
+		}
+		return result;
+	}
+	// blacklist delete
+	public int blackDelete(String id) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql="update membertbl set black=1 where id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			dbClose();
+		}
+		return result;
+	}
+	// blacklist check
+	public int blackSearch(String id) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql="select black from membertbl where id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			dbClose();
+		}
+		return result;
+	}
+	
 }
