@@ -13,8 +13,9 @@ import javax.swing.border.LineBorder;
 
 import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
+import teach.TeachMsgReplyDialog;
 
-public class AdminReceiveMsgDialog implements MouseListener{
+public class AdminReceiveMsgDialog extends JFrame implements MouseListener{
 	JFrame frame = new JFrame();
 	LineBorder lineBorder = new LineBorder(Color.black);
 	JPanel mainPane = new JPanel();
@@ -22,8 +23,13 @@ public class AdminReceiveMsgDialog implements MouseListener{
 		JLabel recUserTp, recUserStrTp;
 		JLabel msgLbl = new JLabel();
 		JLabel sendLbl = new JLabel("<HTML><U>답장하기</U></HTML>",JLabel.CENTER);
+		
+		String id; int msgNum;
 	public AdminReceiveMsgDialog() {}
 	public AdminReceiveMsgDialog(String id, int msgNum) {
+		this.id="master";
+		this.msgNum=msgNum;
+		
 		frame.setTitle("메세지 상세내용");
 		mainPane.setLayout(null);
 		
@@ -75,9 +81,12 @@ public class AdminReceiveMsgDialog implements MouseListener{
 		int clickBtn = e.getButton();
 		Object obj = e.getSource();
 		if(clickBtn==1) {
-			if(obj == sendLbl) {
-				frame.setVisible(false);
-				//쪽지쓰기 다이어로그 구현
+			ConsDAO dao = new ConsDAO();
+			List<ConsVO> lst = dao.replyInfo(msgNum);
+			if(lst.size()>0) {
+				ConsVO vo = lst.get(0);
+				this.setVisible(false);
+				new AdminMsgReplyDialog(vo.getGet(), vo.getSend(), vo.getMsg_title());
 			}
 		}
 		

@@ -150,5 +150,49 @@ public class ConsDAO extends DBConnection{
 		
 		return lst;
 	}
+	// Teach 답장하기
+	public List<ConsVO> replyInfo(int msgNum) {
+		List<ConsVO> lst = new ArrayList<ConsVO>();
+		try {
+			getConn();
+			
+			sql="select get, send, msg_title from constbl where msg_num=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, msgNum);
+			
+			rs = pstmt.executeQuery();
+			ConsVO vo = new ConsVO();
+			vo.setGet(rs.getString(1));
+			vo.setSend(rs.getString(2));
+			vo.setMsg_title(rs.getString(3));
+			
+			lst.add(vo);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		
+		return lst;
+	}
+	public int insertReply(ConsVO vo) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql="insert into constbl(msg_num, get, send, msg_title, msg_detail, sendtime) "
+					+ " values(msb_num.nextval, ?, ?, ?, ?, sysdate) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			result=pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
 
 }
