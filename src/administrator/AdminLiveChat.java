@@ -167,41 +167,41 @@ public class AdminLiveChat extends JPanel implements MouseListener, ActionListen
 		
 	}
 	//학생 레코드넣기
-		public void setNewTableList(List<Acess_memVO> lst) {
-			stuT.setRowCount(0); //JTable의 레코드 지우기
-			
-			for(int i=0; i<lst.size(); i++) {
-				Acess_memVO vo = lst.get(i);
-				Object[] stuData = {"○", vo.getId(), vo.getId()};
-				stuT.addRow(stuData);
-			}
+	public void setNewTableList(List<Acess_memVO> lst) {
+		stuT.setRowCount(0); //JTable의 레코드 지우기
+		
+		for(int i=0; i<lst.size(); i++) {
+			Acess_memVO vo = lst.get(i);
+			Object[] stuData = {"○", vo.getId(), vo.getId()};
+			stuT.addRow(stuData);
 		}
-		public void setNewTeacherTableList(List<Acess_memVO> lst2) {
-			teaT.setRowCount(0); //JTable의 레코드 지우기
+	}
+	public void setNewTeacherTableList(List<Acess_memVO> lst2) {
+		teaT.setRowCount(0); //JTable의 레코드 지우기
+		
+		for(int i=0; i<lst2.size(); i++) {
+			Acess_memVO vo2 = lst2.get(i);
+			Object[] teaData = {"○", vo2.getId(), vo2.getName()};
 			
-			for(int i=0; i<lst2.size(); i++) {
-				Acess_memVO vo2 = lst2.get(i);
-				Object[] teaData = {"○", vo2.getId(), vo2.getName()};
-				
-				teaT.addRow(teaData);
-			}
+			teaT.addRow(teaData);
 		}
-		//회원선택
-		public void getMemberAll() {
-			//데이터베이스의 모든 회원을 선택해서 JTable에 표시한다
-			Acess_memDAO dao = new Acess_memDAO();
-			List<Acess_memVO> lst = dao.LiveChattStu();
-			
-			setNewTableList(lst);
-		}
-		//선생님선택
-		public void getTeacherAll() {
-			//데이터베이스의 모든 회원을 선택해서 JTable에 표시한다
-			Acess_memDAO dao2 = new Acess_memDAO();
-			List<Acess_memVO> lst2 = dao2.LiveChattpeople();
-			
-			setNewTeacherTableList(lst2);
-		}
+	}
+	//회원선택
+	public void getMemberAll() {
+		//데이터베이스의 모든 회원을 선택해서 JTable에 표시한다
+		Acess_memDAO dao = new Acess_memDAO();
+		List<Acess_memVO> lst = dao.LiveChattStu();
+		
+		setNewTableList(lst);
+	}
+	//선생님선택
+	public void getTeacherAll() {
+		//데이터베이스의 모든 회원을 선택해서 JTable에 표시한다
+		Acess_memDAO dao2 = new Acess_memDAO();
+		List<Acess_memVO> lst2 = dao2.LiveChattpeople();
+		
+		setNewTeacherTableList(lst2);
+	}
 	public static void main(String[] args) {
 		new AdminLiveChat();
 	}
@@ -217,7 +217,7 @@ public class AdminLiveChat extends JPanel implements MouseListener, ActionListen
 			}
 			for(int i=0; i<stuTable.getRowCount(); i++) {
 				if(stuTable.getValueAt(i, 0).equals("●")) {
-					JOptionPane.showMessageDialog(this, "선택한 선생님과 채팅이 연결됩니다.");
+					JOptionPane.showMessageDialog(this, "선택한 학생과 채팅이 연결됩니다.");
 					new main.Main4ChatClient(id);
 				}
 			}
@@ -231,6 +231,16 @@ public class AdminLiveChat extends JPanel implements MouseListener, ActionListen
 	public void mouseClicked(MouseEvent e) {
 		int clickBtn = e.getButton();
 		if(clickBtn==1) {
+			//선택한 컬럼의 데이터 가져오기
+			int row = stuTable.getSelectedRow();
+			int col = stuTable.getSelectedColumn();
+			Object value = stuTable.getValueAt(row, col);
+			if(value.equals("○")) {
+				stuTable.setValueAt("●", row, col);
+			}else if(value.equals("●")) {
+				stuTable.setValueAt("○", row, col);
+			}
+		}else if(clickBtn ==3) {
 			//선택한 컬럼의 데이터 가져오기
 			int row = teaTable.getSelectedRow();
 			int col = teaTable.getSelectedColumn();
