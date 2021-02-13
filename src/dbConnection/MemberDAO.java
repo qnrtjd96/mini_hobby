@@ -342,13 +342,14 @@ public class MemberDAO extends DBConnection{
 	//2021.02.11 이강산
 	//휴면계정 admin sleep user
 	public int memberDelete(String id) {
+		System.out.println("dao id ? ? ? "+id);
 		int result = 0;
 		try {
 			getConn();
-			sql = "delete from membertbl where id=?";
+			sql = "delete from membertbl where id=? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
-			
+			System.out.println("dao id ? ? ? "+id);
 			result = pstmt.executeUpdate();
 			
 		}catch(Exception e) {
@@ -356,6 +357,7 @@ public class MemberDAO extends DBConnection{
 		}finally {
 			dbClose();
 		}
+		System.out.println("result? ? ? "+result);
 		return result;
 	}
 	//학생 계정 탈퇴
