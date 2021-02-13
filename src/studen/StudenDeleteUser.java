@@ -18,6 +18,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 
 import dbConnection.Acess_memDAO;
+import dbConnection.BoardDAO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 import main.Main0Login;
@@ -113,9 +114,15 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 	public void matchPwd(String inputPwd, String idStr, String pwdStr) {
 		System.out.println("idStr > > > "+idStr+", 입력 비밀번호 > "+inputPwd+", 로그인 비밀번호 > > > "+pwdStr);
 		if(inputPwd.equals(pwdStr)) {	//로그인한 회원의 비밀번호와 일치시
+			BoardDAO doit = new BoardDAO();
+			int first = doit.deleteMember(idStr);
+			if(first>0) {
+				System.out.println("board부분 삭제완료");
+			}else {
+				System.out.println("board부분 삭제안됨");
+			}
 			MemberDAO dao = new MemberDAO();
-			
-			int result = dao.memberDelete(idStr);
+			int result = dao.memDelete(idStr);
 			if(result>0) {
 				JOptionPane.showMessageDialog(this, "이용해주셔서 감사합니다, \n 언제든 다시 돌아와주세요.");
 				new Main0Login();

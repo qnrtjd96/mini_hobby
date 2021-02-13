@@ -7,6 +7,25 @@ public class MemberDAO extends DBConnection{
 	public MemberDAO() {
 		
 	}
+	//2021-02-14 이강산
+	//회원 탈퇴(StudenDeleteUser)
+	public int memDelete(String idStr) {
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from membertbl where id=? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.getMessage();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
+	
 	//휴먼계정 조회
 	//2020-02-09 이강산
 	public List<MemberVO> sleepingAllSelect() {
@@ -342,14 +361,12 @@ public class MemberDAO extends DBConnection{
 	//2021.02.11 이강산
 	//휴면계정 admin sleep user
 	public int memberDelete(String id) {
-		System.out.println("dao id ? ? ? "+id);
 		int result = 0;
 		try {
 			getConn();
 			sql = "delete from membertbl where id=? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
-			System.out.println("dao id ? ? ? "+id);
 			result = pstmt.executeUpdate();
 			
 		}catch(Exception e) {
@@ -357,7 +374,6 @@ public class MemberDAO extends DBConnection{
 		}finally {
 			dbClose();
 		}
-		System.out.println("result? ? ? "+result);
 		return result;
 	}
 	//학생 계정 탈퇴
