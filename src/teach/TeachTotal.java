@@ -251,7 +251,7 @@ public class TeachTotal extends JPanel implements MouseListener{
 		List<Stu_ClassVO> lst = dao.payTeaSum(idStr);
 		
 		if(lst.size()==0 ) {
-			System.out.println("아이디를 매치를 못함...");
+			System.out.println("값이 null임");
 			soonwonn.setText("0원");
 			totalwonn.setText("0원");
 		}else if(lst.equals(null)) {

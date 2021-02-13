@@ -46,7 +46,7 @@ public class Stu_ClassDAO extends DBConnection{
 				lst.add(vo);
 			}
 		}catch(Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}finally {
 			dbClose();  
 		}

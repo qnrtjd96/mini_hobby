@@ -21,6 +21,7 @@ import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
 import dbConnection.Mem_teacherDAO;
 import dbConnection.Mem_teacherVO;
+import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 import dbConnection.MoneyDAO;
 import dbConnection.MoneyVO;
@@ -67,6 +68,7 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		
 		//달력에 아이디 넣어줘야대는값
 		MoneyVO vo;
+		MemberVO vo10;
 		
 		//월별 데이터
 		Calendar date; 
@@ -323,7 +325,17 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		List<MoneyVO> searchId = dao.getMoneyInfo(idStr);
 		
 		if(searchId.size()==0 ) {
-			System.out.println("아이디를 매치를 못함...");
+			System.out.println("값이 없음");
+			
+			MemberDAO dao2 = new MemberDAO();
+			List<MemberVO> a = dao2.idcheck(idStr);
+			vo10 = a.get(0);
+			
+			charge2 = "0";
+			charge1.setText(charge2 + "원");	
+		}else if(searchId.equals(null)) {
+			charge2 = "0";
+			charge1.setText(charge2 + "원");	
 		}else {
 			vo = searchId.get(0);
 			charge2 = Integer.toString(vo.getBalance());
@@ -381,7 +393,12 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		}
 		// 월의 1일~마지막일 까지 출력 (+라벨 배경색 바꾸기 위한 작업)
 		Stu_ClassDAO dao = new Stu_ClassDAO();
-		List<Stu_ClassVO> lst = dao.StuCalendar(vo.getId());
+		List<Stu_ClassVO> lst;
+		if(vo != null) {
+			 lst = dao.StuCalendar(vo.getId());
+		}else {
+			 lst = dao.StuCalendar(vo10.getId());
+		}
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);

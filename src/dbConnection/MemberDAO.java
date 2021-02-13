@@ -8,6 +8,34 @@ public class MemberDAO extends DBConnection{
 		
 	}
 	//2021-02-14 이강산
+	//회원 마이페이지 칼럼이 0인경우에 대신검색(StudenMyPage)
+	public List<MemberVO> idcheck(String idStr) {
+		List<MemberVO> lst= new ArrayList<MemberVO>();
+		try {
+			getConn(); 
+			sql = "SELECT id FROM MEMBERTBL WHERE id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+				
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setId(rs.getString(1));
+				
+				lst.add(vo);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;	
+	}
+	
+	//2021-02-14 이강산
 	//회원 탈퇴(StudenDeleteUser)
 	public int memDelete(String idStr) {
 		int result = 0;
