@@ -27,7 +27,7 @@ public class AdminReceiveMsgDialog extends JFrame implements MouseListener{
 		String id; int msgNum;
 	public AdminReceiveMsgDialog() {}
 	public AdminReceiveMsgDialog(String id, int msgNum) {
-		this.id="master";
+		this.id=id;
 		this.msgNum=msgNum;
 		
 		frame.setTitle("메세지 상세내용");
@@ -99,7 +99,6 @@ public class AdminReceiveMsgDialog extends JFrame implements MouseListener{
 	public void msgDetailList(String id, int msgNum) {
 		ConsDAO dao = new ConsDAO();
 		List<ConsVO> lst = dao.studenDiaMsgRec(id, msgNum);
-		
 		for(int i=0; i<lst.size(); i++) {
 			ConsVO vo = lst.get(i);
 			Object[] data = {" "+vo.getMsg_title(),vo.getSend(),vo.getMsg_detail()};

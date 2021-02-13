@@ -21,6 +21,8 @@ import javax.swing.border.LineBorder;
 import administrator.Admin0Login;
 import dbConnection.Acess_memDAO;
 import dbConnection.Acess_memVO;
+import dbConnection.BlackListDAO;
+import dbConnection.BlackListVO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 import studen.Studen2JFrameExtends;
@@ -123,18 +125,27 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 				Acess_memVO amVO = new Acess_memVO(vo.getSort(), idStr, vo.getName());
 				Acess_memDAO amDAO = new Acess_memDAO();
 				int result = amDAO.LogIn(amVO);
-				if (vo.getSort()==1) {
-					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
-					this.setVisible(false);
-					new Studen2JFrameExtends(idStr, pwdStr);
-					new Main3ChatServer(vo.getId());
-				} else if(vo.getSort()==2) {
-					JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
-					this.setVisible(false);
-					new Teach1JFrameExtends(vo.getId());
-					new Main3ChatServer(vo.getId());
-				} else if(vo.getSort()==3) {
-					JOptionPane.showMessageDialog(this, "관리자님께서는 로그인페이지 하단의 Administrator Login을 이용해주십시오");
+				if(vo.getBlack()==1) {
+					if (vo.getSort()==1) {
+						JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
+						this.setVisible(false);
+						new Studen2JFrameExtends(idStr, pwdStr);
+						new Main3ChatServer(vo.getId());
+					} else if(vo.getSort()==2) {
+						JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
+						this.setVisible(false);
+						new Teach1JFrameExtends(vo.getId());
+						new Main3ChatServer(vo.getId());
+					} else if(vo.getSort()==3) {
+						JOptionPane.showMessageDialog(this, "관리자님께서는 로그인페이지 하단의 Administrator Login을 이용해주십시오");
+					}
+				} else if(vo.getBlack()==2) {
+					BlackListDAO daob = new BlackListDAO();
+					List<BlackListVO> lst = daob.searchList(idStr);
+					if (lst.size()>0) {
+						BlackListVO volst = lst.get(0);
+						JOptionPane.showMessageDialog(this, volst.getId()+"님은 "+volst.getWhy()+"사유로 로그인이 불가능한 회원입니다. 관리자측 문의 부탁드립니다.");
+					}
 				}
 			}
 		}

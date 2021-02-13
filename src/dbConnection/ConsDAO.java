@@ -181,10 +181,14 @@ public class ConsDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql="insert into constbl(msg_num, get, send, msg_title, msg_detail, sendtime) "
-					+ " values(msb_num.nextval, ?, ?, ?, ?, sysdate) ";
+			sql="insert into constbl(msg_num, get, send, msg_title, msg_detail, send_time) "
+					+ " values(msg_num.nextval, ?, ?, ?, ?, sysdate) ";
 			
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getGet());
+			pstmt.setString(2, vo.getSend());
+			pstmt.setString(3, vo.getMsg_title());
+			pstmt.setString(4, vo.getMsg_detail());
 			
 			result=pstmt.executeUpdate();
 		}catch(Exception e) {
