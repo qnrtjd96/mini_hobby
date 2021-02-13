@@ -49,6 +49,8 @@ public class AdminMsgWrite extends JPanel implements ActionListener{
 		sp.setBounds(0,101,740,600); ta.setFont(fn);
 		send.setBounds(500,720,200,50); send.setBackground(col); send.setFont(fn2);
 		
+		send.addActionListener(this);
+		
 	}
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();

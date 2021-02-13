@@ -234,7 +234,7 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 	public void setMember() {
 		String id = tfStr[0].getText();
 		MemberVO vo = new MemberVO(id, tfStr[1].getText(), tfStr[3].getText(),
-				tfStr[4].getText(), tfStr[5].getText(), tfStr[6].getText(), tfStr[7].getText(), check);
+				tfStr[4].getText(), tfStr[5].getText(), tfStr[6].getText(), tfStr[7].getText(), check, 1);
 		if(vo.getId().equals("")||vo.getPwd().equals("")) {
 			JOptionPane.showMessageDialog(this, "아이디와 비밀번호는 필수 입력조건입니다.");
 		} else if (vo.getName().equals("")||vo.getMail().equals("")||vo.getTel().equals("")) {

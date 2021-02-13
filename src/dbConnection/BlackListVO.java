@@ -5,11 +5,25 @@ public class BlackListVO {
 	private String id;
 	private String why;
 	private String black_date;
+	private int sort; // memberVO 연동
 	
-	public BlackListVO(String id, String why, String black_date) {
+	public BlackListVO() {
+		
+	}
+	
+	public BlackListVO(String id, String why, String black_date, int sort) {
 		this.id = id;
 		this.why = why;
 		this.black_date = black_date;
+		this.sort = sort;
+	}
+
+	public int getSort() {
+		return sort;
+	}
+
+	public void setSort(int sort) {
+		this.sort = sort;
 	}
 
 	public String getId() {
