@@ -9,6 +9,33 @@ public class Stu_ClassDAO extends DBConnection{
 		
 	}
 	//2021-02-12 이강산
+	//학생 결제내역(마이페이지)(StudenMyPage)
+	public List<Stu_ClassVO> payStuSum(String date, String idStr) {
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql="select count(class_num) from STU_CLASS where substr(pay_date, 0,5) = ? and id = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			pstmt.setString(2, idStr);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO vo = new Stu_ClassVO();
+				vo.setPay(rs.getInt(1));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();  
+		}
+		return lst;
+	}
+	
+	//2021-02-12 이강산
 	//선생님 총수익(TeachTotal)
 	public List<Stu_ClassVO> paytotalSum(String date, String idStr) {
 		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
@@ -77,7 +104,6 @@ public class Stu_ClassDAO extends DBConnection{
 			while(rs.next()) {
 				Stu_ClassVO vob = new Stu_ClassVO();
 				vob.setClassdate(rs.getString(1));
-				System.out.println("vob = " + vob);
 				lst.add(vob);
 			}
 		} catch(Exception e) {
