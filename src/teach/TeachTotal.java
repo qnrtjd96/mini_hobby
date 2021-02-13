@@ -40,9 +40,9 @@ public class TeachTotal extends JPanel implements MouseListener{
 	JLabel cal4 = new JLabel(); String cal41;
 	 	p grap = new p();//그래프들어갈자리
 	JLabel totoal = new JLabel("총 수입");
-	JLabel totalwonn = new JLabel(); String dbwon;
+	JLabel totalwonn = new JLabel(); String dbwon= "0";
 	JLabel soontotal = new JLabel("순 수입");
-	JLabel soonwonn = new JLabel(); String soonwon;
+	JLabel soonwonn = new JLabel(); String soonwon="0";
 	
 	String idStr;
 	
@@ -51,6 +51,7 @@ public class TeachTotal extends JPanel implements MouseListener{
 	int year1, year2, year3, year4;
 	int month1, month2, month3, month4;
 	String date1, date2, date3, date4;
+	public TeachTotal(){}
 	public TeachTotal(String id){
 		idStr = id;
 		setLayout(null);
@@ -251,6 +252,11 @@ public class TeachTotal extends JPanel implements MouseListener{
 		
 		if(lst.size()==0 ) {
 			System.out.println("아이디를 매치를 못함...");
+			soonwonn.setText("0원");
+			totalwonn.setText("0원");
+		}else if(lst.equals(null)) {
+			soonwonn.setText("0원");
+			totalwonn.setText("0원");			
 		}else {
 			Stu_ClassVO won = lst.get(0);
 			dbwon = Integer.toString(won.getPay());
