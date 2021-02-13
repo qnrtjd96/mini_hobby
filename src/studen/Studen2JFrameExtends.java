@@ -27,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import dbConnection.Acess_memDAO;
+import dbConnection.BoardDAO;
+import dbConnection.BoardVO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 import main.Main0Login;
@@ -41,7 +43,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	ImageIcon background = new ImageIcon("mini_hobby/img/searchBack.gif");
 	
 	JPanel center = new JPanel(null); //전체 프레임의 중간에 들어갈 패널
-		String defWord = "클래스명 또는 강사의 이름을 입력해주세요.";
+		String defWord = " < < <클래스명을 입력해주세요 > > >";
 		JTextField searchTf = new JTextField();
 		JButton searchBtn = new JButton("검색");
 		
@@ -106,13 +108,13 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center.setVisible(true);
 		} else if(obj==searchBtn) {
 			String searchWord = searchTf.getText();
+			StudenCateList scl = new StudenCateList(searchWord);
+			scl.searchTf.setText(searchWord);
 			center.setVisible(false);
 			center.removeAll();
-			center = new StudenCateList().mainPane;
+			center = scl.mainPane;
 			center.setVisible(true);
 			add("Center", center);
-			System.out.println("검색버튼을 누름");
-			matchWord(searchWord);
 		}else if(obj==musicBtn) {
 			String music = musicBtn.getText();
 			StudenCateList scl = new StudenCateList(music);
@@ -197,9 +199,9 @@ System.out.println("로그아웃?"+result);
 					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
 					new Main0Login();
 				}
-			}else if(lbl.equals(searchTf)) {
-				
-			}
+			}//else if(lbl.equals(searchTf)) {
+			//	searchTf.setText("");
+			//}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -268,7 +270,7 @@ System.out.println("로그아웃?"+result);
 		back.setBackground(Color.white);
 		back.setBounds(0,65, 1000,500);
 		
-		searchTf.setText(defWord);
+		//searchTf.setText(defWord);
 		searchTf.setBorder(new LineBorder(Color.black, 2));
 		searchTf.setFont(searchFnt); searchTf.setBounds(100,250, 500,40); center.add(searchTf);
 		
@@ -301,16 +303,8 @@ System.out.println("로그아웃?"+result);
 		
 		searchTf.addMouseListener(this);
 		
-		
 	}
 	
-	public void matchWord(String searchWord) {
-		System.out.println("검색눌림");
-		JOptionPane.showMessageDialog(this, "ㅎㅎㅎㅎ");
-		
-	}
-	
-	//이벤트 구현 여기서 해야하나?
 	public void mousePressed(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
