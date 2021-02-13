@@ -121,9 +121,13 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	}
 	public TeachReservationDetail(String id, String classname, int class_num, String classdate) {
 		this.id=id;
-		this.classname = classname;
 		this.class_num = class_num;
-		this.time = classdate;
+		
+		BoardDAO dao = new BoardDAO();
+		List<BoardVO> lst = dao.studenInfo(class_num);
+		BoardVO vo = lst.get(0);
+		this.classname = vo.getClassname();
+		time = vo.getClassdate();
 		
 		lbl1.setText("선택한 클래스 : "+classname);
 		lbl2.setText("선택한 일자 : "+classdate);

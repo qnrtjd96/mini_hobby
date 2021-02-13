@@ -341,7 +341,7 @@ public class BoardDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql="update boardtbl set classtime=?, where class_num=?";
+			sql="update boardtbl set classtime=? where class_num=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, classtime);

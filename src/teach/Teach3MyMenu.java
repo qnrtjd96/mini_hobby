@@ -23,7 +23,7 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 	JPanel paneStu = new JPanel(new BorderLayout(20,20));
 		JPanel paneLeft = new JPanel();
 			//왼쪽 메뉴 라벨 입력
-		JPanel center = new TeachInfo();
+		JPanel center;
 			//각 메뉴별 기능 구현
 			//오른쪽 패널 타이틀 보더 설정
 			LineBorder lineBorder = new LineBorder(Color.black, 1);
@@ -49,7 +49,7 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 		this.id = id; 
 		System.out.println("teach3MyMenu id > > > "+id);
 		add("Center", paneStu);
-		
+		center = new TeachInfo(id);
 		paneStu.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		paneStu.setBackground(Color.white);
 		paneStu.add(paneLeft); paneStu.add(paneBottom); paneStu.add(center);

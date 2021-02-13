@@ -96,14 +96,18 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 	public StudenReservationDetail() {}
 	public StudenReservationDetail(String id, int class_num, String classname) {
 		this.id=id;
-		this.class_num=class_num;
+		this.class_num = class_num;
+System.out.println("글번호="+class_num);
 		
 		BoardDAO dao = new BoardDAO();
 		List<BoardVO> lst = dao.studenInfo(class_num);
-		BoardVO vo = lst.get(0);
-		time = vo.getClassdate();
-		classtime = vo.getClasstime();
-		this.classname = vo.getClassname();
+System.out.println("1="+lst.size());
+		if(lst.size()>0) {
+			BoardVO vo = lst.get(0);
+			this.classname = vo.getClassname();
+			time = vo.getClassdate();
+			classtime = vo.getClasstime();
+		}
 		
 		mainStart();
 		tableSetting();

@@ -180,18 +180,22 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 				center.setVisible(true);
 				add("Center", center);
 			}else if(lbl.equals("내정보")) {
+				///////////수정금지/////////////////
+				MemberDAO dao = new MemberDAO();
+				List<MemberVO> lst = dao.getMemberInfo(id);
+				MemberVO vo = lst.get(0);
+				String pwdRe = vo.getPwd();
 				String pwd = JOptionPane.showInputDialog("비밀번호를 입력하세요.");
 				if (pwd==null) {
 					
-				} else if (pwd.equals("master1234")) {
+				} else if (pwd.equals(pwdRe)) {
 					center.setVisible(false);
 					center.removeAll();
-					System.out.println("내정보로 넘어가는 > "+id);
 					center = new Teach3MyMenu(id).paneStu;
 					this.setVisible(true);
 					add("Center", center);
 				} else {
-					JOptionPane.showMessageDialog(this, "접속에 실패하셨습니다.");
+					JOptionPane.showMessageDialog(this, "비밀번호를 다시 확인해주세요");
 				}
 			}else if(lbl.equals("로그아웃")) {
 				int answer = JOptionPane.showConfirmDialog(this, "로그아웃 하시겠습니까?", "로그아웃 확인", 0);
@@ -200,7 +204,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 					this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 					Acess_memDAO dao = new Acess_memDAO();
 					int result = dao.LogOut(id);
-					
+System.out.println("로그아웃?"+result);
 					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
 					new Main0Login();
 				}
@@ -218,6 +222,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		public void windowClosing(WindowEvent we) {
 			Acess_memDAO dao = new Acess_memDAO();
 			int result = dao.LogOut(id);
+System.out.println("로그아웃?"+result);
 			System.exit(0);
 		}
 	}

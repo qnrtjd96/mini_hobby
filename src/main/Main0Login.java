@@ -124,14 +124,17 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 				//로그인 정보 DB로 넘기기
 				Acess_memVO amVO = new Acess_memVO(vo.getSort(), idStr, vo.getName());
 				Acess_memDAO amDAO = new Acess_memDAO();
-				int result = amDAO.LogIn(amVO);
 				if(vo.getBlack()==1) {
 					if (vo.getSort()==1) {
+						int result = amDAO.LogIn(amVO);
+System.out.println("로그인?"+result);
 						JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
 						this.setVisible(false);
 						new Studen2JFrameExtends(idStr, pwdStr);
 						new Main3ChatServer(vo.getId());
 					} else if(vo.getSort()==2) {
+						int result = amDAO.LogIn(amVO);
+System.out.println("로그인?"+result);
 						JOptionPane.showMessageDialog(this, vo.getName()+"님, 환영합니다.");
 						this.setVisible(false);
 						new Teach1JFrameExtends(vo.getId());
