@@ -44,7 +44,6 @@ import dbConnection.MemoVO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
 import main.Main0Login;
-import studen.StudenCateList;
 
 public class Teach1JFrameExtends extends JFrame implements ActionListener, MouseListener, Runnable{
 	JPanel paneTop = new JPanel(new BorderLayout());
@@ -111,6 +110,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		setBackground(Color.white);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		addWindowListener(new AdapterInner());
 	}
 	//logo 버튼 이벤트 오버라이딩
 	public void actionPerformed(ActionEvent ae) {
