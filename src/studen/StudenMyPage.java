@@ -37,7 +37,6 @@ public class StudenMyPage extends JPanel implements MouseListener{
 	
 			JLabel charge = new JLabel("나의 잔액 : ");
 			JLabel charge1 = new JLabel(); String charge2= "";
-			JLabel won = new JLabel("원");
 			JPanel cal = new JPanel();
 			JLabel ture1 = new JLabel("참여예정"); 
 			JLabel false1 = new JLabel("참여완료");
@@ -68,13 +67,21 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		
 		//달력에 아이디 넣어줘야대는값
 		MoneyVO vo;
+		
+		//월별 데이터
+		Calendar date; 
+		int year1, year2, year3, year4 ,year5, year6;
+		int month1, month2, month3, month4, month5, month6;
+		String date1, date2, date3, date4, date5, date6;
 	public StudenMyPage() {}
 	public StudenMyPage(String idStr) {
 		this.idStr = idStr;
+		
+		canlendarDate();
 		setLayout(null);
 
 		//패널에추가
-		add(charge); add(charge1); add(won);
+		add(charge); add(charge1); 
 		add(cal);
 		add(blue);  add(red);
 		add(ture1); add(false1);
@@ -87,10 +94,9 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		//int x, int y, int width, int height						
 		charge.setBounds(290,5,500,70); charge.setFont(fntPlain25);
 		charge1.setBounds(420, 5, 500, 70); charge1.setFont(fntPlain25);
-		won.setBounds(500, 5, 500, 70); won.setFont(fntPlain25);
 		cal.setBounds(27, 75, 500, 400); cal.setFont(fntPlain15); cal.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		blue.setBounds(365, 480, 500, 20);  red.setBounds(455, 480, 500, 20);
-		blue.setForeground(Color.blue);		red.setForeground(Color.red);
+		blue.setForeground(col);		red.setForeground(Color.red);
 		ture1.setBounds(380, 480, 500, 20);	false1.setBounds(470, 480, 500, 20);
 		ture1.setFont(fntBold15); 			false1.setFont(fntBold15);
 
@@ -98,7 +104,6 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		total.setFont(fntBold25);			
 		grap.setBounds(27, 580, 500, 200);	
 		/////////////////////////////////						
-		System.out.println("id 잘받아오는거 맞니? = " + idStr);
 
 		//마지막 paneRight에 추가
 		setBackground(Color.white);
@@ -109,45 +114,206 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		//날짜선언
 		calendar_Tea();
 	}	
+	public void canlendarDate() {
+		date = Calendar.getInstance();
+		year6 = date.get(Calendar.YEAR); //현재 날짜의 년도
+		month6 = date.get(Calendar.MONTH)+1; //현재 날짜의 월
+		//3달전 데이터
+		year5 = year6; month5 = month6-1;
+		year4 = year5; month4 = month5-1;
+		year3 = year4; month3 = month4-1;
+		year2 = year3; month2 = month3-1;
+		year1 = year2; month1 = month2-1;
+
+		if(month6==1) {
+			year5 -= 1;	month5 = 12;
+			year4 = year5; month4 = 11;
+			year3 = year4; month3 = 10;
+			year2 = year3; month2 = 9;
+			year1 = year2; month1 = 8;
+		}else if(month5==1) {
+			year4 -= 1; month4 = 12;
+			year3 = year4; month3 = 11;
+			year2 = year3; month2 = 10;
+			year1 = year2; month1 = 9;
+		}else if(month4==1) {
+			year3 -= 1; month3 = 12;
+			year2 = year3; month2 = 11;
+			year1 = year2; month1 = 10;
+		}else if(month3==1) {
+			year2 -= 1; month2 = 12;
+			year1 = year2; month1 = 11;
+		}else if(month2==1) {
+			year1 -= 1; month1 = 12;
+		}
+		//년도 2글자로 줄이기, 월이 한글자일때 0넣기
+		String year01, year02, year03, year04, year05, year06;
+		String month01, month02, month03, month04, month05, month06;
+		year01 = String.valueOf(year1).substring(2); month01 = String.format("%02d", month1);
+		year02 = String.valueOf(year2).substring(2); month02 = String.format("%02d", month2);
+		year03 = String.valueOf(year3).substring(2); month03 = String.format("%02d", month3);
+		year04 = String.valueOf(year4).substring(2); month04 = String.format("%02d", month4);
+		year05 = String.valueOf(year5).substring(2); month05 = String.format("%02d", month5);
+		year06 = String.valueOf(year6).substring(2); month06 = String.format("%02d", month6);
+		//DB where에 사용될 날짜데이터
+		date1 = year01+"/"+month01;
+		date2 = year02+"/"+month02;
+		date3 = year03+"/"+month03;
+		date4 = year04+"/"+month04;
+		date5 = year05+"/"+month05;
+		date6 = year06+"/"+month06;
+	}
+	//월별 총수익 데이터 DB
+	public int sumDatePay(String date) {
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> lst = dao.payStuSum(date, idStr);
+		int sum=0;
+		for(int i=0; i<lst.size(); i++) {
+			Stu_ClassVO vo = lst.get(i);
+			sum = vo.getPay();
+		}
+		return sum;
+	}
+	
 	//결과물(그래프)이 나타날 패널
 	public class p extends JPanel{
-		int lab=10, lab1=7, lab2=8;
+		int lab=0, lab1=0, lab2=0, lab3=0, lab4=0, lab5=0;
 
 		public void paint(Graphics g) {
 			g.clearRect(0,0,getWidth(),getHeight()); //클리어
+			if(sumDatePay(date1)==0) {
+				lab = 0;
+			}else if(sumDatePay(date1)>1 && sumDatePay(date1)<=5) {
+				lab = 10;
+			}else if (sumDatePay(date1)>5 && sumDatePay(date1)<=10) {
+				lab = 10;
+			}else if (sumDatePay(date1)>10 && sumDatePay(date1)<=15) {
+				lab = 10;
+			}else if (sumDatePay(date1)>15) {
+				lab = 80;
+			}
+			if(sumDatePay(date2)==0) {
+				lab1 = 0;
+			}else if(sumDatePay(date2)>1 && sumDatePay(date2)<=5) {
+				lab1 = 30;
+			}else if (sumDatePay(date2)>5 && sumDatePay(date2)<=10) {
+				lab1 = 80;
+			}else if (sumDatePay(date2)>10 && sumDatePay(date2)<=15) {
+				lab1 = 130;
+			}else if (sumDatePay(date2)>15) {
+				lab1 = 200;
+			}
+			if(sumDatePay(date3)==0) {
+				lab2 = 0;
+			}else if(sumDatePay(date3)>1 && sumDatePay(date3)<=5) {
+				lab2 = 30;
+			}else if (sumDatePay(date3)>5 && sumDatePay(date3)<=10) {
+				lab2 = 80;
+			}else if (sumDatePay(date3)>10 && sumDatePay(date3)<=15) {
+				lab2 = 130;
+			}else if (sumDatePay(date3)>15) {
+				lab2 = 200;
+			}
+			if(sumDatePay(date4)==0) {
+				lab3 = 0;
+			}else if(sumDatePay(date4)>1 && sumDatePay(date4)<=5) {
+				lab3 = 30;
+			}else if (sumDatePay(date4)>5 && sumDatePay(date4)<=10) {
+				lab3 = 80;
+			}else if (sumDatePay(date4)>10 && sumDatePay(date4)<=15) {
+				lab3 = 130;
+			}else if (sumDatePay(date4)>15) {
+				lab3 = 200;
+			}
+			if(sumDatePay(date5)==0) {
+				lab4 = 0;
+			}else if(sumDatePay(date5)>1 && sumDatePay(date5)<=5) {
+				lab4 = 10;
+			}else if (sumDatePay(date5)>5 && sumDatePay(date5)<=10) {
+				lab4 = 20;
+			}else if (sumDatePay(date5)>10 && sumDatePay(date5)<=15) {
+				lab4 = 30;
+			}else if (sumDatePay(date5)>15) {
+				lab4 = 40;
+			}
+			
+			if(sumDatePay(date6)==0) {
+				lab5 = 0;
+			}else if(sumDatePay(date6)>1 && sumDatePay(date6)<=5) {
+				lab5 = 15;
+			}else if (sumDatePay(date6)>5 && sumDatePay(date6)<=10) {
+				lab5 = 30;
+			}else if (sumDatePay(date6)>10 && sumDatePay(date6)<=15) {
+				lab5 = 45;
+			}else if (sumDatePay(date6)>15) {
+				lab5 = 60;
+			}
+			
 			//테두리 그리기
 			//(int x1, int y1, int x2, int y2)
 			g.drawLine(30,160,500,160); //가로줄
 			for (int i = 1; i< 16 ; i++) {
 				if(i ==5) {
 					g.drawLine(30, 110, 500, 110);
-					g.drawString(i + "", 10, 160-(10*i));
+					g.drawString(i + "", 10, 160-(10*i)); //왼쪽에 개수 생성하는거
+					g.drawString(sumDatePay(date1) + "번", 55, 160-(lab*2));
+					g.drawString(sumDatePay(date2) + "번", 135, 160-(lab1*2));
+					g.drawString(sumDatePay(date3) + "번", 205, 160-(lab2*2));
+					g.drawString(sumDatePay(date4) + "번", 285, 160-(lab3*2));
+					g.drawString(sumDatePay(date5) + "번", 365, 160-(lab4*2));
+					g.drawString(sumDatePay(date6) + "번", 445, 160-(lab5*2));
 				}
 				if(i == 10) {
 					g.drawLine(30, 60, 500, 60);
 					g.drawString(i + "", 10, 160-(10*i));
+					g.drawString(sumDatePay(date1) + "번", 55, 160-(lab*2));
+					g.drawString(sumDatePay(date2) + "번", 135, 160-(lab1*2));
+					g.drawString(sumDatePay(date3) + "번", 205, 160-(lab2*2));
+					g.drawString(sumDatePay(date4) + "번", 285, 160-(lab3*2));
+					g.drawString(sumDatePay(date5) + "번", 365, 160-(lab4*2));
+					g.drawString(sumDatePay(date6) + "번", 445, 160-(lab5*2));
 				}
-				if(i ==15) {
-					g.drawString(i + "", 10, 160-(10*i));
-					break;
+				if(i == 15) {
+					g.drawString(sumDatePay(date1) + "번", 55, 160-(lab*2));
+					g.drawString(sumDatePay(date2) + "번", 135, 160-(lab1*2));
+					g.drawString(sumDatePay(date3) + "번", 205, 160-(lab2*2));
+					g.drawString(sumDatePay(date4) + "번", 285, 160-(lab3*2));
+					g.drawString(sumDatePay(date5) + "번", 365, 160-(lab4*2));
+					g.drawString(sumDatePay(date6) + "번", 445, 160-(lab5*2));
 				}
 			}		
 			g.drawLine(30,10,30,160); //세로줄
-
+			
+//			g.drawString(sumDatePay(date1) + "번", 50, 160);
+//			g.drawString(sumDatePay(date2) + "번", 130, 160);
+//			g.drawString(sumDatePay(date3) + "번", 200, 160);
+//			g.drawString(sumDatePay(date4) + "번", 280, 160);
+//			g.drawString(sumDatePay(date5) + "번", 360, 160);
+//			g.drawString(sumDatePay(date6) + "번", 440, 160);
+			
 			//좌표값으로 지정해주기 //(String str, int x, int y)
 //				drawString(String str, int x, int y)
-				g.drawString("12월", 55, 175);
-				g.drawString("1월",  110, 175);
-				g.drawString("2월",  165, 175);
+				g.drawString(date1, 50, 175);
+				g.drawString(date2,  130, 175);
+				g.drawString(date3,  200, 175);
+				g.drawString(date4,  280, 175);
+				g.drawString(date5,  360, 175);
+				g.drawString(date6,  440, 175);
 			g.setColor(Color.ORANGE);
 
 			if(lab > 0)
 				//fillRect(int x, int y, int width, int height)
-				g.fillRect(50,160-lab*10, 30, lab*10);	
+				g.fillRect(50,160-lab*2, 30, lab*2);	
 			if(lab1 > 0)
-				g.fillRect(105,160-lab1*10, 30, lab1*10);	
+				g.fillRect(130,160-lab1*2, 30, lab1*2);	
 			if(lab2 > 0)
-				g.fillRect(160,160-lab2*10, 30, lab2*10);
+				g.fillRect(200,160-lab2*2, 30, lab2*2);
+			if(lab3 > 0)
+				g.fillRect(280,160-lab3*2, 30, lab3*2);
+			if(lab4 > 0)
+				g.fillRect(360,160-lab4*2, 30, lab4*2);
+			if(lab5 > 0)
+				g.fillRect(440,160-lab5*2, 30, lab5*2);
 		}
 	}
 	//회원정보 세팅 나의잔액때문에 세팅함
@@ -161,7 +327,7 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		}else {
 			vo = searchId.get(0);
 			charge2 = Integer.toString(vo.getBalance());
-			charge1.setText(charge2);	
+			charge1.setText(charge2 + "원");	
 		}
 	}
 
@@ -216,7 +382,6 @@ public class StudenMyPage extends JPanel implements MouseListener{
 		// 월의 1일~마지막일 까지 출력 (+라벨 배경색 바꾸기 위한 작업)
 		Stu_ClassDAO dao = new Stu_ClassDAO();
 		List<Stu_ClassVO> lst = dao.StuCalendar(vo.getId());
-		System.out.println("lst = " + lst.size());
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -234,7 +399,7 @@ public class StudenMyPage extends JPanel implements MouseListener{
 						dayOfMonthLbl.setBackground(col);
 					} else if(da<d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
 						dayOfMonthLbl.setOpaque(true);
-						dayOfMonthLbl.setBackground(Color.LIGHT_GRAY);
+						dayOfMonthLbl.setBackground(Color.RED);
 					}
 				}
 			} 
