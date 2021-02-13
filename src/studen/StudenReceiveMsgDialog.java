@@ -13,6 +13,7 @@ import javax.swing.border.LineBorder;
 
 import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
+import teach.TeachMsgReplyDialog;
 
 public class StudenReceiveMsgDialog extends JDialog implements ActionListener{
 	JPanel mainPane = new JPanel();
@@ -26,7 +27,11 @@ public class StudenReceiveMsgDialog extends JDialog implements ActionListener{
 		JButton sendBtn = new JButton("답장하기");
 	LineBorder lineBorder = new LineBorder(Color.black);
 	Color col6 = new Color(204,222,233);
+	String id; int msgNum;
 	public StudenReceiveMsgDialog(String id, int msgNum) {
+		this.id=id;
+		this.msgNum=msgNum;
+		
 		setTitle("메세지 내용");
 		add("Center",mainPane);
 		mainPane.setLayout(null);
@@ -69,8 +74,13 @@ public class StudenReceiveMsgDialog extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if(obj == sendBtn) {
-			this.setVisible(false);
-			//쪽지쓰기 다이어로그 연결
+			ConsDAO dao = new ConsDAO();
+			List<ConsVO> lst = dao.replyInfo(msgNum);
+			if(lst.size()>0) {
+				ConsVO vo = lst.get(0);
+				this.setVisible(false);
+				new StudenMsgReplyDialog(vo.getGet(), vo.getSend(), vo.getMsg_title());
+			}
 		}
 	}
 	//데이터 핸들링

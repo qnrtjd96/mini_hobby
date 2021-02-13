@@ -181,10 +181,7 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			JLabel obj = (JLabel)me.getSource();
 			Object lbl = obj.getText();
 			try {
-				if(lbl.equals("이전으로")) {
-					////// 구현해서 객체 호출하세요 //////
-					JOptionPane.showMessageDialog(this, "구현중입니다.");
-				}else if(lbl.equals("메세지함")) {
+				if(lbl.equals("메세지함")) {
 					////// 구현해서 객체 호출하세요 //////
 					mainPane.setVisible(false);
 					mainPane.removeAll();
@@ -213,12 +210,12 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 	public void StudenTopMenu() {
 		
 		//paneLabel 간격조정
-		GridLayout grid = new GridLayout(0,4);
+		GridLayout grid = new GridLayout(0,3);
 		paneLabel.setLayout(grid);
 		grid.setHgap(10);
 		
 		//paneLabel 패널에 대입할 라벨
-		String topLblStr[] = {"이전으로","메세지함","관리메뉴","로그아웃"};
+		String topLblStr[] = {"메세지함","관리메뉴","로그아웃"};
 		
 		for(int i=0; i<topLblStr.length; i++) {
 			JLabel topLbl = new JLabel(topLblStr[i], JLabel.CENTER);
