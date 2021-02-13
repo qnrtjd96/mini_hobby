@@ -383,4 +383,33 @@ public class Stu_ClassDAO extends DBConnection{
 		}
 		return result;
 	}
+	// teach 수강클래스 내역 뽑기
+	public List<Stu_ClassVO> teachList(String id) {
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		try {
+			getConn();
+			
+			sql="select pay_class, pay, s.classdate, s.id from stu_class s join boardtbl b "
+					+ " using(class_num) where b.id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO vo = new Stu_ClassVO();
+				vo.setPay_class(rs.getString(1));
+				vo.setPay(rs.getInt(2));
+				vo.setClassdate(rs.getString(3));
+				vo.setId(rs.getString(4));
+				
+				lst.add(vo);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return lst;
+	}
 }
