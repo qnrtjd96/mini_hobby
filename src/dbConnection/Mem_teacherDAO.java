@@ -43,7 +43,7 @@ public class Mem_teacherDAO extends DBConnection {
 		try {
 			getConn();
 			
-			sql = "select a.classname, a.city, a.cost, a.name from (select b.id, b.classname, b.city, b.cost, m.name from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where t.cate=?";
+			sql = "select a.classname, a.city, a.cost, a.name, a.class_num from (select b.id, b.classname, b.city, b.cost, m.name, b.class_num from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where t.cate=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, cate);
@@ -55,6 +55,7 @@ public class Mem_teacherDAO extends DBConnection {
 				vo.setCity(rs.getString(2));
 				vo.setCost(rs.getInt(3));
 				vo.settName(rs.getString(4));
+				vo.setClass_num(rs.getInt(5));
 				
 				lst.add(vo);
 			}
@@ -71,7 +72,7 @@ public class Mem_teacherDAO extends DBConnection {
 			try {
 				getConn();
 				
-				sql = "select a.classname, a.city, a.name, a.career from (select b.id, b.classname, b.city, b.career, m.name from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where t.cate=?";
+				sql = "select a.classname, a.city, a.name, a.career, a.class_num from (select b.id, b.classname, b.city, b.career, m.name b.class_num from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where t.cate=?";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, cate);
@@ -83,6 +84,7 @@ public class Mem_teacherDAO extends DBConnection {
 					vo.setCity(rs.getString(2));
 					vo.settName(rs.getString(3));
 					vo.setCareer(rs.getString(4));
+					vo.setClass_num(rs.getInt(5));
 					
 					lst.add(vo);
 				}

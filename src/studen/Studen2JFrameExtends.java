@@ -193,7 +193,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 					this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 					Acess_memDAO dao = new Acess_memDAO();
 					int result = dao.LogOut(idStr);
-					
+System.out.println("로그아웃?"+result);
 					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
 					new Main0Login();
 				}
@@ -208,6 +208,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		public void windowClosing(WindowEvent we) {
 			Acess_memDAO dao = new Acess_memDAO();
 			int result = dao.LogOut(idStr);
+System.out.println("로그아웃?"+result);
 			System.exit(0);
 		}
 	}
