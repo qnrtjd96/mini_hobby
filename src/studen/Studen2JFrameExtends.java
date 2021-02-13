@@ -82,7 +82,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		this.idStr = idStr;
 		this.pwdStr = pwdStr;
 		
-		StudenTopMenu(idStr);
+		StudenTopMenu(idStr, pwdStr);
 		StudenSearch(idStr);
 		
 		
@@ -180,7 +180,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 				if(inputPwdString.equals(vo.getPwd())) {
 					center.setVisible(false);
 					center.removeAll();
-					center = new Studen4MyMenu(idStr).paneStu;
+					center = new Studen4MyMenu(idStr, pwdStr).paneStu;
 					this.setVisible(true);
 					add("Center", center);
 				}else {
@@ -197,6 +197,8 @@ System.out.println("로그아웃?"+result);
 					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
 					new Main0Login();
 				}
+			}else if(lbl.equals(searchTf)) {
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -212,7 +214,7 @@ System.out.println("로그아웃?"+result);
 			System.exit(0);
 		}
 	}
-	public void StudenTopMenu(String idStr) {
+	public void StudenTopMenu(String idStr, String pwdStr) {
 		
 		//paneLabel 간격조정
 		GridLayout grid = new GridLayout(0,3);
