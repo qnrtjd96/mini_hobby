@@ -262,14 +262,13 @@ public class TeachTotal extends JPanel implements MouseListener{
 	public void mouseReleased(MouseEvent me) {
 		Object obj = me.getSource();
 		if(obj==cal1) {
-			System.out.println("1. 눌렸니? = "+ cal1);
-			//new TeachIncome();
+			new TeachIncome(idStr, date1);
 		}else if(obj==cal2) {
-			System.out.println("2. 눌렸니? = "+ cal2);
+			new TeachIncome(idStr, date2);
 		}else if(obj==cal3) {
-			System.out.println("3. 눌렸니? = "+ cal3);
+			new TeachIncome(idStr, date3);
 		}else if(obj==cal4) {
-			System.out.println("4. 눌렸니? = "+ cal4);
+			new TeachIncome(idStr, date4);
 		}
 	}
 	@Override
