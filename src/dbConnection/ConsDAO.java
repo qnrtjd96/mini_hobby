@@ -55,7 +55,7 @@ public class ConsDAO extends DBConnection{
 		
 		try {
 			getConn();
-			sql = "select msg_num, get, send, msg_title, msg_detail, to_char(send_time, 'YYYY/MM/DD HH:MI') from constbl where send = ? and msg_num = ?";
+			sql = "select msg_num, get, send, msg_title, msg_detail, to_char(send_time, 'YYYY/MM/DD HH:MI') from constbl where get = ? and msg_num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setInt(2, msgNum);
@@ -63,6 +63,35 @@ public class ConsDAO extends DBConnection{
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				ConsVO vo = new ConsVO(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		
+		return lst;
+	}
+	//관리자 보낸메세지 
+	public List<ConsVO> adminSendMsgRec(){
+		List<ConsVO> lst = new ArrayList<ConsVO>();
+		
+		try {
+			getConn();
+			
+			sql = "select c.msg_num, c.get, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.get=m.id where send = 'master' ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ConsVO vo = new ConsVO();
+				vo.setMsg_num(rs.getInt(1));
+				vo.setGet(rs.getString(2));	
+				vo.setSort(rs.getInt(3));
+				vo.setMsg_title(rs.getString(4));
+				vo.setMsg_detail(rs.getString(5));
+				vo.setSend_time(rs.getString(6));
 				lst.add(vo);
 			}
 		}catch(Exception e) {
@@ -105,7 +134,7 @@ public class ConsDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.send=m.id where get = 'master'";
+			sql = "select c.msg_num, c.send, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.get=m.id where get = 'master'";
 			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -121,35 +150,7 @@ public class ConsDAO extends DBConnection{
 		
 		return lst;
 	}
-	//관리자 보낸메세지 
-	public List<ConsVO> adminSendMsgRec(){
-		List<ConsVO> lst = new ArrayList<ConsVO>();
-		
-		try {
-			getConn();
-			
-			sql = "select c.msg_num, c.get, m.sort, c.msg_title, c.msg_detail, to_char(c.send_time, 'YYYY/MM/DD HH:MI') from constbl c join membertbl m on c.get=m.id where send = 'master' ";
-			
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				ConsVO vo = new ConsVO();
-				vo.setMsg_num(rs.getInt(1));
-				vo.setGet(rs.getString(2));		System.out.println("받는 사람 dao > > > "+rs.getString(2));
-				vo.setSort(rs.getInt(3));
-				vo.setMsg_title(rs.getString(4));
-				vo.setMsg_detail(rs.getString(5));
-				vo.setSend_time(rs.getString(6));
-				lst.add(vo);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-			dbClose();
-		}
-		
-		return lst;
-	}
+	
 	// Teach 답장하기
 	public List<ConsVO> replyInfo(int msgNum) {
 		List<ConsVO> lst = new ArrayList<ConsVO>();
