@@ -207,7 +207,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	} 
 	//프레임 X 눌렀을때의 이벤트
 	class AdapterInner extends WindowAdapter{
 		//다시 오버라이딩
