@@ -220,5 +220,24 @@ public class Mem_teacherDAO extends DBConnection {
 		}
 		return result;
 	}
+	//선생님 계정 삭제 참조 테이블 삭제
+	public int delTeaFkTbl(String id) {
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from mem_teacher where id = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
 
 }

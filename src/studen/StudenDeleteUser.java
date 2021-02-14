@@ -51,7 +51,6 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 		this.idStr = idStr;
 		this.pwdStr =pwdStr; 
 		
-		System.out.println("회원 탈퇴 1 > " +idStr);
 		add(deletMain);
 		setBackground(Color.white);
 		
@@ -123,6 +122,7 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 			int result = dao.memDelete(idStr);
 			if(result>0) {
 				JOptionPane.showMessageDialog(this, "이용해주셔서 감사합니다, \n 언제든 다시 돌아와주세요.");
+				this.setVisible(false);
 				new Main0Login();
 			}else {
 				JOptionPane.showMessageDialog(this, "탈퇴 안됨..");

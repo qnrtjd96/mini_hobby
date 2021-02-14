@@ -40,14 +40,17 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
 	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
 	
-	String id;
+	String id, pwd;
 	public Teach3MyMenu() {
 		
 	}
 	
-	public Teach3MyMenu(String id) {
+	public Teach3MyMenu(String id, String pwd) {
 		this.id = id; 
-		System.out.println("teach3MyMenu id > > > "+id);
+		this.pwd = pwd;
+		
+		System.out.println("- - - - - - - - teach3MyMenu id > > > "+id+ " , "+pwd);
+		
 		add("Center", paneStu);
 		center = new TeachInfo(id);
 		paneStu.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
@@ -116,7 +119,8 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 		}else if(lbl.equals("탈퇴하기")) {
 			center.setVisible(false);
 			center.removeAll();
-			center = new TeachDeleteUser(id).deletMain;
+			center = new TeachDeleteUser(id,pwd).deletMain;
+			System.out.println("회원탈퇴  > >  > "+id+", "+pwd);
 			paneStu.add(center); paneStu.setLayout(null);
 			center.setBounds(200,20,570,800);
 			center.setVisible(true);

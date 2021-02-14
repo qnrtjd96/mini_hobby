@@ -245,6 +245,66 @@ public class Stu_ClassDAO extends DBConnection{
 		}
 		return lst;
 	}
+	//학생 수업 취소 
+	public int deletStuClass(String idStr, String sendDelStr) {
+		int result = 0;
+		try {
+			getConn();
+			
+			sql = "delete from stu_class where id = ? and pay_class = ? ";
+			//delete from stu_class where id='youngjun2' and pay_class='가능?';
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+			pstmt.setString(2, sendDelStr);
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		
+		return result;
+	}
+	
+	//학생 구매내역 > 달력 클릭 시 
+		public List<Stu_ClassVO> showClickPurchase(String idStr) {
+			System.out.println("....선택 날짜 예약 중인 클래스 DAO 실행 됨?");
+			
+			List<Stu_ClassVO> dueLst = new ArrayList<Stu_ClassVO>();
+			
+			try {
+				getConn();
+				
+				sql = "select stu.id ,stu.pay_class, bor.id, to_char(stu.classdate, 'mm/dd'), stu.classtime, bor.area "
+						+ "from stu_class stu, boardtbl bor where stu.class_num=bor.class_num "
+							+ "and stu.id=? and stu.classdate >= to_char(sysdate, 'yy/mm/dd')";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, idStr);
+				
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {	//담는거 까먹지 말기 ^^
+					Stu_ClassVO vo = new Stu_ClassVO(
+								rs.getString(1), rs.getString(2), rs.getString(3),
+								rs.getString(4), rs.getString(5), rs.getString(6)
+							);
+					
+					dueLst.add(vo);
+					System.out.println("반복문에 담기나?"+dueLst);
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				dbClose();
+			}
+			System.out.println("dueLst에 뭐가 있는지...? "+dueLst);
+			return dueLst;
+			
+		}
 	
 	//학생 구매내역 > 예약 중인 내역
 	public List<Stu_ClassVO> showDuePurchase(String idStr) {
@@ -257,7 +317,7 @@ public class Stu_ClassDAO extends DBConnection{
 			
 			sql = "select stu.id ,stu.pay_class, bor.id, to_char(stu.classdate, 'mm/dd'), stu.classtime, bor.area "
 					+ "from stu_class stu, boardtbl bor where stu.class_num=bor.class_num "
-						+ "and stu.id=? and stu.classdate >= sysdate ";
+						+ "and stu.id=? and stu.classdate >= to_char(sysdate, 'yy/mm/dd')";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, idStr);
@@ -295,7 +355,7 @@ public class Stu_ClassDAO extends DBConnection{
 
 			sql = "select stu.id ,stu.pay_class, bor.id, to_char(stu.classdate, 'mm/dd'), stu.classtime, bor.area "
 					+ "from stu_class stu, boardtbl bor where stu.class_num=bor.class_num "
-						+ "and stu.id=? and stu.classdate < sysdate ";
+						+ "and stu.id=? and stu.classdate <= to_char(sysdate, 'yy/mm/dd') ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, idStr);
