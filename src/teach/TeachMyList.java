@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -27,7 +29,7 @@ import dbConnection.BoardVO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 
-public class TeachMyList extends JPanel implements MouseListener{
+public class TeachMyList extends JPanel implements MouseListener, ActionListener{
 	JPanel mainPane = new JPanel();
 	JTextField searchTf = new JTextField(20);
 	JButton searchBtn = new JButton("검색");
@@ -121,6 +123,7 @@ public class TeachMyList extends JPanel implements MouseListener{
 		// 클릭 시 초기화
 		searchTf.addMouseListener(this);
 		table.addMouseListener(this);
+		newListBtn.addActionListener(this);
 	}
 	public void mouseClicked(MouseEvent me) {
 		Object obj = me.getSource();
@@ -149,6 +152,14 @@ public class TeachMyList extends JPanel implements MouseListener{
 			int result = dao.LogOut(id);
 			System.exit(0);
 		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		Object obj= ae.getSource();
+		if(obj==newListBtn) {
+			new TeachTextCreate(id);
+		}
+		
 	}
 
 }

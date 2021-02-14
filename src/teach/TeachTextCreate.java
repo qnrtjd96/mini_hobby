@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -31,7 +32,7 @@ import dbConnection.BoardVO;
 import dbConnection.Mem_teacherDAO;
 import dbConnection.Mem_teacherVO;
 
-public class TeachTextCreate extends JDialog implements ActionListener, ItemListener{
+public class TeachTextCreate extends JDialog implements ActionListener, ItemListener, MouseListener{
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntPlain20 = new Font("맑은 고딕", Font.PLAIN, 20);
 	Font fntPlain25 = new Font("맑은 고딕", Font.PLAIN, 25);
@@ -178,6 +179,11 @@ public class TeachTextCreate extends JDialog implements ActionListener, ItemList
 		area2.addItemListener(this); //상세지역 이벤트
 		dayLable.addItemListener(this); //날짜 이벤트
 		updateBtn.addActionListener(this); //등록버튼 
+		classname2.addMouseListener(this);
+	    classdetail2.addMouseListener(this);
+	    total2.addMouseListener(this);
+	    detail2.addMouseListener(this);
+	    pay2.addMouseListener(this);
 		
 		setSize(800,920);
 		setLocation(50, 100);
@@ -347,5 +353,26 @@ public class TeachTextCreate extends JDialog implements ActionListener, ItemList
 			System.exit(0);
 		}
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent me) {
+		Object obj = me.getSource();
+		if(obj==classname2) {
+			classname2.setText("");
+		} else if(obj==classdetail2) {
+			classdetail2.setText("");
+		} else if(obj==total2) {
+			total2.setText("");
+		} else if(obj==detail2) {
+			detail2.setText("");
+		} else if(obj==pay2) {
+			pay2.setText("");
+		} 
+		
+	}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
 
 }

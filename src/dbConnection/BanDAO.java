@@ -93,4 +93,30 @@ public class BanDAO extends DBConnection{
 		}
 		return result;
 	}
+	// 쪽지보낼때 제약어
+	public List<BanVO> overlapWrite(String searchBan) {
+		List<BanVO> lst = new ArrayList<BanVO>();
+		try {
+			getConn();
+			
+			sql="select dont from bantbl where ? like '%'||dont||'%'";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, searchBan);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BanVO vo = new BanVO();
+				vo.setDont(rs.getString(1));
+				
+				lst.add(vo);
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return lst;	
+	}
 }
