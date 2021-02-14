@@ -276,7 +276,7 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 			} else {
 				JOptionPane.showMessageDialog(this, "회원가입에 실패하였습니다.");
 			}
-			MoneyDAO mdao = new MoneyDAO();
+			MoneyDAO mdao = new MoneyDAO(); //충전정보 추가
 			mdao.setMoney(id);
 		}
 	}
