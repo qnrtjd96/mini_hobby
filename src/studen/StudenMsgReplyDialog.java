@@ -40,8 +40,8 @@ public class StudenMsgReplyDialog extends JDialog implements ActionListener {
 	String getter; String idStr; String msgTitle;
 	public StudenMsgReplyDialog() {}
 	public StudenMsgReplyDialog(String get, String sender, String msgTitle) {
-		this.idStr = sender;
-		this.getter = get;
+		this.idStr = get;
+		this.getter = sender;
 		this.msgTitle = msgTitle;
 		
 		setBackground(Color.white);
@@ -49,13 +49,13 @@ public class StudenMsgReplyDialog extends JDialog implements ActionListener {
 		
 		add(title); add(titleTf); add(receiver); add(receiTf); add(sp); add(send);
 		title.setBounds(0,0,150,50); title.setFont(fn2); title.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		title.setHorizontalAlignment(JLabel.CENTER);
+		title.setHorizontalAlignment(JLabel.CENTER); title.setBackground(col);
 		receiver.setBounds(0,51,150,50); receiver.setFont(fn2); receiver.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		receiver.setHorizontalAlignment(JLabel.CENTER);
+		receiver.setHorizontalAlignment(JLabel.CENTER); receiver.setBackground(col);
 		titleTf.setBounds(150,0,330,50); titleTf.setFont(fn);
 		receiTf.setBounds(150,51,330,50); receiTf.setFont(fn);
-		sp.setBounds(0,101,480,330); ta.setFont(fn);
-		send.setBounds(440,450,100,40); send.setBackground(col); send.setFont(fn2);
+		sp.setBounds(0,101,480,390); ta.setFont(fn);
+		send.setBounds(340,500,130,40); send.setBackground(col); send.setFont(fn2);
 		
 		titleTf.setText("[RE]:"+msgTitle);
 		receiTf.setText(getter);
@@ -64,6 +64,7 @@ public class StudenMsgReplyDialog extends JDialog implements ActionListener {
 		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocation(190, 100);
+		setBackground(Color.white);
 		
 		send.addActionListener(this);
 		
