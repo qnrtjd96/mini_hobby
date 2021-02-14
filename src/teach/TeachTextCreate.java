@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -67,11 +67,11 @@ public class TeachTextCreate extends JDialog implements ActionListener, ItemList
 		    JLabel  time = new JLabel("수업시간");
 		    
 	    JPanel formCenterPane = new JPanel(new GridLayout(6, 1));
-		    JTextArea classname2 = new JTextArea();
-		    JTextArea classdetail2 = new JTextArea();
-		    JTextArea total2 = new JTextArea();
-		    JTextArea detail2 = new JTextArea();
-		    JTextArea pay2 = new JTextArea();
+		    JTextArea classname2 = new JTextArea("EX)재미난 기타교실");
+		    JTextArea classdetail2 = new JTextArea("EX)초급부터 고급까지 모두 수업가능합니다 ^^");
+		    JTextArea total2 = new JTextArea("EX)네이버밴드 경력10년, 신촌밴드생활 7년");
+		    JTextArea detail2 = new JTextArea("EX)서강대 바로 옆건물 2층");
+		    JTextArea pay2 = new JTextArea("EX)30000");
 		    
 		    JPanel time2 = new JPanel(new GridLayout(4, 3));
 	    		String classTime[] = {"09:00~10:00","10:00~11:00","11:00~12:00",
@@ -94,15 +94,19 @@ public class TeachTextCreate extends JDialog implements ActionListener, ItemList
 	public TeachTextCreate(String id) {
 		this.id= id; //받아온 매개변수 멤버변수에 세팅
 		
+		//폰트넣기 + 백그라운드흰색으로 변경////////////////////////////////////
 		dayLabel.setFont(fntBold15);
 		cate.setFont(fntBold15);  area.setFont(fntBold15); cate2.setFont(fntBold15); 
 		classname.setFont(fntBold20);classdetail.setFont(fntBold20);total.setFont(fntBold20);
 		detail.setFont(fntBold20);pay.setFont(fntBold20);time.setFont(fntBold20);updateBtn.setFont(fntBold15);
+		classname2.setFont(fntBold20); classdetail2.setFont(fntBold20); total2.setFont(fntBold20); detail2.setFont(fntBold20); pay2.setFont(fntBold20);
 		mainCenterPane.setBackground(Color.WHITE); topPane.setBackground(Color.WHITE);
 		topPane1.setBackground(Color.WHITE); topPane2.setBackground(Color.WHITE);
 		formLabelPane.setBackground(Color.WHITE); formCenterPane.setBackground(Color.WHITE);
 		mainBottomPane.setBackground(Color.WHITE); buttonPane.setBackground(Color.WHITE); 
 		area2.setBackground(Color.WHITE); main.setBackground(Color.WHITE); dayLabel.setBackground(Color.WHITE);dayLable.setBackground(Color.white);
+		/////////////////////////////////////////////////////////////////////////////////////////////
+		
 		//상단패널
 		for(String Name : area2Str) {
 			area2Model.addElement(Name);
@@ -343,4 +347,5 @@ public class TeachTextCreate extends JDialog implements ActionListener, ItemList
 			System.exit(0);
 		}
 	}
+
 }
