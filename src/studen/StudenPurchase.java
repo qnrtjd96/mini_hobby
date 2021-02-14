@@ -132,7 +132,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		dueTable.getColumn("예약시간").setPreferredWidth(40);
 		dueTable.getColumn("장소").setPreferredWidth(40);
 		dueTable.getTableHeader().setBackground(col6);	dueTable.getTableHeader().setFont(headFnt);
-		dueSp = new JScrollPane(dueTable);		//dueSp.setSize(300, 200);
+		dueSp = new JScrollPane(dueTable);		dueSp.setSize(300, 200);
 		dueSp.setBounds(25, 360, 520, 140);		add(dueSp);
 		
 		//버튼 넣기.. 달력 크기 조절하고 다시 셋바운드로 맞추기
@@ -182,7 +182,6 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			System.out.println("set DuePurchase erro... > 예약 중인 클래스를 찾지 못함");
 		}else {
 			Stu_ClassVO vo = allLst.get(0);
-			System.out.println("vo에서 아이디 받아옴 ...? "+vo);
 			System.out.println("vo.getID > > > "+vo.getId());
 			if(vo.getId().equals(idStr)) {
 				for(int i=0; i<allLst.size(); i++) {
@@ -230,8 +229,9 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	}	
 	@Override	//예약날짜별 예약현황 보여주기..
 	public void mousePressed(MouseEvent e) {
-		Object obj = e.getSource();
+/*
 		JLabel lbl = (JLabel)e.getSource();
+		System.out.println("날짜 클릭하면 ? > > > "+lbl);
 		
 		Stu_ClassDAO dao = new Stu_ClassDAO();
 		List<Stu_ClassVO> lst = dao.showClickPurchase(idStr);
@@ -260,33 +260,19 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 				
 			}	
 		}
-		
+*/		
 	}
 	
 	//날짜 클릭하면 테이블에 예약내역 보여주기
 	@Override
 	public void mouseClicked(MouseEvent me) {
-		int clickBtn = me.getButton();
-		if(clickBtn==1) {
-			int row = dueTable.getSelectedRow();
-			//for(int c=0; c<dueTable.getColumnCount(); c++) {
-				Object obj = dueTable.getValueAt(row, 1); //클래스
-				//cancelDueClass((String)obj);
-			//}
-		}
-		
-		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		Stu_ClassVO vo = new Stu_ClassVO();
-		
-		//날짜 바꿔주기
-		SimpleDateFormat sdf = new SimpleDateFormat("YYYY/MM/DD");
-		//Date dueDate = sdf.parse(vo.getClassdate());
-		
+
 		if(obj==rebookBtn) {
 			System.out.println("예약변경 누름");
 			//다이얼로그
@@ -298,27 +284,22 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		}else if(obj==cancelBtn) {
 			System.out.println("예약취소 누름");
 			int result = 0;
-			//다이얼로그 ...날짜계산필요 (일주일?3일전에 변경안됨)
-			if(vo.getClassdate().equals(vo.getClassdate())) {
-			//if(Integer.parseInt(vo.getClassdate())>((Integer.parseInt(vo.getClassdate())-3))) {
-				for(int i=0; i<dueTable.getRowCount(); i++){
-					System.out.println("삭제 vo.getPay_class > "+vo.getPay_class()+", 예약날짜 > "+vo.getClassdate());
-					if(dueTable.getValueAt(i, 0).equals(vo.getPay_class())) {
-						String sendDelStr = (String) dueTable.getValueAt(i, 1);
-						Stu_ClassDAO dao = new Stu_ClassDAO(); 
-						result = dao.deletStuClass(idStr, sendDelStr);
-						System.out.println("예약 삭제 > > > "+idStr+" / "+sendDelStr);
-					}
-				}
-				if(result>0) {
-					JOptionPane.showMessageDialog(this, "예약이 취소되었습니다.");
-					dueModel.setRowCount(0);
-					setDuePurchase(idStr);
-				}else {
-					JOptionPane.showMessageDialog(this, "예약 취소가 실패되었습니다.");
-				}
+			//다이얼로그 ...날짜계산필요 (일주일?3일전에 변경안됨)... 
+			for(int i=0; i<dueTable.getRowCount(); i++){
+				System.out.println("테이블 선택 값 > "+dueTable.getValueAt(i, 2));
+				String sendDelStr = (String) dueTable.getValueAt(i, 2);
+				System.out.println("String sendDelStr ? ? ? "+sendDelStr);
+				Stu_ClassDAO dao = new Stu_ClassDAO(); 
+				result = dao.deletStuClass(idStr, sendDelStr);
+				System.out.println("> > >예약 삭제 > > > "+idStr+" / "+sendDelStr);
+				
+			}
+			if(result>0) {
+				JOptionPane.showMessageDialog(this, "예약이 취소되었습니다.");
+				dueModel.setRowCount(0);
+				setDuePurchase(idStr);
 			}else {
-				JOptionPane.showMessageDialog(this, "예약 날짜 3일 전에는 취소가 불가능합니다.");
+				JOptionPane.showMessageDialog(this, "예약취소가 실패되었습니다.");
 			}
 		}
 	}

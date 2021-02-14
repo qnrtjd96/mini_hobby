@@ -250,9 +250,7 @@ public class Stu_ClassDAO extends DBConnection{
 		int result = 0;
 		try {
 			getConn();
-			
-			sql = "delete from stu_class where id = ? and pay_class = ? ";
-			//delete from stu_class where id='youngjun2' and pay_class='가능?';
+			sql = "delete from stu_class where id = ? and classdate = to_date(?, 'yyyy-mm-dd') ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, idStr);
 			pstmt.setString(2, sendDelStr);
@@ -314,11 +312,10 @@ public class Stu_ClassDAO extends DBConnection{
 		
 		try {
 			getConn();
-			
-			sql = "select stu.id ,stu.pay_class, bor.id, to_char(stu.classdate, 'mm/dd'), stu.classtime, bor.area "
-					+ "from stu_class stu, boardtbl bor where stu.class_num=bor.class_num "
-						+ "and stu.id=? and stu.classdate >= to_char(sysdate, 'yy/mm/dd')";
-			
+
+			//stu.id ,stu.pay_class, bor.id, to_char(stu.classdate, 'mm/dd'), stu.classtime, bor.area "
+			sql = "select s.id, s.pay_class, b.id, s.classdate, s.classtime, b.area from stu_class s, boardtbl b "
+					+ "where s.class_num=b.class_num and s.id = ? and s.classdate >= sysdate ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, idStr);
 			
