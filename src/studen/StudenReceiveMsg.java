@@ -106,7 +106,7 @@ public class StudenReceiveMsg extends JPanel implements MouseListener, ActionLis
 		msgList(id);
 		
 		// setBounds
-		sp.setBounds(0,0,745,770); delLbl.setBounds(620,790,100,30);
+		sp.setBounds(0,0,745,770); delLbl.setBounds(620,770,100,30);
 		table.addMouseListener(this);
 		delLbl.addActionListener(this);
 	}
