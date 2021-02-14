@@ -45,7 +45,7 @@ public class TeachInfo extends JPanel implements ActionListener {
 			JTextField teaEmailTf = new JTextField(250);	String emailTest = "";
 			JTextField teaTelTf = new JTextField(250);		String telTest = "";
 			JTextField teaAddrTf = new JTextField(250);		String addrTest = "";
-		
+		 
 			JPanel catePane = new JPanel();
 				JLabel cateLbl = new JLabel("분야");
 					JPanel radioPane = new JPanel();
@@ -67,6 +67,7 @@ public class TeachInfo extends JPanel implements ActionListener {
 			
 	public TeachInfo(String id) {
 		this.id = id;
+		//this.pwd = pwd;
 		System.out.println("Teach info id > > >"+ id);
 		setLayout(new BorderLayout());
 		//패널 기본 설정
@@ -150,8 +151,8 @@ public class TeachInfo extends JPanel implements ActionListener {
 			teaPwdTf.setEnabled(true);	teaNameTf.setEnabled(true);
 			teaEmailTf.setEnabled(true); teaTelTf.setEnabled(true);
 			teaAddrTf.setEnabled(true); careerTf.setEnabled(true);
-			cate[0].setEnabled(true); cate[1].setEnabled(true);
-			cate[2].setEnabled(true); cate[3].setEnabled(true);
+			//cate[0].setEnabled(true); cate[1].setEnabled(true);
+			//cate[2].setEnabled(true); cate[3].setEnabled(true);
 			
 			doBtn.setVisible(false);
 			
@@ -225,7 +226,7 @@ public class TeachInfo extends JPanel implements ActionListener {
 		String test1 = ae.getActionCommand();
 		
 		//카테고리랑 경력 연수 추가
-		if(test1.equals("음악")) {
+/*		if(test1.equals("음악")) {
 			vo.setCate(cate[0].getText());
 			cate[0].setSelected(true);
 		}else if(test1.equals("미술")) {
@@ -238,7 +239,7 @@ public class TeachInfo extends JPanel implements ActionListener {
 			vo.setCate("요리");
 			cate[3].setSelected(true);
 		}
-		
+*/		
 		Mem_teacherDAO dao = new Mem_teacherDAO();
 		
 		int result = dao.teachInfoUpdate(vo, id);
