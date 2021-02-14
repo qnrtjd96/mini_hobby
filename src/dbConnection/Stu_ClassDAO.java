@@ -245,12 +245,43 @@ public class Stu_ClassDAO extends DBConnection{
 		}
 		return lst;
 	}
+	//학생 수업 변경원하는 수업 받아오기 
+	public List<Stu_ClassVO> getChangeClass(String changeClass, String idStr) {
+		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		
+		try {
+			getConn();
+			//select class_num, id, pay_class from stu_class where id ='soulmate026' and pay_class = '카페의 기본 아메리카노 내리기!';
+
+			sql = "select class_num, id, pay_class from stu_class where id = ? and pay_class = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, idStr);
+			pstmt.setString(2, changeClass);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Stu_ClassVO voClass = new Stu_ClassVO();
+				voClass.setClass_num(rs.getInt(1));
+				voClass.setId(rs.getString(2));
+				voClass.setPay_class(rs.getString(3));
+				
+				lst.add(voClass);
+			}
+		}catch(Exception e) {
+			
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
+	
 	//학생 수업 취소 
 	public int deletStuClass(String idStr, String sendDelStr) {
 		int result = 0;
 		try {
 			getConn();
-			sql = "delete from stu_class where id = ? and classdate = to_date(?, 'yyyy-mm-dd') ";
+			sql = "delete from stu_class where id = ? and pay_class = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, idStr);
 			pstmt.setString(2, sendDelStr);
