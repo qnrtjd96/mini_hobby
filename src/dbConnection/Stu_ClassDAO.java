@@ -381,7 +381,7 @@ public class Stu_ClassDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql="insert into stu_class (class_num, id, pay_class, pay_cate, pay, pay_date, classdate, classtime "
+			sql="insert into stu_class (class_num, id, pay_class, pay_cate, pay, pay_date, classdate, classtime) "
 					+ " values(?, ?, ?, ?, ?, sysdate, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);

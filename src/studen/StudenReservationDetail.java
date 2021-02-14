@@ -11,8 +11,10 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -30,6 +32,8 @@ import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
 import dbConnection.MoneyDAO;
 import dbConnection.MoneyVO;
+import dbConnection.ReviewDAO;
+import dbConnection.ReviewVO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
 
@@ -71,8 +75,6 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 			JPanel review = new JPanel(new BorderLayout());
 				JLabel re1 = new JLabel("후기글");
 				JPanel rev = new JPanel(new GridLayout(0,1));
-					JLabel re2 = new JLabel("별점 : ");
-					JLabel re3 = new JLabel("등록된 후기가 없습니다.");
 		JPanel detail = new JPanel(new BorderLayout());
 		JScrollPane sp = new JScrollPane(detail);
 		
@@ -92,16 +94,18 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 	String id; int class_num; String classname;
 	String time; String category; int costInt;
 	String classtime; String stuTime; int rest;
+	TreeSet<String> selectCheck = new TreeSet<String>();
 
 	public StudenReservationDetail() {}
 	public StudenReservationDetail(String id, int class_num, String classname) {
 		this.id=id;
+System.out.println("id?"+id);
 		this.class_num = class_num;
-System.out.println("글번호="+class_num);
+System.out.println("class_num?"+class_num);
 		
 		BoardDAO dao = new BoardDAO();
 		List<BoardVO> lst = dao.studenInfo(class_num);
-System.out.println("1="+lst.size());
+System.out.println("초반세팅 받아오니?"+lst.size());
 		if(lst.size()>0) {
 			BoardVO vo = lst.get(0);
 			this.classname = vo.getClassname();
@@ -111,6 +115,8 @@ System.out.println("1="+lst.size());
 		
 		mainStart();
 		tableSetting();
+System.out.println("클래스명:"+this.classname);
+
 		
 		lbl1.setText("선택한 클래스 : "+this.classname);
 		lbl2.setText("선택한 일자 : "+time);
@@ -139,43 +145,72 @@ System.out.println("1="+lst.size());
 		Object obj = ae.getSource();
 		
 		if(obj==btn) {
-			System.out.println("classtime="+classtime);
-			System.out.println("stuTime="+stuTime);
-			if (stuTime.length()>11) {
-				JOptionPane.showMessageDialog(this, "시간은 중복선택이 불가능합니다. 다시 확인해주세요");
-			} else {
-				MoneyDAO dao = new MoneyDAO();
-				List<MoneyVO> lst = dao.getMoneyInfo(id);
-				classtime.replaceAll(stuTime+",", "");
-				if(lst.size()>0) {
-					MoneyVO vo = lst.get(0);
-					this.rest = vo.getBalance();
-					int rest2 = rest-costInt;
-					if (rest2>=0) {
-						BoardDAO daob = new BoardDAO();
-						int resul = daob.updateTime(class_num, classtime);
-						if(resul>0) {
-							// stu_class 등록
-							Stu_ClassDAO daos = new Stu_ClassDAO();
-							Stu_ClassVO vos = new Stu_ClassVO(class_num, id, classname, category, costInt, time, classtime);
-							int result = daos.insertPay(vos);
-							if (result>0) {
-								String text = "결제가 완료되었습니다.\n결제금액 : "+costInt+"원\n잔액 : "+rest2+"원";
+	System.out.println("누구냐넌?"+id);
+	System.out.println("classtime="+classtime);
+			int count = selectCheck.size();
+	System.out.println("count?"+count);
+			TreeSet<String> timeArr = new TreeSet<String>();
+			StringTokenizer str = new StringTokenizer(classtime, " [,]");
+			while(str.hasMoreTokens()) {
+				String token = str.nextToken();
+				timeArr.add(token);
+			}
+	System.out.println("잘쪼개졌니?"+timeArr.size());
+			Iterator<String> st = selectCheck.iterator();
+			while(st.hasNext()) {
+				String stu = st.next();
+	System.out.println("stu?"+stu);
+				Iterator<String> st2 = timeArr.iterator();
+				while(st2.hasNext()) {
+					String bo = st2.next();
+	System.out.println("bo?"+bo);
+					if(stu.equals(bo)) {
+						timeArr.remove(bo); break;
+					}
+				}
+			}
+			String classtim = timeArr.toString();
+			classtime = classtim.substring(1,classtim.length()-1);
+	System.out.println("바뀐시간="+classtime);
+			MoneyDAO dao = new MoneyDAO();
+			List<MoneyVO> lst = dao.getMoneyInfo(id);
+	System.out.println("lst받아왔어?"+lst.size());
+			if(lst.size()>0) {
+				MoneyVO vo = lst.get(0);
+				this.rest = vo.getBalance();
+				int costInt2 = costInt*count;
+				int rest2 = rest-costInt2;
+	System.out.println("원래잔액:"+rest+", 결제할금액:"+costInt2+", 잔액:"+rest2);
+				if (rest2>=0) {
+					BoardDAO daob = new BoardDAO();
+					int resul = daob.updateTime(class_num, classtime);
+	System.out.println("보드테이블 update되었니?"+resul);
+					if(resul>0) {
+						// stu_class 등록
+						Stu_ClassDAO daos = new Stu_ClassDAO();
+						Stu_ClassVO vos = new Stu_ClassVO(class_num, id, classname, category, costInt, time, classtime);
+						int result = daos.insertPay(vos);
+	System.out.println("stutable insert?"+result);
+						if (result>0) {
+							int result2 = dao.updateMoney(rest2, id);
+	System.out.println("잔액 update?"+result2);
+							if(result2>0) {
+								String text = "결제가 완료되었습니다.\n결제금액 : "+costInt2+"원\n잔액 : "+rest2+"원";
 								JOptionPane.showMessageDialog(this, text);
 							}
 						}
-					} else {
-						String text = "충전금액이 부족합니다. 충전 후 예약진행이 가능합니다.";
-						JOptionPane.showMessageDialog(this, text);
-						this.setVisible(false);
 					}
+				} else {
+					String text = "충전금액이 부족합니다. 충전 후 예약진행이 가능합니다.";
+					JOptionPane.showMessageDialog(this, text);
+					this.setVisible(false);
 				}
 			}
 		}
 	}
 	public void tableSetting() {
 		BoardDAO dao = new BoardDAO();
-		List<BoardVO> lst = dao.detailTable(classname, time);
+		List<BoardVO> lst = dao.detailTable(class_num);
 		if (lst.size()>0) {
 			BoardVO vo = lst.get(0);
 			this.class_num = vo.getClass_num();
@@ -190,6 +225,22 @@ System.out.println("1="+lst.size());
 			costInt = vo.getCost();
 			li12.setText(vo.getClasstime());
 			this.time = vo.getClassdate();
+		}
+		ReviewDAO dao2 = new ReviewDAO();
+		List<ReviewVO> lst2 = dao2.tableReview(class_num);
+		if(lst2.size()>0) {
+			for (int i=0; i<lst2.size(); i++) {
+				ReviewVO vo2 = lst2.get(i);
+				String star="★";
+				if(vo2.getScore()==2) star="★★";
+				else if(vo2.getScore()==3) star="★★★";
+				else if(vo2.getScore()==4) star="★★★★";
+				else if(vo2.getScore()==5) star="★★★★★";
+				JLabel re2 = new JLabel("별점 : "+star);
+				JLabel re3 = new JLabel(vo2.getReview_detail());
+				rev.add("North", re2); re2.setFont(fn);
+				rev.add(re3); re3.setFont(fn); re3.setBorder(new LineBorder(Color.LIGHT_GRAY));
+			}
 		}
 		checkBoxStart();
 		
@@ -214,6 +265,7 @@ System.out.println("1="+lst.size());
 					check[i] = new JCheckBox(token);
 					check[i].setFont(fn); check[i].setHorizontalAlignment(JCheckBox.CENTER);
 					check[i].setBackground(Color.white);
+					check[i].addItemListener(this);
 					select.add(check[i]);
 					i++;
 				}
@@ -283,8 +335,6 @@ System.out.println("1="+lst.size());
         
 		review.add("North", re1); re1.setFont(fnt);
 		review.add(rev);
-		rev.add("North", re2); re2.setFont(fn);
-		rev.add(re3); re3.setFont(fn);
 		rev.setBackground(Color.white); review.setBackground(Color.white);
 		
 		btn.addActionListener(this);
@@ -376,13 +426,17 @@ System.out.println("1="+lst.size());
 	@Override
 	public void itemStateChanged(ItemEvent ie) {
 		JCheckBox che = (JCheckBox)ie.getItem();
+		String str = che.getText();
 		if (che.isSelected()) {
-			if (stuTime.equals("")) {
-				stuTime = che.getText();
-			} else {
-				JOptionPane.showMessageDialog(this, "예약은 1시간씩만 가능합니다.");
+			selectCheck.add(str);
+		} else {
+			Iterator<String> st = selectCheck.iterator();
+			while(st.hasNext()) {
+				String str2 = st.next();
+				if (str2.equals(str)) {
+					selectCheck.remove(str2); break;
+				}
 			}
-			
 		}
 	}
 }
