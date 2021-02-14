@@ -35,7 +35,7 @@ import main.Main0Login;
 
 public class Studen2JFrameExtends extends JFrame implements ActionListener, MouseListener{
 	JPanel paneTop = new JPanel(new BorderLayout());
-		ImageIcon logo = new ImageIcon("mini_hobby/img/logo.png");
+		ImageIcon logo = new ImageIcon("img/logo.png");
 		JButton Logo = new JButton(logo);
 		Dimension logoSize = new Dimension(100, 50);
 		JPanel paneLabel = new JPanel();

@@ -50,6 +50,7 @@ public class StudenDeleteUser extends JPanel implements ActionListener{
 	public StudenDeleteUser(String idStr, String pwdStr) {
 		this.idStr = idStr;
 		this.pwdStr =pwdStr; 
+		System.out.println("idStr > > > "+idStr+", 로그인 비밀번호 > > > "+pwdStr);
 		
 		add(deletMain);
 		setBackground(Color.white);

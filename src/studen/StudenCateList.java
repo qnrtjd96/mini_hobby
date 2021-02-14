@@ -136,7 +136,6 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 	}
 	//id 받아오기
 	public void getId(String id) {
-System.out.println("이거 실행은 되니?"+id);
 		this.idStr = id;
 	}
 	public void actionPerformed(ActionEvent ae) {
@@ -185,7 +184,6 @@ System.out.println("이거 실행은 되니?"+id);
 			if(col==1) {
 				title = (String)model.getValueAt(row, 1); // 클래스명 가져오기 (혹시몰라서)
 				int class_num = (int)model.getValueAt(row, 0);
-	System.out.println("넘길거야..id"+idStr);
 				new StudenReservationDetail(idStr, class_num, title);
 			}
 		}
