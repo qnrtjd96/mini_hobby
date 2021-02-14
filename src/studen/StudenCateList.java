@@ -53,10 +53,13 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
     	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
     	
     String idStr;
+    String cate;
     
     public StudenCateList() {}
 	public StudenCateList(String cate, String idStr) {
 		this.idStr=idStr;
+		this.cate=cate;
+		System.out.println("cate > > > "+cate);
 
 		mainPane.setLayout(null);
 		mainPane.setBackground(Color.white);
@@ -160,8 +163,9 @@ System.out.println("이거 실행은 되니?"+id);
 		}
 	}
 	
-	public void getSearchResult(String searchWord) {
+	public void getSearchResult(String searchWord ) {
 		Mem_teacherDAO dao = new Mem_teacherDAO();
+		System.out.println("검색 메소드 연결 ? searchWord >  > "+searchWord);
 		List<Mem_teacherVO> searchList = dao.getSearch(searchWord);
 		for(int idx=0; idx<searchList.size(); idx++ ) {
 			Mem_teacherVO vo = searchList.get(idx);
