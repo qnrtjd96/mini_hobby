@@ -2,10 +2,12 @@ package administrator;
 
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,7 +17,7 @@ import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
 import teach.TeachMsgReplyDialog;
 
-public class AdminReceiveMsgDialog extends JFrame implements MouseListener{
+public class AdminReceiveMsgDialog extends JDialog implements MouseListener{
 	JFrame frame = new JFrame();
 	LineBorder lineBorder = new LineBorder(Color.black);
 	JPanel mainPane = new JPanel();
@@ -25,6 +27,13 @@ public class AdminReceiveMsgDialog extends JFrame implements MouseListener{
 		JLabel sendLbl = new JLabel("<HTML><U>답장하기</U></HTML>",JLabel.CENTER);
 		
 		String id; int msgNum;
+		
+		Color col = new Color(204,222,233);
+		Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
+		Font fnt = new Font("맑은 고딕",Font.BOLD, 28);
+		Font fn2 = new Font("맑은 고딕", Font.BOLD, 18);
+		Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
+		Font fnt3 = new Font("맑은 고딕", Font.BOLD, 25);
 	public AdminReceiveMsgDialog() {}
 	public AdminReceiveMsgDialog(String id, int msgNum) {
 		this.id=id;
@@ -71,6 +80,7 @@ public class AdminReceiveMsgDialog extends JFrame implements MouseListener{
 		
 		frame.add("Center",mainPane);
 		frame.setSize(500,500);
+		frame.setLocation(190, 100);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(frame.DISPOSE_ON_CLOSE);
 		
@@ -78,18 +88,17 @@ public class AdminReceiveMsgDialog extends JFrame implements MouseListener{
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int clickBtn = e.getButton();
 		Object obj = e.getSource();
-		if(clickBtn==1) {
+		if (obj==sendLbl) {
 			ConsDAO dao = new ConsDAO();
 			List<ConsVO> lst = dao.replyInfo(msgNum);
 			if(lst.size()>0) {
 				ConsVO vo = lst.get(0);
 				this.setVisible(false);
+				frame.setVisible(false);
 				new AdminMsgReplyDialog(vo.getGet(), vo.getSend(), vo.getMsg_title());
 			}
 		}
-		
 	}
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}

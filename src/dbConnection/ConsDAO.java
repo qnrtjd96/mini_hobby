@@ -163,12 +163,14 @@ public class ConsDAO extends DBConnection{
 			pstmt.setInt(1, msgNum);
 			
 			rs = pstmt.executeQuery();
-			ConsVO vo = new ConsVO();
-			vo.setGet(rs.getString(1));
-			vo.setSend(rs.getString(2));
-			vo.setMsg_title(rs.getString(3));
-			
-			lst.add(vo);
+			while(rs.next()) {
+				ConsVO vo = new ConsVO();
+				vo.setGet(rs.getString(1));
+				vo.setSend(rs.getString(2));
+				vo.setMsg_title(rs.getString(3));
+				
+				lst.add(vo);
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

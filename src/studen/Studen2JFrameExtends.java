@@ -104,18 +104,17 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center.removeAll();
 			StudenSearch(idStr);
 			center.setVisible(true);
-		} else if(obj==searchBtn) {
+		} else if(obj==searchBtn) { // 검색버튼
 			String searchWord = searchTf.getText();
 			center.setVisible(false);
 			center.removeAll();
-			center = new StudenCateList().mainPane;
+			center = new StudenCateList("",idStr).mainPane;
 			center.setVisible(true);
 			add("Center", center);
-			System.out.println("검색버튼을 누름");
 			matchWord(searchWord);
 		}else if(obj==musicBtn) {
 			String music = musicBtn.getText();
-			StudenCateList scl = new StudenCateList(music);
+			StudenCateList scl = new StudenCateList(music,idStr);
 			scl.searchTf.setText(music);
 			center.setVisible(false);
 			center.removeAll();
@@ -124,7 +123,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			add("Center", center);
 		}else if(obj==artBtn) {
 			String art = artBtn.getText();
-			StudenCateList scl = new StudenCateList(art);
+			StudenCateList scl = new StudenCateList(art,idStr);
 			scl.searchTf.setText(art);
 			center.setVisible(false);
 			center.removeAll();
@@ -133,7 +132,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			add("Center", center);
 		}else if(obj==sportBtn) {
 			String sport = sportBtn.getText();
-			StudenCateList scl = new StudenCateList(sport);
+			StudenCateList scl = new StudenCateList(sport,idStr);
 			scl.searchTf.setText(sport);
 			center.setVisible(false);
 			center.removeAll();
@@ -142,7 +141,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			add("Center", center);
 		}else if(obj==cookBtn) {
 			String cook = cookBtn.getText();
-			StudenCateList scl = new StudenCateList(cook);
+			StudenCateList scl = new StudenCateList(cook,idStr);
 			scl.searchTf.setText(cook);
 			center.setVisible(false);
 			center.removeAll();

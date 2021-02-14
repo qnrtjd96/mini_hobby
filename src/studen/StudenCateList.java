@@ -52,7 +52,8 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
     	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
     String idStr;
     public StudenCateList() {}
-	public StudenCateList(String cate) {
+	public StudenCateList(String cate, String idStr) {
+		this.idStr=idStr;
 
 		mainPane.setLayout(null);
 		mainPane.setBackground(Color.white);
@@ -127,7 +128,8 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 	}
 	//id 받아오기
 	public void getId(String id) {
-		idStr = id;
+System.out.println("이거 실행은 되니?"+id);
+		this.idStr = id;
 	}
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
@@ -164,6 +166,7 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 			if(col==1) {
 				title = (String)model.getValueAt(row, 1); // 클래스명 가져오기 (혹시몰라서)
 				int class_num = (int)model.getValueAt(row, 0);
+	System.out.println("넘길거야..id"+idStr);
 				new StudenReservationDetail(idStr, class_num, title);
 			}
 		}

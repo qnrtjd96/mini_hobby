@@ -27,6 +27,26 @@ public class MoneyDAO extends DBConnection{
 		}
 		return result;
 	}
+	// 결제후 잔액 변동
+	public int updateMoney(int rest, String id) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql = "update Moneytbl set rest=? where id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(2, id);
+			pstmt.setInt(1, rest);
+			
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return result;
+	}
 	
 	//2021.02.11 이강산
 	//회원 마이페이지(메인) 잔액가져오기

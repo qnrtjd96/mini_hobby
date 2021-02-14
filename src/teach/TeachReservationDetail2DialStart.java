@@ -79,7 +79,7 @@ public class TeachReservationDetail2DialStart extends JDialog implements ActionL
 			dial.setVisible(false);
 			selStr = select.toString();
 			selectStr = selStr.substring(1, selStr.length()-1);
-			new TeachReservationDetail(selectStr, id, classname, time);
+			new TeachReservationDetail(selectStr, id, classname, time, class_num);
 		}
 	}
 
