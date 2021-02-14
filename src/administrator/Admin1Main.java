@@ -291,46 +291,46 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			//그래프 막대기 핸들링
 			if(sumDatePay(date1)==0) {
 				lab = 3;
-			}else if(sumDatePay(date1)>=1 && sumDatePay(date1)<50000) {
+			}else if(sumDatePay(date1)>=1 && sumDatePay(date1)<300000) {
 				lab = 30;
-			}else if (sumDatePay(date1)>50000 && sumDatePay(date1)<=200000) {
+			}else if (sumDatePay(date1)>300000 && sumDatePay(date1)<=600000) {
 				lab = 80;
-			}else if (sumDatePay(date1)>200000 && sumDatePay(date1)<=500000) {
+			}else if (sumDatePay(date1)>600000 && sumDatePay(date1)<=900000) {
 				lab = 130;
-			}else if (sumDatePay(date1)>500000) {
+			}else if (sumDatePay(date1)>12000000) {
 				lab = 200;
 			}
 			if(sumDatePay(date2)==0) {
 				lab1 = 3;
-			}else if(sumDatePay(date2)>=1 && sumDatePay(date2)<50000) {
+			}else if(sumDatePay(date2)>=1 && sumDatePay(date2)<300000) {
 				lab1 = 30;
-			}else if (sumDatePay(date2)>50000 && sumDatePay(date2)<=200000) {
+			}else if (sumDatePay(date2)>300000 && sumDatePay(date2)<=600000) {
 				lab1 = 80;
-			}else if (sumDatePay(date2)>200000 && sumDatePay(date2)<=500000) {
+			}else if (sumDatePay(date2)>600000 && sumDatePay(date2)<=900000) {
 				lab1 = 130;
-			}else if (sumDatePay(date2)>500000) {
+			}else if (sumDatePay(date2)>12000000) {
 				lab1 = 200;
 			}
 			if(sumDatePay(date3)==0) {
 				lab2 = 3;
-			}else if(sumDatePay(date3)>=1 && sumDatePay(date3)<50000) {
+			}else if(sumDatePay(date3)>=1 && sumDatePay(date3)<300000) {
 				lab2 = 30;
-			}else if (sumDatePay(date3)>50000 && sumDatePay(date3)<=200000) {
+			}else if (sumDatePay(date3)>300000 && sumDatePay(date3)<=600000) {
 				lab2 = 80;
-			}else if (sumDatePay(date3)>200000 && sumDatePay(date3)<=500000) {
+			}else if (sumDatePay(date3)>600000 && sumDatePay(date3)<=900000) {
 				lab2 = 130;
-			}else if (sumDatePay(date3)>500000) {
+			}else if (sumDatePay(date3)>12000000) {
 				lab2 = 200;
 			}
 			if(sumDatePay(date4)==0) {
 				lab3 = 3;
-			}else if(sumDatePay(date4)>=1 && sumDatePay(date4)<50000) {
+			}else if(sumDatePay(date4)>=1 && sumDatePay(date4)<300000) {
 				lab3 = 30;
-			}else if (sumDatePay(date4)>50000 && sumDatePay(date4)<=200000) {
+			}else if (sumDatePay(date4)>300000 && sumDatePay(date4)<=600000) {
 				lab3 = 80;
-			}else if (sumDatePay(date4)>200000 && sumDatePay(date4)<=500000) {
+			}else if (sumDatePay(date4)>600000 && sumDatePay(date4)<=900000) {
 				lab3 = 130;
-			}else if (sumDatePay(date4)>500000) {
+			}else if (sumDatePay(date4)>12000000) {
 				lab3 = 200;
 			}
 			g.clearRect(0,0,getWidth(),getHeight()); //클리어
