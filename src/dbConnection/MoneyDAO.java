@@ -6,6 +6,25 @@ import java.util.List;
 public class MoneyDAO extends DBConnection{
 
 	public MoneyDAO() {}
+	// 회원가입시 초기값
+	public int setMoney(String id) {
+		int result=0;
+		try {
+			getConn();
+			
+			sql = "insert into Moneytbl(id, money_char, char_date, rest) values(?, 0, sysdate, 0)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return result;
+	}
 	// 충전하기
 	public int insertMoney(String id, int money_char, int rest) {
 		int result=0;
