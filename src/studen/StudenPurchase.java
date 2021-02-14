@@ -35,6 +35,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import dbConnection.Acess_memDAO;
+import dbConnection.BoardDAO;
 import dbConnection.MemberDAO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
@@ -95,11 +96,12 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	Color col = new Color(204,222,233);
 	
 	String idStr;
+	int classNum;
+	String changeClass;
 	
 	public void StudenPurchase() {	}
 	 
 	public StudenPurchase(String idStr) {
-		
 		this.idStr = idStr;
 		
 		setBorder(new LineBorder(Color.black, 1));
@@ -113,12 +115,6 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		cal.setBorder(new LineBorder(Color.black,1));
 		calendarStu();
 		
-/*		//달력 색깔 표시
-		blue.setBounds(25, 355, 500, 20);  red.setBounds(25, 350, 500, 20);
-		blue.setForeground(col);		red.setForeground(Color.red);
-		ture1.setBounds(380, 480, 500, 20);	false1.setBounds(470, 480, 500, 20);
-		ture1.setFont(fntBold15); 			false1.setFont(fntBold15);
-*/		
 		//예약 중인 클래스
 		dueModel = new DefaultTableModel(dueCol, 0) {
 			public boolean isCellEditable(int i, int c) {
@@ -140,6 +136,8 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		rebookBtn.setBounds(410,500, 70,30);		add(rebookBtn);
 		cancelBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);
 		cancelBtn.setBounds(475,500, 70,30);		add(cancelBtn);
+		writeReview.setFont(btnFnt);			writeReview.setBackground(col6);
+		writeReview.setBounds(475,755, 70,30);		add(writeReview);
 		
 		//전체 구매 클래스
 		allModel = new DefaultTableModel(allCol, 0) {
@@ -275,24 +273,21 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 
 		if(obj==rebookBtn) {
 			System.out.println("예약변경 누름");
-			//다이얼로그
-			//Dialog log = new Dialog(this);
-			
-			//JDialog log = new JDialog();
-			//log.setTitle("테스트");
-			//dialStart newDial = new dialStart(new StudenTopMenu()); //클래스 하단에 클래스 만들어주기
+			for(int i=0; i<dueTable.getRowCount(); i++) {
+				changeClass = (String)dueTable.getValueAt(i, 1);//시간바꾸고싶은 클래스 이름 받아옴
+				Stu_ClassDAO classDao = new Stu_ClassDAO();
+				List<Stu_ClassVO> lst = classDao.getChangeClass(changeClass, idStr);
+				classNum = vo.getClass_num();
+				System.out.println("예약변경 원하는 수업의 글번호 뽑아오기 .... "+classNum);
+				new duePurchaseDialog(classNum, idStr);
+			}	
 		}else if(obj==cancelBtn) {
 			System.out.println("예약취소 누름");
 			int result = 0;
-			//다이얼로그 ...날짜계산필요 (일주일?3일전에 변경안됨)... 
 			for(int i=0; i<dueTable.getRowCount(); i++){
-				System.out.println("테이블 선택 값 > "+dueTable.getValueAt(i, 2));
-				String sendDelStr = (String) dueTable.getValueAt(i, 2);
-				System.out.println("String sendDelStr ? ? ? "+sendDelStr);
+				String sendDelStr = (String) dueTable.getValueAt(i, 1);
 				Stu_ClassDAO dao = new Stu_ClassDAO(); 
 				result = dao.deletStuClass(idStr, sendDelStr);
-				System.out.println("> > >예약 삭제 > > > "+idStr+" / "+sendDelStr);
-				
 			}
 			if(result>0) {
 				JOptionPane.showMessageDialog(this, "예약이 취소되었습니다.");
@@ -301,6 +296,8 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			}else {
 				JOptionPane.showMessageDialog(this, "예약취소가 실패되었습니다.");
 			}
+		}else if(obj==writeReview) {
+
 		}
 	}
 	
