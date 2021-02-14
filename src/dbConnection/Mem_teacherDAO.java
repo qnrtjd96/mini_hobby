@@ -195,6 +195,7 @@ System.out.println("getSearch > > > "+searchWord);
 		}
 		return result;
 	}
+	/*
 	//선생님 회원정보 수정2
 	public int teachInfoUpdate2(Mem_teacherVO vo, String id) {
 		System.out.println("DAO 선생님 정보수정 2 실행? ");
@@ -219,6 +220,7 @@ System.out.println("getSearch > > > "+searchWord);
 		}
 		return result;
 	}
+	*/
 	//선생님 계정 삭제 참조 테이블 삭제
 	public int delTeaFkTbl(String id) {
 		int result = 0;

@@ -243,10 +243,11 @@ public class TeachInfo extends JPanel implements ActionListener {
 		Mem_teacherDAO dao = new Mem_teacherDAO();
 		
 		int result = dao.teachInfoUpdate(vo, id);
-		int result2 = dao.teachInfoUpdate2(vo, id);
+		/*int result2 = dao.teachInfoUpdate2(vo, id);*/
 		
-		System.out.println("카테고리 부분 수정? > > > "+result2);
-		if(result>0 && result2>0) { //수정완료 확인부분
+//		System.out.println("카테고리 부분 수정? > > > "+result2);
+//		if(result>0 && result2>0) { //수정완료 확인부분
+		if(result>0) {
 			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다!");
 			//비활성화 시키기
 			teaPwdTf.setEnabled(false);		teaNameTf.setEnabled(false);	careerTf.setEnabled(false);
