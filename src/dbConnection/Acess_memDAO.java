@@ -14,7 +14,7 @@ public class Acess_memDAO extends DBConnection {
 		List<Acess_memVO> lst= new ArrayList<Acess_memVO>();
 		try {
 			getConn(); 
-			sql = "select id,name from ACCESSMEMTBL where sort=2";
+			sql = "select id,name from acess_mem where sort=2";
 			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -39,7 +39,7 @@ public class Acess_memDAO extends DBConnection {
 		List<Acess_memVO> lst= new ArrayList<Acess_memVO>();
 		try {
 			getConn(); 
-			sql = "select id,name from ACCESSMEMTBL where sort=1";
+			sql = "select id,name from acess_mem where sort=1";
 			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -64,7 +64,7 @@ public class Acess_memDAO extends DBConnection {
 		try {
 			getConn();
 		
-			sql = "insert into accessmemtbl(id,name,sort) values(?,?,?)";
+			sql = "insert into acess_mem(id,name,sort) values(?,?,?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
@@ -84,7 +84,7 @@ public class Acess_memDAO extends DBConnection {
 		int result = 0;
 		try {
 			getConn();
-			sql = "delete from accessmemtbl where id = ?";
+			sql = "delete from acess_mem where id = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			result = pstmt.executeUpdate();
@@ -101,7 +101,7 @@ public class Acess_memDAO extends DBConnection {
 		try {
 			getConn();
 			
-			sql = "select count(id) from accessmemtbl";
+			sql = "select count(id) from acess_mem";
 			
 			pstmt = conn.prepareStatement(sql);
 			
