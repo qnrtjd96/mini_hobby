@@ -26,9 +26,6 @@ import javax.swing.table.TableColumnModel;
 
 import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
-import dbConnection.ConsDAO;
-import dbConnection.MemberDAO;
-import dbConnection.MemberVO;
 
 public class AdminPaymentDialog extends JFrame implements ActionListener,  MouseListener{
 	JPanel mainPane = new JPanel();
@@ -41,10 +38,7 @@ public class AdminPaymentDialog extends JFrame implements ActionListener,  Mouse
 			
 		JButton cancleBtn = new JButton("결제취소");
 	// 테이블 필드명
-	Object headList[] = {"선택","강사아이디","이름","금액","결제일자"};
-	// 테이블 레코드 테스트 값
-	//Object recoList1[] = {"○","adfg1234","김강사","30000","2021.02.07"};
-	//Object recoList2[] = {"○","ggdg123","박강사","20000","2021.01.15"};
+	Object headList[] = {"선택","No","강사아이디","이름","금액","결제일자"};
 	
 	Color col6 = new Color(204,222,233);
 	Font fntPlain13 = new Font("맑은 고딕", Font.PLAIN, 13);
@@ -70,6 +64,7 @@ public class AdminPaymentDialog extends JFrame implements ActionListener,  Mouse
 		
 		// 컬럼 너비 조절
 		diaTable.getColumn("선택").setPreferredWidth(40);
+		diaTable.getColumn("No").setPreferredWidth(40);
 		diaTable.getColumn("강사아이디").setPreferredWidth(130);
 		diaTable.getColumn("이름").setPreferredWidth(80);
 		diaTable.getColumn("금액").setPreferredWidth(80);
@@ -103,6 +98,7 @@ public class AdminPaymentDialog extends JFrame implements ActionListener,  Mouse
 		tcmSchedule.getColumn(2).setCellRenderer(tScheduleCellRenderer);
 		tcmSchedule.getColumn(3).setCellRenderer(tScheduleCellRenderer);
 		tcmSchedule.getColumn(4).setCellRenderer(tScheduleCellRenderer);
+		tcmSchedule.getColumn(5).setCellRenderer(tScheduleCellRenderer);
 		
 		
 		// 테이블 데이터
@@ -164,7 +160,7 @@ public class AdminPaymentDialog extends JFrame implements ActionListener,  Mouse
 		
 		for(int i=0; i<lst.size();i++) {
 			BoardVO vo = lst.get(i);
-			Object[] data = {"○", vo.getId(), vo.getName(), vo.getCost(), vo.getPay_date()};
+			Object[] data = {"○", vo.getClass_num(), vo.getId(), vo.getName(), vo.getCost(), vo.getPay_date()};
 			model.addRow(data);
 		}
 	}
