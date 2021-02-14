@@ -164,10 +164,13 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	}
 	//label 이벤트 오버라이딩
 	@Override
-	public void mouseReleased(MouseEvent me) {
-		JLabel obj = (JLabel)me.getSource();
-		Object lbl = obj.getText();
-		try {
+	public void mouseReleased(MouseEvent me2) {
+		Object obj2 = me2.getSource();
+		if (obj2==ta) {
+			
+		} else {
+			JLabel obj = (JLabel)me2.getSource();
+			Object lbl = obj.getText();
 			if(lbl.equals("이전으로")) {
 				center.setVisible(false);
 				center.removeAll();
@@ -206,13 +209,10 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 					this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 					Acess_memDAO dao = new Acess_memDAO();
 					int result = dao.LogOut(id);
-System.out.println("로그아웃?"+result);
 					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
 					new Main0Login();
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	public void mousePressed(MouseEvent e) {}
@@ -229,24 +229,26 @@ System.out.println("로그아웃?"+result);
 		}
 	}
 	public void mouseClicked(MouseEvent me) {
-		Object obj = me.getSource();
-		JLabel lbl = (JLabel)me.getSource();
-		int date = Integer.parseInt(lbl.getText());
-System.out.println("달력 찍으면 나오는 날짜 ? ? ? "+date);
-		MemoDAO dao = new MemoDAO();
-		List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
-		String text = "";
-System.out.println("date="+ta.getText().substring(0,10)+"id="+id);
-		if (lst.size()==0) { // 저장된 메모가 없을경우
-			ta.setText(y+"-"+m+"-"+date+"\n\n");
-		} else if(lst.size()>0) { // 저장메모가 있을경우
-			for (int i=0; i<lst.size(); i++) {
-				MemoVO vom = lst.get(i);
-				text=text+vom.getMemo_detail()+"\n";
+		Object obj2 = me.getSource();
+		if (obj2==ta) {
+			
+		} else {
+			Object obj = me.getSource();
+			JLabel lbl = (JLabel)me.getSource();
+			int date = Integer.parseInt(lbl.getText());
+			MemoDAO dao = new MemoDAO();
+			List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
+			String text = "";
+			if (lst.size()==0) { // 저장된 메모가 없을경우
+				ta.setText(y+"-"+m+"-"+date+"\n\n");
+			} else if(lst.size()>0) { // 저장메모가 있을경우
+				for (int i=0; i<lst.size(); i++) {
+					MemoVO vom = lst.get(i);
+					text=text+vom.getMemo_detail()+"\n";
+				}
+				ta.setText(y+"-"+m+"-"+date+"\n\n"+text);
 			}
-			ta.setText(y+"-"+m+"-"+date+"\n\n"+text);
 		}
-		
 	}
 	public void TeachTopMenu(String id, String pwd) {
 		System.out.println("teachTopMenu id > > >  >"+id+", "+pwd);
