@@ -67,7 +67,7 @@ public class Teach3MyMenu extends JPanel implements MouseListener{
 			lblLeft.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 			lblLeft.setFont(fntBold15);
 			lblLeft.addMouseListener(this);
-		}
+		} 
 		//왼쪽 메뉴 레이아웃 및 간격조정
 		GridLayout grid = new GridLayout(10,0);
 		paneLeft.setLayout(grid);

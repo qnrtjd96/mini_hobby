@@ -160,10 +160,10 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	@Override
 	public void mouseReleased(MouseEvent me) {
 		Object tfObj = me.getSource();
-		JLabel obj = (JLabel)me.getSource();
-		Object lbl = obj.getText();
-		
-		try {
+		if(tfObj==searchTf) {
+			searchTf.setText("");
+		} else {
+			String lbl = ((JLabel)tfObj).getText();
 			if(lbl.equals("이전으로")) {
 				////// 구현해서 객체 호출하세요 //////
 				JOptionPane.showMessageDialog(this, "구현중입니다.");
@@ -201,11 +201,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
 					new Main0Login();
 				}
-			}else if(tfObj==searchTf) {
-				searchTf.setText("");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	} 
 	//프레임 X 눌렀을때의 이벤트
