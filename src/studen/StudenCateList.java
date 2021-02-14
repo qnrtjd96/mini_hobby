@@ -164,7 +164,6 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 	
 	public void getSearchResult(String searchWord ) {
 		Mem_teacherDAO dao = new Mem_teacherDAO();
-		System.out.println("검색 메소드 연결 ? searchWord >  > "+searchWord);
 		List<Mem_teacherVO> searchList = dao.getSearch(searchWord);
 		for(int idx=0; idx<searchList.size(); idx++ ) {
 			Mem_teacherVO vo = searchList.get(idx);
