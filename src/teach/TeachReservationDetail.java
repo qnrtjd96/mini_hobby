@@ -95,11 +95,12 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	int class_num; int costInt;
 
 	public TeachReservationDetail() {}
-	public TeachReservationDetail(String selStr, String id, String classname, String time) {
+	public TeachReservationDetail(String selStr, String id, String classname, String time, int class_num) {
 		this.selStr=selStr;
 		this.id=id;
 		this.classname=classname;
 		this.time=time;
+		this.class_num=class_num;
 		
 		BoardDAO dao = new BoardDAO();
 		int result = dao.updateTime(selStr, id, classname, time);
@@ -182,7 +183,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	}
 	public void tableSetting() {
 		BoardDAO dao = new BoardDAO();
-		List<BoardVO> lst = dao.detailTable(classname, time);
+		List<BoardVO> lst = dao.detailTable(class_num);
 		if (lst.size()>0) {
 			BoardVO vo = lst.get(0);
 			this.class_num = vo.getClass_num();

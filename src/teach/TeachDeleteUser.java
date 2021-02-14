@@ -18,6 +18,11 @@ import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 
 import dbConnection.Acess_memDAO;
+import dbConnection.BoardDAO;
+import dbConnection.Mem_teacherDAO;
+import dbConnection.MemberDAO;
+import dbConnection.Stu_ClassDAO;
+import main.Main0Login;
 
 public class TeachDeleteUser extends JPanel implements ActionListener{
 	JPanel deletMain = new JPanel(null);
@@ -36,19 +41,20 @@ public class TeachDeleteUser extends JPanel implements ActionListener{
 
 		Random randomNum = new Random(); //.nextInt(9);
 		
-		JPanel gPane = new JPanel(new GridLayout(3,3));
+		JPanel gPane = new JPanel(new GridLayout(3,3)); 
 		JToggleButton gBtn[] = new JToggleButton[9];
-		
-	JPanel robotSouth = new JPanel();
-		JButton chooBtn = new JButton("선택완료");
 	
-	String id;
+	String id, pwd;
 		
 	public TeachDeleteUser() {
 		
 	}
 	
-	public TeachDeleteUser(String id) {
+	public TeachDeleteUser(String id, String pwd) {
+		this.id = id;
+		this.pwd = pwd;
+		System.out.println("idStr > > > "+id+", 로그인 비밀번호 > > > "+pwd);
+
 		add(deletMain);
 		setBackground(Color.white);
 		
@@ -86,16 +92,7 @@ public class TeachDeleteUser extends JPanel implements ActionListener{
 			
 		robotPane.add("Center", gPane);
 		
-		
-		
-		
-		chooBtn.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-		robotSouth.add(chooBtn);
-		robotPane.add("South", chooBtn);
-		
 		robotPane.setBorder(new LineBorder(Color.black, 1));
-		
-		chooBtn.addActionListener(this);
 		
 		setVisible(true);
 	}
@@ -104,30 +101,48 @@ public class TeachDeleteUser extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		
-		if(obj==gBtn) {
-			
-			System.out.println("선택하기");
-			System.out.println("obj");
+		if(obj==gBtn[1]) {
 			System.out.println("gBtn[1]");
 			String inputPwd = JOptionPane.showInputDialog(this, "비밀번호를 다시 입력해주세요");
-			matchPwd(inputPwd);
-			//비밀번호 입력받는거로 바꾸기 ... 디비랑 대조
-			//String inputPwd = JOptionPane.showInputDialog(this, "비밀번호를 다시 입력해주세요");
-			//matchPwd(inputPwd);
-		
+			System.out.println("idStr > > > "+id+", 입력 비밀번호 > "+inputPwd+", 로그인 비밀번호 > > > "+pwd);
+
+			matchPwd(inputPwd, id, pwd);
 		}else {
 			JOptionPane.showMessageDialog(this, "다시 선택해주세요.");
 		}
 		
 	}
 	
-	public void matchPwd(String inputPwd) {
-		
-		if(inputPwd.equals("1234")) {	//로그인한 회원의 비밀번호와 일치시
-			System.out.println("회원탈퇴성공... ㅠㅠ");
+	public void matchPwd(String inputPwd, String id, String pwd) {
+		System.out.println("idStr > > > "+id+", 입력 비밀번호 > "+inputPwd+", 로그인 비밀번호 > > > "+pwd);
+
+		if(inputPwd.equals(pwd)) {	//로그인한 회원의 비밀번호와 일치 시
+			BoardDAO delDao = new BoardDAO();
+			int delBor = delDao.deleteMember(id);
+			if(delBor>0) {
+				System.err.println("boardtbl 삭제 성공");
+			}else {
+				System.out.println("boardtbl 삭제 실패");
+			}
+			Mem_teacherDAO teaDao = new Mem_teacherDAO();
+			int teaFkDel = teaDao.delTeaFkTbl(id);
+			if(teaFkDel>0) {
+				System.out.println("선생님 참조 테이블 삭제 성공");
+			}else {
+				System.out.println("선생님 참조 테이블 삭제 실패");
+			}
+			MemberDAO dao = new MemberDAO();
+			int result = dao.memDelete(id);
+			if(result>0) {
+				JOptionPane.showMessageDialog(this, "이용해주셔서 감사합니다, \n 언제든 다시 돌아와주세요.");
+				this.setVisible(false);
+				new Main0Login();
+			}else {
+				JOptionPane.showMessageDialog(this, "탈퇴 안됨..");
+			}
 		}else {
 			System.out.println("회원탈퇴실패^^");
-		} 
+		}
 	}
 	//프레임 X 눌렀을때의 이벤트
 	class AdapterInner extends WindowAdapter{

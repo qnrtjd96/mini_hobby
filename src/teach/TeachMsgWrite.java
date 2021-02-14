@@ -53,6 +53,8 @@ public class TeachMsgWrite extends JPanel implements ActionListener{
 		sp.setBounds(0,101,740,600); ta.setFont(fn);
 		send.setBounds(500,720,200,50); send.setBackground(col); send.setFont(fn2);
 		
+		send.addActionListener(this);
+		
 	}
 	//프레임 X 눌렀을때의 이벤트
 	class AdapterInner extends WindowAdapter{
@@ -71,6 +73,7 @@ public class TeachMsgWrite extends JPanel implements ActionListener{
 			int result = dao.insertReply(vo);
 			if (result>0) {
 				JOptionPane.showMessageDialog(this, "메시지 전송이 완료되었습니다.");
+				receiTf.setText(""); titleTf.setText(""); ta.setText("");
 			}
 		}
 		

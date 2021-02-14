@@ -156,7 +156,7 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 				mainPane.removeAll();
 				mainPane.setVisible(false);
 				String cate = searchTf.getText();
-				this.mainPane = new StudenCateList(cate).mainPane;
+				this.mainPane = new StudenCateList(cate,"master").mainPane;
 				mainPane.setVisible(true);
 				add("Center", mainPane);
 			}

@@ -3,6 +3,8 @@ package dbConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.net.httpserver.Authenticator.Result;
+
 public class BoardDAO extends DBConnection{
 
 	public BoardDAO() {
@@ -143,16 +145,17 @@ public class BoardDAO extends DBConnection{
 		return lst;
 	}
 	// 테이블세팅
-	public List<BoardVO> detailTable(String classname, String time) {
+	public List<BoardVO> detailTable(int class_num) {
 		List<BoardVO> lst = new ArrayList<BoardVO>();
 		try {
 			getConn();
 			
-			sql = "select * from boardtbl where classname=? and classdate=to_date(?, 'yyyy-mm-dd')";
+			sql = "select class_num, id, classname, cate, city, cost, intro, career, area, "
+					+ " to_char(writedate, 'yyyy-mm-dd'), to_char(classdate, 'yyyy-mm-dd'), classtime "
+					+ " from boardtbl where class_num=?";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, classname);
-			pstmt.setString(2, time);
+			pstmt.setInt(1, class_num);;
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -332,8 +335,7 @@ public class BoardDAO extends DBConnection{
 		try {
 			getConn();
 			
-			sql="select cate, to_char(s.classdate, 'yyyy-mm-dd'), b.classtime, b.classname from boardtbl b join stu_class s "
-					+ " using (class_num) where class_num=?";
+			sql="select cate, to_char(classdate, 'yyyy-mm-dd'), classtime, classname from boardtbl where class_num=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, class_num);
@@ -345,6 +347,7 @@ public class BoardDAO extends DBConnection{
 				vo.setClassdate(rs.getString(2));
 				vo.setClasstime(rs.getString(3));
 				vo.setClassname(rs.getString(4));
+				
 				lst.add(vo);
 			}
 		} catch(Exception e){
@@ -365,6 +368,8 @@ public class BoardDAO extends DBConnection{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, classtime);
 			pstmt.setInt(2, class_num);
+			
+			result = pstmt.executeUpdate();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

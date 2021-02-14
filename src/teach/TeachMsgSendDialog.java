@@ -70,7 +70,7 @@ public class TeachMsgSendDialog extends JDialog {
 		System.out.println("send dialog id > > > "+ id + ", send dialog msgnum > > > "+sendMsgNum);
 		
 		ConsDAO dao = new ConsDAO();
-		List<ConsVO> lst = dao.studenDiaMsgRec(id, sendMsgNum);
+		List<ConsVO> lst = dao.studenSendDiaMsgRec(id, sendMsgNum);
 		
 		for(int i=0; i<lst.size(); i++) {
 			System.out.println("send dialog id > > > "+ id + ", send dialog msgnum > > > "+sendMsgNum);

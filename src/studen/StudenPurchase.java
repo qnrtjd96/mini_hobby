@@ -13,8 +13,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -25,12 +28,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import dbConnection.Acess_memDAO;
+import dbConnection.MemberDAO;
 import dbConnection.Stu_ClassDAO;
 import dbConnection.Stu_ClassVO;
 
@@ -58,8 +63,13 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		String days[] = {"일", "월", "화", "수", "목", "금", "토"}; 
 		JPanel datePane = new JPanel( new GridLayout(0,7)); //날짜 출력 
 	
+/*	//달력 표시 
+	JLabel ture1 = new JLabel("참여예정"); 
+	JLabel false1 = new JLabel("참여완료");
+	JLabel red = new JLabel("■");
+	JLabel blue = new JLabel("■");
+*/		
 	//수강 예정 테이블, 전체 구매 테이블
-	
 	DefaultTableModel dueModel;
 	JTable dueTable;		JScrollPane dueSp;
 	String dueCol[] = {"번호", "클래스명", "예약일", "예약시간", "장소"};
@@ -82,6 +92,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	Font headFnt = new Font("맑은 고딕", Font.BOLD, 15);
 	
 	Color col6 = new Color(204,222,233);
+	Color col = new Color(204,222,233);
 	
 	String idStr;
 	
@@ -102,6 +113,12 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		cal.setBorder(new LineBorder(Color.black,1));
 		calendarStu();
 		
+/*		//달력 색깔 표시
+		blue.setBounds(25, 355, 500, 20);  red.setBounds(25, 350, 500, 20);
+		blue.setForeground(col);		red.setForeground(Color.red);
+		ture1.setBounds(380, 480, 500, 20);	false1.setBounds(470, 480, 500, 20);
+		ture1.setFont(fntBold15); 			false1.setFont(fntBold15);
+*/		
 		//예약 중인 클래스
 		dueModel = new DefaultTableModel(dueCol, 0) {
 			public boolean isCellEditable(int i, int c) {
@@ -141,6 +158,10 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		allPurchase.getTableHeader().setBackground(col6);	allPurchase.getTableHeader().setFont(headFnt);
 		allSp = new JScrollPane(allPurchase);
 		allSp.setBounds(25, 530, 520, 220);		add(allSp);
+		
+		//테이블 이벤트 
+		dueTable.addMouseListener(this);
+		allPurchase.addMouseListener(this);
 		
 		//이벤트 구현 필요 ...rebookBtn > JDialog, cancelBtn > db에서 지우기
 		rebookBtn.addActionListener(this);
@@ -184,7 +205,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	public void setDuePurchase(String idStr) {
 		System.out.println("구매내역 아이디 받아오는지 확인 >> "+idStr);
 		Stu_ClassDAO dao = new Stu_ClassDAO();
-		List<Stu_ClassVO> dueLst = dao.showAllPurchase(idStr);
+		List<Stu_ClassVO> dueLst = dao.showDuePurchase(idStr);
 		
 		if(dueLst.size()==0) {
 			System.out.println("set DuePurchase erro... > 예약 중인 클래스를 찾지 못함");
@@ -206,16 +227,66 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			}	
 		}
 			
-	}
-	
-	//학생 예약 내역 취소
-	public void cancelDueClass() {
+	}	
+	@Override	//예약날짜별 예약현황 보여주기..
+	public void mousePressed(MouseEvent e) {
+		Object obj = e.getSource();
+		JLabel lbl = (JLabel)e.getSource();
+		
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> lst = dao.showClickPurchase(idStr);
+		
+		if(lst.size()==0) {
+			System.out.println("set Click Purchase erro... > 예약 중인 클래스를 찾지 못함");
+		}else {
+			Stu_ClassVO vo = lst.get(0);
+			//테이블 비워주기..
+			DefaultTableModel defaultTable = (DefaultTableModel)dueTable.getModel();
+			defaultTable.setNumRows(0);
+			System.out.println("vo.getID > > > "+vo.getId());
+			if(vo.getId().equals(idStr)) {
+				//해당날짜만 안나옴 ㅠㅠ 
+				for(int i=0; i<lst.size(); i++) {
+					vo = lst.get(i);
+					
+					Object[] dueClassObj = {
+							i+1,
+							vo.getPay_class(), vo.getClassdate(), 
+							vo.getClasstime(), vo.getArea()
+					};
+					
+					dueModel.addRow(dueClassObj);
+				}
+				
+			}	
+		}
 		
 	}
 	
+	//날짜 클릭하면 테이블에 예약내역 보여주기
+	@Override
+	public void mouseClicked(MouseEvent me) {
+		int clickBtn = me.getButton();
+		if(clickBtn==1) {
+			int row = dueTable.getSelectedRow();
+			//for(int c=0; c<dueTable.getColumnCount(); c++) {
+				Object obj = dueTable.getValueAt(row, 1); //클래스
+				//cancelDueClass((String)obj);
+			//}
+		}
+		
+		
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
+		Stu_ClassVO vo = new Stu_ClassVO();
+		
+		//날짜 바꿔주기
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY/MM/DD");
+		//Date dueDate = sdf.parse(vo.getClassdate());
+		
 		if(obj==rebookBtn) {
 			System.out.println("예약변경 누름");
 			//다이얼로그
@@ -226,17 +297,30 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			//dialStart newDial = new dialStart(new StudenTopMenu()); //클래스 하단에 클래스 만들어주기
 		}else if(obj==cancelBtn) {
 			System.out.println("예약취소 누름");
+			int result = 0;
 			//다이얼로그 ...날짜계산필요 (일주일?3일전에 변경안됨)
-			int cancelCho = JOptionPane.showConfirmDialog(dueSp, "수업을 취소하시겠습니까?", "예약취소",
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
-			if(cancelCho==1) {
-				//디비 연결해서 예약 취소하기 ..
+			if(vo.getClassdate().equals(vo.getClassdate())) {
+			//if(Integer.parseInt(vo.getClassdate())>((Integer.parseInt(vo.getClassdate())-3))) {
+				for(int i=0; i<dueTable.getRowCount(); i++){
+					System.out.println("삭제 vo.getPay_class > "+vo.getPay_class()+", 예약날짜 > "+vo.getClassdate());
+					if(dueTable.getValueAt(i, 0).equals(vo.getPay_class())) {
+						String sendDelStr = (String) dueTable.getValueAt(i, 1);
+						Stu_ClassDAO dao = new Stu_ClassDAO(); 
+						result = dao.deletStuClass(idStr, sendDelStr);
+						System.out.println("예약 삭제 > > > "+idStr+" / "+sendDelStr);
+					}
+				}
+				if(result>0) {
+					JOptionPane.showMessageDialog(this, "예약이 취소되었습니다.");
+					dueModel.setRowCount(0);
+					setDuePurchase(idStr);
+				}else {
+					JOptionPane.showMessageDialog(this, "예약 취소가 실패되었습니다.");
+				}
+			}else {
+				JOptionPane.showMessageDialog(this, "예약 날짜 3일 전에는 취소가 불가능합니다.");
 			}
 		}
-	}
-	@Override
-	public void mouseReleased(MouseEvent me) {
-		
 	}
 	
 	public void calendarStu() {
@@ -274,7 +358,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			dayOfWeekLbl.setFont(fntPlain15);
 		}
 	}
-	
+	//색깔변경 추가
 	public void dateSetting(int y, int m) {
 		int week, lastDay;
 		//선택된 년도, 월의 1일로 세팅 
@@ -287,29 +371,45 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		for(int space=1; space<week; space++) {
 			datePane.add(new JLabel(""));
 		}
-		// 월의 1일~마지막일 까지 출력 
-		for(int day=1; day<=lastDay; day++) {
-			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
-			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
-			now.set(y, m-1, day); //날짜별로 요일을 구해서
-			int colorWeek = now.get(Calendar.DAY_OF_WEEK);
-			if(colorWeek == 1) { //일요일이면 
-				dayOfMonthLbl.setForeground(Color.RED);
-			}else if(colorWeek == 7) { //토요일이면 
-				dayOfMonthLbl.setForeground(Color.BLUE);
+		// 월의 1일~마지막일 까지 출력 (+라벨 배경색 바꾸기 위한 작업)
+		Stu_ClassDAO dao = new Stu_ClassDAO();
+		List<Stu_ClassVO> lst = dao.StuCalendar(idStr);
+			for(int day=1; day<=lastDay; day++) {
+				JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
+				dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
+				now.set(y, m-1, day); //날짜별로 요일을 구해서
+				int colorWeek = now.get(Calendar.DAY_OF_WEEK);
+				/*여기는 sysout찍으면 나옴*/
+				for(int i=0; i<lst.size(); i++) {
+					Stu_ClassVO vo1 = lst.get(i);
+					String date = vo1.getClassdate();
+					int month = Integer.parseInt(date.substring(5,7));
+					if (month==m) {
+						int da = Integer.parseInt(date.substring(8));
+						if(da>=d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+							dayOfMonthLbl.setOpaque(true);
+							dayOfMonthLbl.setBackground(col);
+						} else if(da<d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
+							dayOfMonthLbl.setOpaque(true);
+							dayOfMonthLbl.setBackground(Color.RED);
+						}
+					}
+				} 
+				if(colorWeek == 1) { //일요일이면 
+					dayOfMonthLbl.setForeground(Color.RED);
+				}else if(colorWeek == 7) { //토요일이면 
+					dayOfMonthLbl.setForeground(Color.BLUE);
+				}
+				datePane.add(dayOfMonthLbl);
+				dayOfMonthLbl.addMouseListener(this);
 			}
-			datePane.add(dayOfMonthLbl);
-			dayOfMonthLbl.addMouseListener(this);
-		}
 	}
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent me) {}
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 	@Override
 	public void mouseExited(MouseEvent e) {}
-	@Override
-	public void mouseClicked(MouseEvent me) {}
 	//프레임 X 눌렀을때의 이벤트
 	class AdapterInner extends WindowAdapter{
 		//다시 오버라이딩
