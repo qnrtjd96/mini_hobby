@@ -66,6 +66,40 @@ public class Mem_teacherDAO extends DBConnection {
 		}
 		return lst;
 	}
+	public List<Mem_teacherVO> getSearch(String searchWord) {
+		List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
+		
+		try {
+			getConn();
+			//select class_num, classname, city, cost, mem.name from boardtbl b, membertbl mem
+			//where b.id=mem.id and b.classname like '%자%' and mem.name like '%김%';
+			sql = "select class_num, classname, city, cost, mem.name from boardtbl b, membertbl mem "
+				+ "where b.id=mem.id and b.classname like ? ";//or mem.name like ?
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,  "%"+searchWord+"%");;
+			//pstmt.setString(2, "%"+searchWord+"%");
+							
+			rs = pstmt.executeQuery();
+							
+			while(rs.next()) {
+				Mem_teacherVO vo = new Mem_teacherVO();
+				//글번호, 수업명, 지, 비용, 강사
+				vo.setClass_num(rs.getInt(1));
+				vo.setClassName(rs.getString(2));
+				vo.setCity(rs.getString(3));
+				vo.setCost(rs.getInt(4));
+				vo.settName(rs.getString(5));
+				
+				lst.add(vo);
+			}					
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+		
+	}
 	// 강사 카테고리 검색시 보여지는 리스트(studenCateList.java)
 		public List<Mem_teacherVO> teaCateList(String cate) {
 			List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
@@ -179,6 +213,25 @@ public class Mem_teacherDAO extends DBConnection {
 			
 			result = pstmt.executeUpdate();
 			System.out.println("DAO 실행결과 > "+result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
+	//선생님 계정 삭제 참조 테이블 삭제
+	public int delTeaFkTbl(String id) {
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from mem_teacher where id = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {

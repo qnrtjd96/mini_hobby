@@ -56,7 +56,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	Font fnt = new Font("맑은 고딕",Font.BOLD, 20);
 	Font fnt2 = new Font("맑은 고딕",Font.PLAIN, 18);
 	Color col = new Color(204,222,233);
-	
+	 
 	JPanel center = new JPanel();
 		JTextField tf = new JTextField();
 		JButton btn = new JButton("검색");
@@ -92,16 +92,16 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		JPanel datePane = new JPanel( new GridLayout(0,7,38,25)); // 1~31 날짜 출력 
 	
 	MemberVO vo;
-	String id;
+	String id, pwd;
 	JPanel[] paneArr;
 	int p;
 	
 	public Teach1JFrameExtends() {}
-	public Teach1JFrameExtends(String id) {
+	public Teach1JFrameExtends(String id, String pwd) {
 		this.id = id;
-		System.out.println("teach frame id > " + id);
+		System.out.println("teach frame id > " + id+", "+pwd);
 		
-		TeachTopMenu(id);
+		TeachTopMenu(id, pwd);
 		TeachMain();
 		
 		setSize(800,1000);
@@ -191,7 +191,8 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 				} else if (pwd.equals(pwdRe)) {
 					center.setVisible(false);
 					center.removeAll();
-					center = new Teach3MyMenu(id).paneStu;
+					center = new Teach3MyMenu(id, pwd).paneStu;
+					System.out.println("teach my menu pwd > "+pwd);
 					this.setVisible(true);
 					add("Center", center);
 				} else {
@@ -230,6 +231,7 @@ System.out.println("로그아웃?"+result);
 		Object obj = me.getSource();
 		JLabel lbl = (JLabel)me.getSource();
 		int date = Integer.parseInt(lbl.getText());
+		System.out.println("달력 찍으면 나오는 날짜 ? ? ? "+date);
 		MemoDAO dao = new MemoDAO();
 		List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
 		if (lst.size()==0) { // 저장된 메모가 없을경우
@@ -240,8 +242,8 @@ System.out.println("로그아웃?"+result);
 		}
 		
 	}
-	public void TeachTopMenu(String id) {
-		System.out.println("teachTopMenu id > > >  >"+id);
+	public void TeachTopMenu(String id, String pwd) {
+		System.out.println("teachTopMenu id > > >  >"+id+", "+pwd);
 		add("North",paneTop);
 		//logoBtn
 		add(Logo);

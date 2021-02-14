@@ -73,7 +73,7 @@ public class StudenSendMsgDialog extends JDialog {
 		System.out.println("다이얼 정보 불러오기 메소드 >  아이디 받아오는지.... "+idStr+", 쪽지번호 읽히는지.... "+sendMsgNum);
 			
 		ConsDAO dao = new ConsDAO();
-		List<ConsVO> sendLst = dao.studenDiaMsgRec(idStr, sendMsgNum);
+		List<ConsVO> sendLst = dao.studenSendDiaMsgRec(idStr, sendMsgNum);
 		
 		for(int i=0; i<sendLst.size(); i++) {
 			ConsVO sendVo = sendLst.get(i);

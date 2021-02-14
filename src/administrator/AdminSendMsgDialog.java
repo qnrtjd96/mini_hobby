@@ -62,7 +62,7 @@ public class AdminSendMsgDialog {
 	
 	public void sendMsgDetailList(String master, int sendMsgNum) {
 		ConsDAO dao = new ConsDAO();
-		List<ConsVO> lst = dao.studenDiaMsgRec(master, sendMsgNum);
+		List<ConsVO> lst = dao.studenSendDiaMsgRec(master, sendMsgNum);
 		for(int i=0; i<lst.size(); i++) {
 			ConsVO vo = lst.get(i);
 			Object data[] = {

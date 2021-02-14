@@ -26,6 +26,7 @@ import javax.swing.table.TableColumnModel;
 
 import administrator.AdminReceiveMsgDialog;
 import dbConnection.Acess_memDAO;
+import dbConnection.BoardDAO;
 import dbConnection.Mem_teacherDAO;
 import dbConnection.Mem_teacherVO;
 
@@ -50,7 +51,9 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
     	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
     	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
     	Font fntBold30 = new Font("맑은 고딕", Font.BOLD, 30);
+    	
     String idStr;
+    
     public StudenCateList() {}
 	public StudenCateList(String cate, String idStr) {
 		this.idStr=idStr;
@@ -93,6 +96,8 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 		
 		//테이블 데이터
 		getCateList(cate);
+		
+		getSearchResult(cate); //검색결과
 		
 		// 검색 부분
 		searchTf.setText(" 검색할 클래스명/지역/강사명을 입력하세요."); 
@@ -155,6 +160,16 @@ System.out.println("이거 실행은 되니?"+id);
 		}
 	}
 	
+	public void getSearchResult(String searchWord) {
+		Mem_teacherDAO dao = new Mem_teacherDAO();
+		List<Mem_teacherVO> searchList = dao.getSearch(searchWord);
+		for(int idx=0; idx<searchList.size(); idx++ ) {
+			Mem_teacherVO vo = searchList.get(idx);
+			Object[] data = {vo.getClass_num(),"<HTML><U>"+vo.getClassName()+"</U></HTML>",vo.getCity(),vo.getCost(),vo.gettName()};
+			model.addRow(data);
+		}
+		
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int clickBtn = e.getButton();

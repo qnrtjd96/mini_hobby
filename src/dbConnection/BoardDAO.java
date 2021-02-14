@@ -3,6 +3,8 @@ package dbConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.net.httpserver.Authenticator.Result;
+
 public class BoardDAO extends DBConnection{
 
 	public BoardDAO() {
