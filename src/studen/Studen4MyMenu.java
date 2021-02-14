@@ -27,8 +27,6 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 			//각 메뉴별 기능 구현
 			LineBorder lineBorder = new LineBorder(Color.black, 1);
 	JPanel paneBottom = new JPanel();
-		//수강시간 구현
-		JLabel lblClock = new JLabel("○○○님의 ★★클래스 수강까지 1시간 20분 43초 남았습니다.", JLabel.CENTER);
 			
 	Color col6 = new Color(204,222,233);
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
@@ -78,8 +76,6 @@ public class Studen4MyMenu extends JPanel implements MouseListener{
 		center.setBackground(Color.white);
 		center.setBorder(lineBorder);
 		
-		//paneBottom 기본셋팅(테스트용으로 라벨 넣음)
-		paneBottom.add(lblClock);
 		//배경색상
 		paneBottom.setBackground(Color.white);
 		
