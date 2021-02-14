@@ -120,7 +120,7 @@ public class AdminPaymentList extends JPanel implements MouseListener{
 			if(col == 2) {
 				idStr = ((String)model.getValueAt(row, 0));
 				nameStr = ((String)model.getValueAt(row, 1));
-				new AdminPaymentDialog(idStr, nameStr);
+				new AdminPaymentDialog(idStr, nameStr, this);
 			}
 		}
 	}

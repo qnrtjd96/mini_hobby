@@ -45,10 +45,11 @@ public class AdminPaymentDialog extends JFrame implements ActionListener,  Mouse
 	Font fntPlain15 = new Font("맑은 고딕", Font.PLAIN, 15);
 	Font fntBold15 = new Font("맑은 고딕", Font.BOLD, 15);
 	Font fntBold20 = new Font("맑은 고딕", Font.BOLD, 20);
-	
+	AdminPaymentList setLst;
 	String id;
 	public AdminPaymentDialog() {};
-	public AdminPaymentDialog(String id, String name) {
+	public AdminPaymentDialog(String id, String name, AdminPaymentList lst) {
+		setLst = lst;
 		this.id = id;
 		mainPane.setLayout(null);
 		//기본셋팅
@@ -181,9 +182,15 @@ public class AdminPaymentDialog extends JFrame implements ActionListener,  Mouse
 				JOptionPane.showMessageDialog(this, "선택한 결제내역이 삭제되었습니다.");
 				model.setRowCount(0);
 				getBoardList();
+				setPayment(setLst);
 			}else {
 				JOptionPane.showMessageDialog(this, "선택된 결제내역이 없습니다.");
 			}
 		}
+	}
+	// 기존 결제관리 리셋
+	public void setPayment(AdminPaymentList lst) {
+		lst.model.setRowCount(0);
+		lst.getMember();
 	}
 }

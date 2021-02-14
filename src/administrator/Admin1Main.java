@@ -292,45 +292,45 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			if(sumDatePay(date1)==0) {
 				lab = 3;
 			}else if(sumDatePay(date1)>=1 && sumDatePay(date1)<300000) {
-				lab = 30;
+				lab = 20;
 			}else if (sumDatePay(date1)>300000 && sumDatePay(date1)<=600000) {
-				lab = 80;
+				lab = 85;
 			}else if (sumDatePay(date1)>600000 && sumDatePay(date1)<=900000) {
-				lab = 130;
-			}else if (sumDatePay(date1)>12000000) {
+				lab = 140;
+			}else if (sumDatePay(date1)>1200000) {
 				lab = 200;
 			}
 			if(sumDatePay(date2)==0) {
 				lab1 = 3;
 			}else if(sumDatePay(date2)>=1 && sumDatePay(date2)<300000) {
-				lab1 = 30;
+				lab1 = 20;
 			}else if (sumDatePay(date2)>300000 && sumDatePay(date2)<=600000) {
-				lab1 = 80;
+				lab1 = 85;
 			}else if (sumDatePay(date2)>600000 && sumDatePay(date2)<=900000) {
-				lab1 = 130;
-			}else if (sumDatePay(date2)>12000000) {
+				lab1 = 140;
+			}else if (sumDatePay(date2)>1200000) {
 				lab1 = 200;
 			}
 			if(sumDatePay(date3)==0) {
 				lab2 = 3;
 			}else if(sumDatePay(date3)>=1 && sumDatePay(date3)<300000) {
-				lab2 = 30;
+				lab2 = 20;
 			}else if (sumDatePay(date3)>300000 && sumDatePay(date3)<=600000) {
-				lab2 = 80;
+				lab2 = 85;
 			}else if (sumDatePay(date3)>600000 && sumDatePay(date3)<=900000) {
-				lab2 = 130;
-			}else if (sumDatePay(date3)>12000000) {
+				lab2 = 140;
+			}else if (sumDatePay(date3)>1200000) {
 				lab2 = 200;
 			}
 			if(sumDatePay(date4)==0) {
 				lab3 = 3;
 			}else if(sumDatePay(date4)>=1 && sumDatePay(date4)<300000) {
-				lab3 = 30;
+				lab3 = 20;
 			}else if (sumDatePay(date4)>300000 && sumDatePay(date4)<=600000) {
-				lab3 = 80;
+				lab3 = 85;
 			}else if (sumDatePay(date4)>600000 && sumDatePay(date4)<=900000) {
-				lab3 = 130;
-			}else if (sumDatePay(date4)>12000000) {
+				lab3 = 140;
+			}else if (sumDatePay(date4)>1200000) {
 				lab3 = 200;
 			}
 			g.clearRect(0,0,getWidth(),getHeight()); //클리어
@@ -407,7 +407,7 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			}else if(countDatePay(date1)>=1 && countDatePay(date1)<=10) {
 				lab = 30;
 			}else if (countDatePay(date1)>10 && countDatePay(date1)<=50) {
-				lab = 80;
+				lab = 75;
 			}else if (countDatePay(date1)>50 && countDatePay(date1)<=100) {
 				lab = 130;
 			}else if (countDatePay(date1)>100) {
@@ -418,7 +418,7 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			}else if(countDatePay(date2)>=1 && countDatePay(date2)<=10) {
 				lab1 = 30;
 			}else if (countDatePay(date2)>10 && countDatePay(date2)<=50) {
-				lab1 = 80;
+				lab1 = 75;
 			}else if (countDatePay(date2)>50 && countDatePay(date2)<=100) {
 				lab1 = 130;
 			}else if (countDatePay(date2)>100) {
@@ -429,7 +429,7 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			}else if(countDatePay(date3)>=1 && countDatePay(date3)<=10) {
 				lab2 = 30;
 			}else if (countDatePay(date3)>10 && countDatePay(date3)<50) {
-				lab2 = 80;
+				lab2 = 75;
 			}else if (countDatePay(date3)>50 && countDatePay(date3)<100) {
 				lab2 = 130;
 			}else if (countDatePay(date3)>100) {
@@ -440,7 +440,7 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			}else if(countDatePay(date4)>=1 && countDatePay(date4)<=10) {
 				lab3 = 30;
 			}else if (countDatePay(date4)>10 && countDatePay(date4)<50) {
-				lab3 = 80;
+				lab3 = 75;
 			}else if (countDatePay(date4)>50 && countDatePay(date4)<100) {
 				lab3 = 130;
 			}else if (countDatePay(date4)>100) {
