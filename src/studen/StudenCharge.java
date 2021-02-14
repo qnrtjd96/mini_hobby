@@ -58,7 +58,7 @@ public class StudenCharge extends JPanel implements ActionListener {
 	public StudenCharge(String id) {
 		idStr = id;
 		MoneyDAO dao = new MoneyDAO();
-		List<MoneyVO> lst = dao.getMoneyInfo(id);
+		List<MoneyVO> lst = dao.getMoneyInfo(idStr);
 		if(lst.size()>0) {
 			MoneyVO vo = lst.get(0);
 			this.rest = vo.getBalance();
@@ -108,6 +108,7 @@ public class StudenCharge extends JPanel implements ActionListener {
 		setSize(800,1000);
 		setVisible(true);
 		
+		
 	}
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -120,6 +121,7 @@ public class StudenCharge extends JPanel implements ActionListener {
 			if (result>0) {
 				String text = "충전이 완료되었습니다.\n충전금액: "+moneyChar+"\n현재잔액: "+rest;
 				JOptionPane.showMessageDialog(this, text);
+				
 			}
 		}
 		

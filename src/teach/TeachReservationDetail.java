@@ -176,6 +176,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 					int result = dao.deleteDetail(class_num);
 					if (result>0) {
 						JOptionPane.showMessageDialog(this, "삭제가 완료되었습니다.");
+						this.setVisible(false);
 					}
 				}
 			}
@@ -292,6 +293,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		
 		btn.addActionListener(this);
 		editBtn.addActionListener(this);
+		deleteBtn.addActionListener(this);
 	}
 	public void calendar_Reser() {
 		//맨위 년도, 월 선택 패널 
