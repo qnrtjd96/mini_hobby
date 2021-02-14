@@ -97,7 +97,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	String idStr;
 	
 	public void StudenPurchase() {	}
-	
+	 
 	public StudenPurchase(String idStr) {
 		
 		this.idStr = idStr;

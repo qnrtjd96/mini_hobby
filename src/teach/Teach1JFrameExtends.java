@@ -60,7 +60,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	JPanel center = new JPanel();
 		JTextField tf = new JTextField();
 		JButton btn = new JButton("검색");
-		JLabel login;
+		JLabel login; 
 		JLabel count = new JLabel("누적 수강생 수 : 0명");
 		JPanel cal = new JPanel();
 		JButton btn_list = new JButton("내 글 목록");
