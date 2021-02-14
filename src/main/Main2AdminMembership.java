@@ -32,6 +32,7 @@ import javax.swing.text.StyledDocument;
 import dbConnection.Mem_teacherVO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
+import dbConnection.MoneyDAO;
 
 public class Main2AdminMembership extends JFrame implements ItemListener, ActionListener, MouseListener{
 	JPanel pane_membership = new JPanel();
@@ -275,6 +276,8 @@ public class Main2AdminMembership extends JFrame implements ItemListener, Action
 			} else {
 				JOptionPane.showMessageDialog(this, "회원가입에 실패하였습니다.");
 			}
+			MoneyDAO mdao = new MoneyDAO();
+			mdao.setMoney(id);
 		}
 	}
 	public void mousePressed(MouseEvent e) {}
