@@ -40,6 +40,7 @@ public class StudenMsgWrite extends JPanel implements ActionListener{
 
 	public StudenMsgWrite(String id) {
 		idStr = id;
+	System.out.println(idStr);
 		setBackground(Color.white);
 		setLayout(null);
 		
@@ -52,6 +53,8 @@ public class StudenMsgWrite extends JPanel implements ActionListener{
 		receiTf.setBounds(200,51,540,50); receiTf.setFont(fn);
 		sp.setBounds(0,101,740,600); ta.setFont(fn);
 		send.setBounds(500,720,200,50); send.setBackground(col); send.setFont(fn2);
+		
+		send.addActionListener(this);
 		
 	}
 	//프레임 X 눌렀을때의 이벤트
@@ -69,6 +72,7 @@ public class StudenMsgWrite extends JPanel implements ActionListener{
 			ConsVO vo = new ConsVO(receiTf.getText(),idStr,titleTf.getText(),ta.getText());
 			ConsDAO dao = new ConsDAO();
 			int result = dao.insertReply(vo);
+	System.out.println(result);
 			if (result>0) {
 				JOptionPane.showMessageDialog(this, "메시지 전송이 완료되었습니다.");
 				receiTf.setText(""); titleTf.setText(""); ta.setText("");
