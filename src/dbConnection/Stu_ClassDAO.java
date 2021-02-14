@@ -8,6 +8,24 @@ public class Stu_ClassDAO extends DBConnection{
 	public Stu_ClassDAO() {
 		
 	}
+	//2021-02-14 이강산
+	//회원 탈퇴(StudenDeleteUser)
+	public int deleteMember(String idStr) {
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from STU_CLASS where id=? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, idStr);
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.getMessage();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
 	//2021-02-12 이강산
 	//학생 결제내역(마이페이지)(StudenMyPage)
 	public List<Stu_ClassVO> payStuSum(String date, String idStr) {
@@ -28,7 +46,7 @@ public class Stu_ClassDAO extends DBConnection{
 				lst.add(vo);
 			}
 		}catch(Exception e) {
-			e.printStackTrace();
+			e.getMessage();
 		}finally {
 			dbClose();  
 		}
