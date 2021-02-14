@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -234,11 +235,16 @@ System.out.println("로그아웃?"+result);
 		System.out.println("달력 찍으면 나오는 날짜 ? ? ? "+date);
 		MemoDAO dao = new MemoDAO();
 		List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
+		String text = "";
+System.out.println("date="+ta.getText().substring(0,10)+"id="+id);
 		if (lst.size()==0) { // 저장된 메모가 없을경우
 			ta.setText(y+"-"+m+"-"+date+"\n\n");
-		} else { // 저장메모가 있을경우
-			MemoVO vom = lst.get(0);
-			ta.setText(y+"-"+m+"-"+date+"\n\n"+vom.getMemo_detail());
+		} else if(lst.size()>0) { // 저장메모가 있을경우
+			for (int i=0; i<lst.size(); i++) {
+				MemoVO vom = lst.get(i);
+				text=text+vom.getMemo_detail()+"\n";
+			}
+			ta.setText(y+"-"+m+"-"+date+"\n\n"+text);
 		}
 		
 	}
