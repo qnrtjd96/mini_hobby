@@ -50,9 +50,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		JButton musicBtn = new JButton("음악");	JButton artBtn = new JButton("미술");
 		JButton sportBtn = new JButton("스포츠"); JButton cookBtn = new JButton("요리");
 		
-		JTextArea classTa = new JTextArea();
-		String testTa = "예약 클래스 : \n 레이아웃 빨리 끝내고 싶다... \n 날짜: 2021-02-25";
-		
 	//배경 설정
 	JPanel back;
 	int width, height;
@@ -108,21 +105,18 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center.setVisible(true);
 		} else if(obj==searchBtn) { // 검색버튼
 			String searchWord = searchTf.getText();
-			StudenCateList scl = new StudenCateList(searchWord);
-			scl.searchTf.setText(searchWord);
-			center.setVisible(false);
-			center.removeAll();
-<<<<<<< HEAD
-			center = scl.mainPane;
-=======
-			center = new StudenCateList("",idStr).mainPane;
->>>>>>> refs/heads/master
-			center.setVisible(true);
-			add("Center", center);
-<<<<<<< HEAD
-=======
-			matchWord(searchWord);
->>>>>>> refs/heads/master
+			if(searchWord.equals("")) {
+				JOptionPane.showMessageDialog(this, "검색어를 입력해주세요");
+			}else {
+				StudenCateList scl = new StudenCateList(searchWord, idStr);
+				System.out.println("메인 검색어 > > > "+searchWord);
+				scl.searchTf.setText(searchWord);
+				center.setVisible(false);
+				center.removeAll();
+				center = scl.mainPane;
+				center.setVisible(true);
+				add("Center", center);
+			}
 		}else if(obj==musicBtn) {
 			String music = musicBtn.getText();
 			StudenCateList scl = new StudenCateList(music,idStr);
@@ -165,7 +159,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 	//label 이벤트 오버라이딩
 	@Override
 	public void mouseReleased(MouseEvent me) {
-		
+		Object tfObj = me.getSource();
 		JLabel obj = (JLabel)me.getSource();
 		Object lbl = obj.getText();
 		
@@ -207,9 +201,9 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
 					new Main0Login();
 				}
-			}//else if(lbl.equals(searchTf)) {
-			//	searchTf.setText("");
-			//}
+			}else if(tfObj==searchTf) {
+				searchTf.setText("");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -223,6 +217,10 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			System.out.println("로그아웃?"+result);
 			System.exit(0);
 		}
+	}
+	
+	public void matchWord(String searchWordS) {
+		
 	}
 	public void StudenTopMenu(String idStr, String pwdStr) {
 		
@@ -298,11 +296,6 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		cookBtn.setBackground(col6); cookBtn.setBorder(new LineBorder(Color.black, 2));
 		cookBtn.setFont(btnFnt); cookBtn.setBounds(371,300, 80,40); center.add(cookBtn);
 		
-		//textArea 가운데 정렬..? ㅠㅠ?
-		classTa.setBackground(Color.white); classTa.setBorder(new LineBorder(Color.black, 1)); 
-		classTa.setFont(new Font("맑은 고딕", Font.PLAIN, 15)); classTa.setBounds(580,700, 200,100);
-		classTa.setText(testTa); 
-		center.add(classTa);
 		center.add(back);
 		//버튼 이벤트 
 		searchBtn.addActionListener(this);

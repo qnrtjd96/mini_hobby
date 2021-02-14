@@ -70,14 +70,13 @@ public class Mem_teacherDAO extends DBConnection {
 		List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
 		
 		try {
-			getConn();
-			//select class_num, classname, city, cost, mem.name from boardtbl b, membertbl mem
-			//where b.id=mem.id and b.classname like '%자%' and mem.name like '%김%';
+			getConn(); 
+System.out.println("getSearch > > > "+searchWord);
 			sql = "select class_num, classname, city, cost, mem.name from boardtbl b, membertbl mem "
-				+ "where b.id=mem.id and b.classname like ? ";//or mem.name like ?
+				+ "where b.id=mem.id and (b.classname like ? or mem.name like ? ) ";	//or mem.name like ?
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,  "%"+searchWord+"%");;
-			//pstmt.setString(2, "%"+searchWord+"%");
+			pstmt.setString(1, "%"+searchWord+"%");;
+			pstmt.setString(2, "%"+searchWord+"%");
 							
 			rs = pstmt.executeQuery();
 							
