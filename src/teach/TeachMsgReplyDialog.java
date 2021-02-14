@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import dbConnection.Acess_memDAO;
+import dbConnection.BanDAO;
+import dbConnection.BanVO;
 import dbConnection.ConsDAO;
 import dbConnection.ConsVO;
 
@@ -82,15 +85,22 @@ public class TeachMsgReplyDialog extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent ae) {
 		Object obj = ae.getSource();
 		if(obj==send) {
-			ConsVO vo = new ConsVO(getter,idStr,msgTitle,ta.getText());
-			ConsDAO dao = new ConsDAO();
-			int result = dao.insertReply(vo);
-			if (result>0) {
-				JOptionPane.showMessageDialog(this, "메시지 전송이 완료되었습니다.");
-				this.setVisible(false);
+			String taText = ta.getText();
+			BanDAO dao2 = new BanDAO();
+			List<BanVO> lst = dao2.overlapWrite(taText);
+			if (lst.size()>0) {
+				JOptionPane.showMessageDialog(this, "제약어가 포함된 내용은 발송이 불가능합니다.");
+				ta.setText("");
+			} else {
+				ConsVO vo = new ConsVO(receiTf.getText(),idStr,titleTf.getText(),ta.getText());
+				ConsDAO dao = new ConsDAO();
+				int result = dao.insertReply(vo);
+				if (result>0) {
+					JOptionPane.showMessageDialog(this, "메시지 전송이 완료되었습니다.");
+					receiTf.setText(""); titleTf.setText(""); ta.setText("");
+				}
 			}
 		}
-		
 	}
 
 }
