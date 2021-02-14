@@ -4,6 +4,8 @@ package administrator;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,10 +26,11 @@ import javax.swing.table.TableColumnModel;
 
 import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
+import dbConnection.ConsDAO;
 import dbConnection.MemberDAO;
 import dbConnection.MemberVO;
 
-public class AdminPaymentDialog extends JFrame implements MouseListener{
+public class AdminPaymentDialog extends JFrame implements ActionListener,  MouseListener{
 	JPanel mainPane = new JPanel();
 		JLabel topLbl;
 		JTable diaTable;
@@ -132,6 +136,7 @@ public class AdminPaymentDialog extends JFrame implements MouseListener{
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		diaTable.addMouseListener(this);
+		cancleBtn.addActionListener(this);
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -161,6 +166,28 @@ public class AdminPaymentDialog extends JFrame implements MouseListener{
 			BoardVO vo = lst.get(i);
 			Object[] data = {"○", vo.getId(), vo.getName(), vo.getCost(), vo.getPay_date()};
 			model.addRow(data);
+		}
+	}
+	// 결제취소
+	public void actionPerformed(ActionEvent ae) {
+		Object obj = ae.getSource();
+		if(obj == cancleBtn) {
+			int result=0;
+			// 데이터 삭제 구현
+			for(int i=0; i<diaTable.getRowCount(); i++) {
+				if(diaTable.getValueAt(i, 0).equals("●")) {
+					int num = (int)diaTable.getValueAt(i, 1);
+					BoardDAO dao = new BoardDAO();
+					result = dao.paymentDel(num);
+				}
+			}
+			if(result>0) {
+				JOptionPane.showMessageDialog(this, "선택한 결제내역이 삭제되었습니다.");
+				model.setRowCount(0);
+				getBoardList();
+			}else {
+				JOptionPane.showMessageDialog(this, "선택된 결제내역이 없습니다.");
+			}
 		}
 	}
 }
