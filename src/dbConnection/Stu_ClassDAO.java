@@ -245,6 +245,8 @@ public class Stu_ClassDAO extends DBConnection{
 		}
 		return lst;
 	}
+	//
+	
 	//학생 수업 변경원하는 수업 받아오기 
 	public List<Stu_ClassVO> getChangeClass(String changeClass, String idStr) {
 		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
