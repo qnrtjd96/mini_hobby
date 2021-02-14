@@ -378,4 +378,22 @@ public class BoardDAO extends DBConnection{
 		}
 		return result;
 	}
+	//관리자 결제내역 삭제
+	public int paymentDel(int num) {
+		int result = 0;
+		try {
+			getConn();
+			sql = "delete from stu_class where class_num=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			
+			result = pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return result;
+	}
 }
