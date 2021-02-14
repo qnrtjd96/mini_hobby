@@ -108,21 +108,14 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center.setVisible(true);
 		} else if(obj==searchBtn) { // 검색버튼
 			String searchWord = searchTf.getText();
-			StudenCateList scl = new StudenCateList(searchWord);
+			StudenCateList scl = new StudenCateList(searchWord, idStr);
 			scl.searchTf.setText(searchWord);
 			center.setVisible(false);
 			center.removeAll();
-<<<<<<< HEAD
 			center = scl.mainPane;
-=======
-			center = new StudenCateList("",idStr).mainPane;
->>>>>>> refs/heads/master
 			center.setVisible(true);
 			add("Center", center);
-<<<<<<< HEAD
-=======
-			matchWord(searchWord);
->>>>>>> refs/heads/master
+			//matchWord(searchWord);
 		}else if(obj==musicBtn) {
 			String music = musicBtn.getText();
 			StudenCateList scl = new StudenCateList(music,idStr);
