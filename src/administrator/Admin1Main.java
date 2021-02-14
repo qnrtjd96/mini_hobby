@@ -291,44 +291,44 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			//그래프 막대기 핸들링
 			if(sumDatePay(date1)==0) {
 				lab = 3;
-			}else if(sumDatePay(date1)>10000 && sumDatePay(date1)<50000) {
+			}else if(sumDatePay(date1)>=1 && sumDatePay(date1)<50000) {
 				lab = 30;
-			}else if (sumDatePay(date1)>50000 && sumDatePay(date1)<200000) {
+			}else if (sumDatePay(date1)>50000 && sumDatePay(date1)<=200000) {
 				lab = 80;
-			}else if (sumDatePay(date1)>200000 && sumDatePay(date1)<500000) {
+			}else if (sumDatePay(date1)>200000 && sumDatePay(date1)<=500000) {
 				lab = 130;
 			}else if (sumDatePay(date1)>500000) {
 				lab = 200;
 			}
 			if(sumDatePay(date2)==0) {
 				lab1 = 3;
-			}else if(sumDatePay(date2)>10000 && sumDatePay(date2)<50000) {
+			}else if(sumDatePay(date2)>=1 && sumDatePay(date2)<50000) {
 				lab1 = 30;
-			}else if (sumDatePay(date2)>50000 && sumDatePay(date2)<200000) {
+			}else if (sumDatePay(date2)>50000 && sumDatePay(date2)<=200000) {
 				lab1 = 80;
-			}else if (sumDatePay(date2)>200000 && sumDatePay(date2)<500000) {
+			}else if (sumDatePay(date2)>200000 && sumDatePay(date2)<=500000) {
 				lab1 = 130;
 			}else if (sumDatePay(date2)>500000) {
 				lab1 = 200;
 			}
 			if(sumDatePay(date3)==0) {
 				lab2 = 3;
-			}else if(sumDatePay(date3)>10000 && sumDatePay(date3)<50000) {
+			}else if(sumDatePay(date3)>=1 && sumDatePay(date3)<50000) {
 				lab2 = 30;
-			}else if (sumDatePay(date3)>50000 && sumDatePay(date3)<200000) {
+			}else if (sumDatePay(date3)>50000 && sumDatePay(date3)<=200000) {
 				lab2 = 80;
-			}else if (sumDatePay(date3)>200000 && sumDatePay(date3)<500000) {
+			}else if (sumDatePay(date3)>200000 && sumDatePay(date3)<=500000) {
 				lab2 = 130;
 			}else if (sumDatePay(date3)>500000) {
 				lab2 = 200;
 			}
 			if(sumDatePay(date4)==0) {
 				lab3 = 3;
-			}else if(sumDatePay(date4)>10000 && sumDatePay(date4)<50000) {
+			}else if(sumDatePay(date4)>=1 && sumDatePay(date4)<50000) {
 				lab3 = 30;
-			}else if (sumDatePay(date4)>50000 && sumDatePay(date4)<200000) {
+			}else if (sumDatePay(date4)>50000 && sumDatePay(date4)<=200000) {
 				lab3 = 80;
-			}else if (sumDatePay(date4)>200000 && sumDatePay(date4)<500000) {
+			}else if (sumDatePay(date4)>200000 && sumDatePay(date4)<=500000) {
 				lab3 = 130;
 			}else if (sumDatePay(date4)>500000) {
 				lab3 = 200;
@@ -404,29 +404,29 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			int lab=0, lab1=0, lab2=0, lab3=0;
 			if(countDatePay(date1)==0) {
 				lab = 3;
-			}else if(countDatePay(date1)>1 && countDatePay(date1)<10) {
+			}else if(countDatePay(date1)>=1 && countDatePay(date1)<=10) {
 				lab = 30;
-			}else if (countDatePay(date1)>10 && countDatePay(date1)<50) {
+			}else if (countDatePay(date1)>10 && countDatePay(date1)<=50) {
 				lab = 80;
-			}else if (countDatePay(date1)>50 && countDatePay(date1)<100) {
+			}else if (countDatePay(date1)>50 && countDatePay(date1)<=100) {
 				lab = 130;
 			}else if (countDatePay(date1)>100) {
 				lab = 200;
 			}
 			if(countDatePay(date2)==0) {
 				lab1 = 3;
-			}else if(countDatePay(date2)>1 && countDatePay(date2)<10) {
+			}else if(countDatePay(date2)>=1 && countDatePay(date2)<=10) {
 				lab1 = 30;
-			}else if (countDatePay(date2)>10 && countDatePay(date2)<50) {
+			}else if (countDatePay(date2)>10 && countDatePay(date2)<=50) {
 				lab1 = 80;
-			}else if (countDatePay(date2)>50 && countDatePay(date2)<100) {
+			}else if (countDatePay(date2)>50 && countDatePay(date2)<=100) {
 				lab1 = 130;
 			}else if (countDatePay(date2)>100) {
 				lab1 = 200;
 			}
 			if(countDatePay(date3)==0) {
 				lab2 = 3;
-			}else if(countDatePay(date3)>1 && countDatePay(date3)<10) {
+			}else if(countDatePay(date3)>=1 && countDatePay(date3)<=10) {
 				lab2 = 30;
 			}else if (countDatePay(date3)>10 && countDatePay(date3)<50) {
 				lab2 = 80;
@@ -437,7 +437,7 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			}
 			if(countDatePay(date4)==0) {
 				lab3 = 3;
-			}else if(countDatePay(date4)>1 && countDatePay(date4)<10) {
+			}else if(countDatePay(date4)>=1 && countDatePay(date4)<=10) {
 				lab3 = 30;
 			}else if (countDatePay(date4)>10 && countDatePay(date4)<50) {
 				lab3 = 80;
