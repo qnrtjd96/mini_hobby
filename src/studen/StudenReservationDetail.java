@@ -189,6 +189,8 @@ System.out.println("클래스명:"+this.classname);
 						// stu_class 등록
 						Stu_ClassDAO daos = new Stu_ClassDAO();
 						Stu_ClassVO vos = new Stu_ClassVO(class_num, id, classname, category, costInt, time, classtime);
+	System.out.println("번호:"+class_num+"id:"+id+"클래스명:"+classname);
+	System.out.println("카테:"+category+"비용:"+costInt+"날짜:"+time+"시간:"+classtime);
 						int result = daos.insertPay(vos);
 	System.out.println("stutable insert?"+result);
 						if (result>0) {
@@ -197,6 +199,7 @@ System.out.println("클래스명:"+this.classname);
 							if(result2>0) {
 								String text = "결제가 완료되었습니다.\n결제금액 : "+costInt2+"원\n잔액 : "+rest2+"원";
 								JOptionPane.showMessageDialog(this, text);
+								this.setVisible(false);
 							}
 						}
 					}

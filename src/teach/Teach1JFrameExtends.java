@@ -232,7 +232,7 @@ System.out.println("로그아웃?"+result);
 		Object obj = me.getSource();
 		JLabel lbl = (JLabel)me.getSource();
 		int date = Integer.parseInt(lbl.getText());
-		System.out.println("달력 찍으면 나오는 날짜 ? ? ? "+date);
+System.out.println("달력 찍으면 나오는 날짜 ? ? ? "+date);
 		MemoDAO dao = new MemoDAO();
 		List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
 		String text = "";
