@@ -53,7 +53,6 @@ public class AdminLiveChat extends JPanel implements MouseListener, ActionListen
 			
 		JPanel bottomPane = new JPanel(new BorderLayout());
 			JButton chatt = new JButton("채팅하기");
-			JButton admin = new JButton("관리자와 채팅");
 		
 	//제목
 	String stuTitle[]	= {"접속여부", "이름"};
@@ -83,7 +82,7 @@ public class AdminLiveChat extends JPanel implements MouseListener, ActionListen
 		
 		//폰트변경
 		connList.setFont(fntBold30); student.setFont(fntBold20); teacher.setFont(fntBold20);
-		chatt.setFont(fntBold20); admin.setFont(fntBold20);
+		chatt.setFont(fntBold20);
 		
 		//여백주기
 		centerPane.setBorder(BorderFactory.createEmptyBorder(10,30,10,30));
@@ -144,7 +143,7 @@ public class AdminLiveChat extends JPanel implements MouseListener, ActionListen
 		
 		//하단
 		bottomPane.add(chatt,BorderLayout.EAST);
-		bottomPane.add(admin,BorderLayout.WEST);
+
 		
 		//전체패널에 추가
 		add(topPane, BorderLayout.NORTH);
@@ -163,7 +162,6 @@ public class AdminLiveChat extends JPanel implements MouseListener, ActionListen
 		stuTable.addMouseListener(this);
 		teaTable.addMouseListener(this);
 		chatt.addActionListener(this);
-		admin.addActionListener(this);
 		
 	}
 	//학생 레코드넣기
@@ -221,8 +219,6 @@ public class AdminLiveChat extends JPanel implements MouseListener, ActionListen
 					new main.Main4ChatClient(id);
 				}
 			}
-		}else if(eventBtn.equals("관리자와 채팅")){ //미구현
-			new main.Main4ChatClient(id);
 		}
 		
 	}
