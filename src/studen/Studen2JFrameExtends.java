@@ -105,7 +105,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center.setVisible(true);
 		} else if(obj==searchBtn) { // 검색버튼
 			String searchWord = searchTf.getText();
-<<<<<<< HEAD
+//<<<<<<< HEAD
 			if(searchWord.equals("")) {
 				JOptionPane.showMessageDialog(this, "검색어를 입력해주세요");
 			}else {
@@ -118,7 +118,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 				center.setVisible(true);
 				add("Center", center);
 			}
-=======
+/*=======
 			StudenCateList scl = new StudenCateList(searchWord, idStr);
 			scl.searchTf.setText(searchWord);
 			center.setVisible(false);
@@ -127,7 +127,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 			center.setVisible(true);
 			add("Center", center);
 			//matchWord(searchWord);
->>>>>>> refs/heads/master
+>>>>>>> refs/heads/master	*/
 		}else if(obj==musicBtn) {
 			String music = musicBtn.getText();
 			StudenCateList scl = new StudenCateList(music,idStr);
@@ -218,7 +218,7 @@ public class Studen2JFrameExtends extends JFrame implements ActionListener, Mous
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	} 
 	//프레임 X 눌렀을때의 이벤트
 	class AdapterInner extends WindowAdapter{
 		//다시 오버라이딩
