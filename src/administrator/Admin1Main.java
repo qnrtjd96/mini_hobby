@@ -404,46 +404,46 @@ public class Admin1Main extends JFrame implements MouseListener, ActionListener{
 			int lab=0, lab1=0, lab2=0, lab3=0;
 			if(countDatePay(date1)==0) {
 				lab = 3;
-			}else if(countDatePay(date1)>=1 && countDatePay(date1)<=10) {
+			}else if(countDatePay(date1)>=1 && countDatePay(date1)<=7) {
 				lab = 30;
-			}else if (countDatePay(date1)>10 && countDatePay(date1)<=50) {
+			}else if (countDatePay(date1)>7 && countDatePay(date1)<=14) {
 				lab = 75;
-			}else if (countDatePay(date1)>50 && countDatePay(date1)<=100) {
+			}else if (countDatePay(date1)>14 && countDatePay(date1)<=21) {
 				lab = 130;
-			}else if (countDatePay(date1)>100) {
+			}else if (countDatePay(date1)>21) {
 				lab = 200;
 			}
 			if(countDatePay(date2)==0) {
 				lab1 = 3;
-			}else if(countDatePay(date2)>=1 && countDatePay(date2)<=10) {
+			}else if(countDatePay(date2)>=1 && countDatePay(date2)<=7) {
 				lab1 = 30;
-			}else if (countDatePay(date2)>10 && countDatePay(date2)<=50) {
+			}else if (countDatePay(date2)>7 && countDatePay(date2)<=14) {
 				lab1 = 75;
-			}else if (countDatePay(date2)>50 && countDatePay(date2)<=100) {
+			}else if (countDatePay(date2)>14 && countDatePay(date2)<=21) {
 				lab1 = 130;
-			}else if (countDatePay(date2)>100) {
+			}else if (countDatePay(date2)>21) {
 				lab1 = 200;
 			}
 			if(countDatePay(date3)==0) {
 				lab2 = 3;
-			}else if(countDatePay(date3)>=1 && countDatePay(date3)<=10) {
+			}else if(countDatePay(date3)>=1 && countDatePay(date3)<=7) {
 				lab2 = 30;
-			}else if (countDatePay(date3)>10 && countDatePay(date3)<50) {
+			}else if (countDatePay(date3)>7 && countDatePay(date3)<=14) {
 				lab2 = 75;
-			}else if (countDatePay(date3)>50 && countDatePay(date3)<100) {
+			}else if (countDatePay(date3)>14 && countDatePay(date3)<=21) {
 				lab2 = 130;
-			}else if (countDatePay(date3)>100) {
+			}else if (countDatePay(date3)>21) {
 				lab2 = 200;
 			}
 			if(countDatePay(date4)==0) {
 				lab3 = 3;
-			}else if(countDatePay(date4)>=1 && countDatePay(date4)<=10) {
+			}else if(countDatePay(date4)>=1 && countDatePay(date4)<=7) {
 				lab3 = 30;
-			}else if (countDatePay(date4)>10 && countDatePay(date4)<50) {
+			}else if (countDatePay(date4)>7 && countDatePay(date4)<=14) {
 				lab3 = 75;
-			}else if (countDatePay(date4)>50 && countDatePay(date4)<100) {
+			}else if (countDatePay(date4)>14 && countDatePay(date4)<=21) {
 				lab3 = 130;
-			}else if (countDatePay(date4)>100) {
+			}else if (countDatePay(date4)>21) {
 				lab3 = 200;
 			}
 			g.clearRect(0,0,getWidth(),getHeight()); //클리어
