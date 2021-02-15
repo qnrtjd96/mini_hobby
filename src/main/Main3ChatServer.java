@@ -100,7 +100,7 @@ public class Main3ChatServer extends JFrame implements ActionListener, KeyListen
 				while(true) {
 					//상대방이 보내온 데이터를 읽기
 					String msg = dis.readUTF();//상대방이 보낼때까지 대기
-					textArea.append(id +" : " + msg + "\n");
+					textArea.append("상대방: " + msg + "\n");
 					textArea.setCaretPosition(textArea.getText().length());
 				}				
 			}catch(IOException e) {

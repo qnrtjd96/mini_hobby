@@ -74,7 +74,7 @@ public class Main4ChatClient extends JFrame implements ActionListener, KeyListen
 		@Override
 		public void run() {
 			try {
-				socket = new Socket("192.168.0.7", 10001);
+				socket = new Socket("192.168.0.19", 10001);
 				textArea.append("1:1 대화를 시작합니다.\n");
 				//데이터 전송을 위한 스트림 생성(입출력 모두)
 				InputStream is = socket.getInputStream();
@@ -86,7 +86,7 @@ public class Main4ChatClient extends JFrame implements ActionListener, KeyListen
 				
 				while(true) {//상대방 메시지 받기
 					String msg = dis.readUTF();
-					textArea.append(id +": " + msg + "\n");
+					textArea.append("상대방: " + msg + "\n");
 					textArea.setCaretPosition(textArea.getText().length());
 				}
 			} catch (UnknownHostException e) {
