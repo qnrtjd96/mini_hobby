@@ -31,7 +31,6 @@ public class Admin0Login extends JFrame implements ActionListener, MouseListener
 	JTextField idTf = new JTextField();  JPasswordField pwdTf = new JPasswordField();
 	
 	JButton loginBtn = new JButton("사장님만을 위한 로그인");
-	
 	JLabel askCompany = new JLabel("문의하기 02-1234-1234 / miniHobby@minicom.net");
 
 	JLabel userLogin = new JLabel("User Login");
