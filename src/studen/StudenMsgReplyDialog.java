@@ -97,7 +97,7 @@ public class StudenMsgReplyDialog extends JDialog implements ActionListener {
 				int result = dao.insertReply(vo);
 				if (result>0) {
 					JOptionPane.showMessageDialog(this, "메시지 전송이 완료되었습니다.");
-					receiTf.setText(""); titleTf.setText(""); ta.setText("");
+					this.setVisible(false);
 				}
 			}
 		}

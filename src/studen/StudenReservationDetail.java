@@ -140,25 +140,19 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 		Object obj = ae.getSource();
 		
 		if(obj==btn) {
-	System.out.println("누구냐넌?"+id);
-	System.out.println("classtime="+classtime);
 			int count = selectCheck.size();
-	System.out.println("count?"+count);
 			TreeSet<String> timeArr = new TreeSet<String>();
 			StringTokenizer str = new StringTokenizer(classtime, " [,]");
 			while(str.hasMoreTokens()) {
 				String token = str.nextToken();
 				timeArr.add(token);
 			}
-	System.out.println("잘쪼개졌니?"+timeArr.size());
 			Iterator<String> st = selectCheck.iterator();
 			while(st.hasNext()) {
 				String stu = st.next();
-	System.out.println("stu?"+stu);
 				Iterator<String> st2 = timeArr.iterator();
 				while(st2.hasNext()) {
 					String bo = st2.next();
-	System.out.println("bo?"+bo);
 					if(stu.equals(bo)) {
 						timeArr.remove(bo); break;
 					}
@@ -166,31 +160,23 @@ public class StudenReservationDetail extends JDialog implements ActionListener, 
 			}
 			String classtim = timeArr.toString();
 			classtime = classtim.substring(1,classtim.length()-1);
-	System.out.println("바뀐시간="+classtime);
 			MoneyDAO dao = new MoneyDAO();
 			List<MoneyVO> lst = dao.getMoneyInfo(id);
-	System.out.println("lst받아왔어?"+lst.size());
 			if(lst.size()>0) {
 				MoneyVO vo = lst.get(0);
 				this.rest = vo.getBalance();
 				int costInt2 = costInt*count;
 				int rest2 = rest-costInt2;
-	System.out.println("원래잔액:"+rest+", 결제할금액:"+costInt2+", 잔액:"+rest2);
 				if (rest2>=0) {
 					BoardDAO daob = new BoardDAO();
 					int resul = daob.updateTime(class_num, classtime);
-	System.out.println("보드테이블 update되었니?"+resul);
 					if(resul>0) {
 						// stu_class 등록
 						Stu_ClassDAO daos = new Stu_ClassDAO();
-						Stu_ClassVO vos = new Stu_ClassVO(class_num, id, classname, category, costInt, time, classtime);
-	System.out.println("번호:"+class_num+"id:"+id+"클래스명:"+classname);
-	System.out.println("카테:"+category+"비용:"+costInt+"날짜:"+time+"시간:"+classtime);
+						Stu_ClassVO vos = new Stu_ClassVO(class_num, id, classname, category, costInt2, time, classtime);
 						int result = daos.insertPay(vos);
-	System.out.println("stutable insert?"+result);
 						if (result>0) {
 							int result2 = dao.updateMoney(rest2, id);
-	System.out.println("잔액 update?"+result2);
 							if(result2>0) {
 								String text = "결제가 완료되었습니다.\n결제금액 : "+costInt2+"원\n잔액 : "+rest2+"원";
 								JOptionPane.showMessageDialog(this, text);
