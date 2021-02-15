@@ -186,57 +186,57 @@ public class StudenMyPage extends JPanel implements MouseListener{
 			if(sumDatePay(date1)==0) {
 				lab = 0;
 			}else if(sumDatePay(date1)>=1 && sumDatePay(date1)<=5) {
-				lab = 10;
+				lab = 15;
 			}else if (sumDatePay(date1)>5 && sumDatePay(date1)<=10) {
-				lab = 10;
+				lab = 35;
 			}else if (sumDatePay(date1)>10 && sumDatePay(date1)<=15) {
-				lab = 10;
+				lab = 50;
 			}else if (sumDatePay(date1)>15) {
-				lab = 80;
+				lab = 70;
 			}
 			if(sumDatePay(date2)==0) {
 				lab1 = 0;
 			}else if(sumDatePay(date2)>=1 && sumDatePay(date2)<=5) {
-				lab1 = 30;
+				lab1 = 15;
 			}else if (sumDatePay(date2)>5 && sumDatePay(date2)<=10) {
-				lab1 = 80;
+				lab1 = 35;
 			}else if (sumDatePay(date2)>10 && sumDatePay(date2)<=15) {
-				lab1 = 130;
+				lab1 = 55;
 			}else if (sumDatePay(date2)>15) {
-				lab1 = 200;
+				lab1 = 70;
 			}
 			if(sumDatePay(date3)==0) {
 				lab2 = 0;
 			}else if(sumDatePay(date3)>=1 && sumDatePay(date3)<=5) {
-				lab2 = 30;
+				lab2 = 15;
 			}else if (sumDatePay(date3)>5 && sumDatePay(date3)<=10) {
-				lab2 = 80;
+				lab2 = 35;
 			}else if (sumDatePay(date3)>10 && sumDatePay(date3)<=15) {
-				lab2 = 130;
+				lab2 = 55;
 			}else if (sumDatePay(date3)>15) {
-				lab2 = 200;
+				lab2 = 70;
 			}
 			if(sumDatePay(date4)==0) {
 				lab3 = 0;
 			}else if(sumDatePay(date4)>=1 && sumDatePay(date4)<=5) {
-				lab3 = 30;
+				lab3 = 10;
 			}else if (sumDatePay(date4)>5 && sumDatePay(date4)<=10) {
-				lab3 = 80;
+				lab3 = 30;
 			}else if (sumDatePay(date4)>10 && sumDatePay(date4)<=15) {
-				lab3 = 130;
+				lab3 = 40;
 			}else if (sumDatePay(date4)>15) {
-				lab3 = 200;
+				lab3 = 80;
 			}
 			if(sumDatePay(date5)==0) {
 				lab4 = 0;
 			}else if(sumDatePay(date5)>=1 && sumDatePay(date5)<=5) {
 				lab4 = 10;
 			}else if (sumDatePay(date5)>5 && sumDatePay(date5)<=10) {
-				lab4 = 20;
-			}else if (sumDatePay(date5)>10 && sumDatePay(date5)<=15) {
 				lab4 = 30;
-			}else if (sumDatePay(date5)>15) {
+			}else if (sumDatePay(date5)>10 && sumDatePay(date5)<=15) {
 				lab4 = 40;
+			}else if (sumDatePay(date5)>15) {
+				lab4 = 80;
 			}
 			
 			if(sumDatePay(date6)==0) {
