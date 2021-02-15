@@ -167,52 +167,61 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 	public void mouseReleased(MouseEvent me) {
 		JLabel obj = (JLabel)me.getSource();
 		Object lbl = obj.getText();
-		try {
-			if(lbl.equals("이전으로")) {
+		if(lbl.equals("이전으로")) {
+			center.setVisible(false);
+			center.removeAll();
+			center=paneArr[p-1];
+			center.setVisible(true);
+			add("Center", center);
+		}else if(lbl.equals("메세지함")) {
+			center.setVisible(false);
+			center.removeAll();
+			center = new Teach2MsgFrame(id).tabBack;
+			center.setVisible(true);
+			add("Center", center);
+		}else if(lbl.equals("내정보")) {
+			///////////수정금지/////////////////
+			MemberDAO dao = new MemberDAO();
+			List<MemberVO> lst = dao.getMemberInfo(id);
+			MemberVO vo = lst.get(0);
+			String pwdRe = vo.getPwd();
+			String pwd = JOptionPane.showInputDialog("비밀번호를 입력하세요.");
+			if (pwd==null) {
+				
+			} else if (pwd.equals(pwdRe)) {
 				center.setVisible(false);
 				center.removeAll();
-				center=paneArr[p-1];
-				center.setVisible(true);
+				center = new Teach3MyMenu(id, pwd).paneStu;
+				System.out.println("teach my menu pwd > "+pwd);
+				this.setVisible(true);
 				add("Center", center);
-			}else if(lbl.equals("메세지함")) {
-				center.setVisible(false);
-				center.removeAll();
-				center = new Teach2MsgFrame(id).tabBack;
-				center.setVisible(true);
-				add("Center", center);
-			}else if(lbl.equals("내정보")) {
-				///////////수정금지/////////////////
-				MemberDAO dao = new MemberDAO();
-				List<MemberVO> lst = dao.getMemberInfo(id);
-				MemberVO vo = lst.get(0);
-				String pwdRe = vo.getPwd();
-				String pwd = JOptionPane.showInputDialog("비밀번호를 입력하세요.");
-				if (pwd==null) {
-					
-				} else if (pwd.equals(pwdRe)) {
-					center.setVisible(false);
-					center.removeAll();
-					center = new Teach3MyMenu(id, pwd).paneStu;
-					System.out.println("teach my menu pwd > "+pwd);
-					this.setVisible(true);
-					add("Center", center);
-				} else {
-					JOptionPane.showMessageDialog(this, "비밀번호를 다시 확인해주세요");
-				}
-			}else if(lbl.equals("로그아웃")) {
-				int answer = JOptionPane.showConfirmDialog(this, "로그아웃 하시겠습니까?", "로그아웃 확인", 0);
-				if (answer==0) {
-					this.setVisible(false);
-					this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-					Acess_memDAO dao = new Acess_memDAO();
-					int result = dao.LogOut(id);
-System.out.println("로그아웃?"+result);
-					//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
-					new Main0Login();
-				}
+			} else {
+				JOptionPane.showMessageDialog(this, "비밀번호를 다시 확인해주세요");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		}else if(lbl.equals("로그아웃")) {
+			int answer = JOptionPane.showConfirmDialog(this, "로그아웃 하시겠습니까?", "로그아웃 확인", 0);
+			if (answer==0) {
+				this.setVisible(false);
+				this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				Acess_memDAO dao = new Acess_memDAO();
+				int result = dao.LogOut(id);
+				//로그아웃 말고 X누르면 지워지는것도 구현해야됨 !!!
+				new Main0Login();
+			}
+		} else {
+			int date = Integer.parseInt(obj.getText());
+			MemoDAO dao = new MemoDAO();
+			List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
+			String text = "";
+			if (lst.size()==0) { // 저장된 메모가 없을경우
+				ta.setText(y+"-"+m+"-"+date+"\n\n");
+			} else if(lst.size()>0) { // 저장메모가 있을경우
+				for (int i=0; i<lst.size(); i++) {
+					MemoVO vom = lst.get(i);
+					text=text+vom.getMemo_detail()+"\n";
+				}
+				ta.setText(y+"-"+m+"-"+date+"\n\n"+text);
+			}
 		}
 	}
 	public void mousePressed(MouseEvent e) {}
@@ -228,26 +237,7 @@ System.out.println("로그아웃?"+result);
 			System.exit(0);
 		}
 	}
-	public void mouseClicked(MouseEvent me) {
-		Object obj = me.getSource();
-		JLabel lbl = (JLabel)me.getSource();
-		int date = Integer.parseInt(lbl.getText());
-System.out.println("달력 찍으면 나오는 날짜 ? ? ? "+date);
-		MemoDAO dao = new MemoDAO();
-		List<MemoVO> lst = dao.OutputMemo(ta.getText().substring(0,10), id);
-		String text = "";
-System.out.println("date="+ta.getText().substring(0,10)+"id="+id);
-		if (lst.size()==0) { // 저장된 메모가 없을경우
-			ta.setText(y+"-"+m+"-"+date+"\n\n");
-		} else if(lst.size()>0) { // 저장메모가 있을경우
-			for (int i=0; i<lst.size(); i++) {
-				MemoVO vom = lst.get(i);
-				text=text+vom.getMemo_detail()+"\n";
-			}
-			ta.setText(y+"-"+m+"-"+date+"\n\n"+text);
-		}
-		
-	}
+	public void mouseClicked(MouseEvent me) {}
 	public void TeachTopMenu(String id, String pwd) {
 		System.out.println("teachTopMenu id > > >  >"+id+", "+pwd);
 		add("North",paneTop);

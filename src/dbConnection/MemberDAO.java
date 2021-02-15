@@ -61,7 +61,7 @@ public class MemberDAO extends DBConnection{
 		List<MemberVO> lst= new ArrayList<MemberVO>();
 		try {
 			getConn(); 
-			sql = "SELECT id, sort, TO_Char(login_date, 'YY/MM/DD') login_date FROM MEMBERTBL WHERE login_date <= TO_CHAR(SYSDATE-365,'YYYYMMDD')";
+			sql = "SELECT id, sort, TO_Char(login_date, 'YY/MM/DD') login_date FROM MEMBERTBL WHERE login_date <= TO_CHAR(SYSDATE-30,'YYYYMMDD')";
 			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();

@@ -164,7 +164,7 @@ public class Stu_ClassDAO extends DBConnection{
 	// 누적수강생 수 받아오기
 	public int teachCountStu(String id) {
 		int result = 0;
-		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
+		//List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
 		try {
 			getConn();
 			
@@ -174,13 +174,7 @@ public class Stu_ClassDAO extends DBConnection{
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				Stu_ClassVO vo = new Stu_ClassVO();
-				vo.setClass_num(rs.getInt(1));
-				lst.add(vo);
-			}
-			result = lst.size();
+			result = pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -245,6 +239,8 @@ public class Stu_ClassDAO extends DBConnection{
 		}
 		return lst;
 	}
+	//
+	
 	//학생 수업 변경원하는 수업 받아오기 
 	public List<Stu_ClassVO> getChangeClass(String changeClass, String idStr) {
 		List<Stu_ClassVO> lst = new ArrayList<Stu_ClassVO>();
