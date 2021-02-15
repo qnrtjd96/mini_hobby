@@ -370,8 +370,7 @@ System.out.println("날짜?"+date+"time?"+time);
 		
 		// 월의 1일~마지막일 까지 출력 + 체크박스 연동
 		BoardDAO dao = new BoardDAO();
-		List<BoardVO> lst = dao.detailBoardCal(id, classname);
-	System.out.println("달력세팅 클래스?"+classname+"     id?"+id);
+		List<BoardVO> lst = dao.detailBoard(class_num);
 	System.out.println("몇개뽑아옴?"+lst.size());
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
