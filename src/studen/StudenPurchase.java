@@ -137,7 +137,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		cancelBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);
 		cancelBtn.setBounds(475,500, 70,30);		add(cancelBtn);
 		writeReview.setFont(btnFnt);			writeReview.setBackground(col6);
-		writeReview.setBounds(475,755, 70,30);		add(writeReview);
+		writeReview.setBounds(100,0, 70,30);		add(writeReview);
 		
 		//전체 구매 클래스
 		allModel = new DefaultTableModel(allCol, 0) {
@@ -164,6 +164,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		//이벤트 구현 필요 ...rebookBtn > JDialog, cancelBtn > db에서 지우기
 		rebookBtn.addActionListener(this);
 		cancelBtn.addActionListener(this);
+		writeReview.addActionListener(this);
 		
 		setDuePurchase(idStr);
 		setAllPurchase(idStr);
@@ -275,12 +276,19 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			System.out.println("예약변경 누름");
 			for(int i=0; i<dueTable.getRowCount(); i++) {
 				changeClass = (String)dueTable.getValueAt(i, 1);//시간바꾸고싶은 클래스 이름 받아옴
-				Stu_ClassDAO classDao = new Stu_ClassDAO();
-				List<Stu_ClassVO> lst = classDao.getChangeClass(changeClass, idStr);
-				classNum = vo.getClass_num();
-				System.out.println("예약변경 원하는 수업의 글번호 뽑아오기 .... "+classNum);
-				new duePurchaseDialog(classNum, idStr);
-			}	
+				System.out.println("예약변경 원하는 수업의 제목 뽑아오기 .... "+changeClass);
+				
+				//바꾸고 싶은 클래스의 글번호 뽑아오기 
+				Stu_ClassDAO dao = new Stu_ClassDAO();
+				List<Stu_ClassVO> lst = dao.getChangeClass(changeClass, idStr);
+				vo = lst.get(0);
+				vo.getClass_num();
+				
+				System.out.println(" vo실행 >  > >  >  > "+vo.getClass_num());
+				new duePurchaseDialog(vo.getClass_num(), idStr);
+			}
+			
+			//setDuePurchase(idStr);... 실행떄마다 쌓임 
 		}else if(obj==cancelBtn) {
 			System.out.println("예약취소 누름");
 			int result = 0;
@@ -297,7 +305,18 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 				JOptionPane.showMessageDialog(this, "예약취소가 실패되었습니다.");
 			}
 		}else if(obj==writeReview) {
-
+			System.out.println("리뷰작성 누름");
+			for(int i=0; i<dueTable.getRowCount(); i++) {
+				changeClass = (String)allPurchase.getValueAt(i, 1);
+				System.out.println("리뷰작성수업의 제목 ?... "+changeClass);
+				//리뷰 쓰려고하는 글번호 뽑아오기 !
+				Stu_ClassDAO dao = new Stu_ClassDAO();
+				List<Stu_ClassVO> lst = dao.getChangeClass(changeClass, idStr);
+				vo = lst.get(0);
+				vo.getClass_num();
+				System.out.println(" - - - - - - 리뷰 쓰려는 글 번호? "+vo.getClass_num());
+				new writeReviewDialog(vo.getClass_num(), idStr);
+			}
 		}
 	}
 	
@@ -398,9 +417,3 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		}
 	}
 }
-
-
-
-//다이얼로그 클래스 ... 프레임 상속이 필요하다..
-
-

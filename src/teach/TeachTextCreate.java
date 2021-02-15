@@ -53,7 +53,7 @@ public class TeachTextCreate extends JDialog implements ActionListener, ItemList
 	    	JLabel dayLabel = new JLabel("날짜");
 			JComboBox<String> dayLable = new JComboBox<String>();
 			DefaultComboBoxModel<String> dayLabel2Model = new DefaultComboBoxModel<String>();
-			    String dayLableStr[]= {"2021/02/15","2021/02/16","2021/02/17","2021/02/18","2021/02/19","2021/02/20","2021/02/21","2021/02/22","2021/02/23","2021/02/24","2021/02/25","2021/02/26","2021/02/27","2021/02/28"};
+			    String dayLableStr[]= {"2021/02/16","2021/02/17","2021/02/18","2021/02/19","2021/02/20","2021/02/21","2021/02/22","2021/02/23","2021/02/24","2021/02/25","2021/02/26","2021/02/27","2021/02/28","2021/03/01"};
 			JLabel  area = new JLabel("지역");
 			JComboBox<String> area2 = new JComboBox<String>();
 			DefaultComboBoxModel<String> area2Model = new DefaultComboBoxModel<String>();
