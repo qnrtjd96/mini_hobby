@@ -293,7 +293,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 				
 			System.out.println(" vo실행 >  > >  >  > "+vo.getClass_num());
 			new duePurchaseDialog(vo.getClass_num(), idStr);
-			
+			//강산이 예약변경 안뜸 ㅠㅠ? 
 		}else if(obj==cancelBtn) {
 			System.out.println("예약취소 누름");
 			int result = 0;
