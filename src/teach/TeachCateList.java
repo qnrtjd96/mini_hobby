@@ -191,6 +191,7 @@ public class TeachCateList extends JPanel implements ActionListener, MouseListen
 				title = (String)model.getValueAt(row, 1); // 클래스명 가져오기 (혹시몰라서)
 				int class_num = (int)model.getValueAt(row,0);
 				String classdate = (String)model.getValueAt(row,3);
+	System.out.println(idStr);
 				new TeachReservationDetail(idStr, title, class_num, classdate);
 			}
 		}

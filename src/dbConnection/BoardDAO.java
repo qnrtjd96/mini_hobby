@@ -144,6 +144,35 @@ public class BoardDAO extends DBConnection{
 		}
 		return lst;
 	}
+	
+	public List<BoardVO> detailBoardCal(String id, String classname) {
+		List<BoardVO> lst = new ArrayList<BoardVO>();
+		try {
+			getConn();
+			
+			sql="select classname, to_char(classdate, 'yyyy-mm-dd'), classtime from boardtbl "
+					+ " where to_char(classdate, 'MM')='02' and id=? and classname=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, classname);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardVO vo = new BoardVO();
+				vo.setClassname(rs.getString(1));
+				vo.setClassdate(rs.getString(2));
+				vo.setClasstime(rs.getString(3));
+				
+				lst.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbClose();
+		}
+		return lst;
+	}
 	// 테이블세팅
 	public List<BoardVO> detailTable(int class_num) {
 		List<BoardVO> lst = new ArrayList<BoardVO>();
@@ -396,4 +425,5 @@ public class BoardDAO extends DBConnection{
 		}
 		return result;
 	}
+	
 }
