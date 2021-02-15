@@ -123,6 +123,7 @@ public class writeReviewDialog extends JDialog implements ActionListener, ItemLi
 				this.setVisible(false);
 			}else {
 				JOptionPane.showMessageDialog(this, "이미 리뷰를 작성하셨습니다.");
+				this.setVisible(false);
 			}
 		}
 	}
