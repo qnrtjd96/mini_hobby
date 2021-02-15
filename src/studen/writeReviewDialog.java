@@ -35,7 +35,7 @@ public class writeReviewDialog extends JDialog implements ActionListener, ItemLi
 		JComboBox<String> box = new JComboBox<String>(model);
 
 	JPanel centerPane = new JPanel();
-		JTextArea typeReview = new JTextArea();		String testTa = "텍스트 에리어 안됨?";
+		JTextArea typeReview = new JTextArea();		String testTa = "리뷰 작성";
 	JPanel btnPane = new JPanel();		
 		JButton doneBtn = new JButton("작성완료");
 	
@@ -94,7 +94,6 @@ public class writeReviewDialog extends JDialog implements ActionListener, ItemLi
 			System.out.println("리뷰작성완료 버튼이 눌림...");
 			ReviewVO vo = new ReviewVO();
 			String writeRivew = typeReview.getText();
-			vo.setReview_detail(writeRivew);
 			
 			String getBoxScore = box.getSelectedItem().toString();
 			System.out.println("콤보박스 값 리턴? "+getBoxScore);
@@ -110,18 +109,20 @@ public class writeReviewDialog extends JDialog implements ActionListener, ItemLi
 				getBoxScore = "5";
 			}
 			System.out.println(" > > > 콤보박스값 String 변환 "+getBoxScore);
-			vo.setScore(Integer.parseInt(getBoxScore));
 			
-			System.out.println(" class - - - 텍스트 에리어 값 리턴 ? ? ? "+vo.getReview_detail());
-			System.out.println(" class - - - 콤보박스 값 리턴 ? ? ? "+vo.getScore());
 			int intBox = Integer.parseInt(getBoxScore);
+			System.out.println(" class - - - 텍스트 에리어 값 리턴 ? ? ? "+writeRivew);
+			System.out.println(" class - - - 콤보박스 값 리턴 ? ? ? "+intBox);
+			System.out.println(", , , , , "+reviewNum);
 			ReviewDAO dao = new ReviewDAO();
 			int result = dao.commitReview(reviewNum, intBox, writeRivew);
 			
+			
 			if(result>0) {
 				JOptionPane.showMessageDialog(this, "리뷰작성이 완료됐습니다.");
+				this.setVisible(false);
 			}else {
-				JOptionPane.showMessageDialog(this, "리뷰작성 업로드 실패");
+				JOptionPane.showMessageDialog(this, "이미 리뷰를 작성하셨습니다.");
 			}
 		}
 	}

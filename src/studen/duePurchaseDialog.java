@@ -18,6 +18,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
@@ -129,35 +130,24 @@ public class duePurchaseDialog extends JDialog implements ActionListener, ItemLi
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if(obj==changeBtn) {
-			//체크박스 값을 받아오는거
-			TreeSet<String> timeSet = new TreeSet<String>();
-			StringTokenizer strTk = new StringTokenizer(classtime," [,]"); //자르기
-			while(strTk.hasMoreTokens()) {
-				String token = strTk.nextToken();
-				timeSet.add(token);	//트리셋에 담아주기
-			}
-			System.out.println("- - - - - - - - - 리셋에 담김 ? "+timeSet.size());
-			
+			String str = "";
 			Iterator<String> it = selectCheck.iterator(); //트리셋에서 값 받아오기
 			while(it.hasNext()) {
 				String checkStr = it.next();
 				System.out.println("       selectCheck iterator 1 > "+checkStr);
+				str = str+checkStr+",";
+				classtime = str.substring(0,str.length()-1);
+				System.out.println("- - - -  - - -  -"+classtime);
+			}
+			Stu_ClassDAO dao = new Stu_ClassDAO();
+			int result = dao.stuChangeClasstime(classtime, id, classNum);
+			if(result>0) {
+				JOptionPane.showMessageDialog(this, "예약변경이 완료되었습니다.");
+				this.setVisible(false);
+			}else {
+				JOptionPane.showMessageDialog(this, "예약변경이 실패되었습니다.");
+			}
 			
-				Iterator<String> it2 = timeSet.iterator();
-				while(it2.hasNext()) {
-					String timeStr = it2.next();
-					System.out.println("       timeStr iterator 1 > "+timeStr);
-					//비교해서 제거해주기
-					if(checkStr.equals(timeStr)) {
-						timeSet.remove(timeStr);
-						break;
-					}
-				}
-			}	
-			String newClassTime = timeSet.toString();
-			classtime = newClassTime.substring(1, newClassTime.length()-1);
-			System.out.println(" < < < 바뀐시간 담겼나? > > > "+classtime);
-			//
 		}
 	}
 	

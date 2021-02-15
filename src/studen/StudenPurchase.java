@@ -82,6 +82,9 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	String allCol[] = {"번호", "클래스명", "강사", "예약일", "장소"};
 	Object allData[][] = new Object[0][allCol.length];
 	
+	int r, c;
+	int allr, allc;
+	
 	JButton rebookBtn = new JButton("예약변경");
 	JButton cancelBtn = new JButton("예약취소");
 	JButton writeReview = new JButton("리뷰작성");
@@ -137,8 +140,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		cancelBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);
 		cancelBtn.setBounds(475,500, 70,30);		add(cancelBtn);
 		writeReview.setFont(btnFnt);			writeReview.setBackground(col6);
-		writeReview.setBounds(100,0, 70,30);		add(writeReview);
-		
+		writeReview.setBounds(475,670, 70,30);		add(writeReview);
 		//전체 구매 클래스
 		allModel = new DefaultTableModel(allCol, 0) {
 			public boolean isCellEditable(int i, int c) {
@@ -155,8 +157,8 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		allPurchase.getColumn("장소").setPreferredWidth(40);
 		allPurchase.getTableHeader().setBackground(col6);	allPurchase.getTableHeader().setFont(headFnt);
 		allSp = new JScrollPane(allPurchase);
-		allSp.setBounds(25, 530, 520, 220);		add(allSp);
-		
+		allSp.setBounds(25, 530, 520, 140);		add(allSp);
+
 		//테이블 이벤트 
 		dueTable.addMouseListener(this);
 		allPurchase.addMouseListener(this);
@@ -265,6 +267,12 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	//날짜 클릭하면 테이블에 예약내역 보여주기
 	@Override
 	public void mouseClicked(MouseEvent me) {
+		//예약예정 테이블 값 받아오기
+		r = dueTable.getSelectedRow();
+		c =dueTable.getSelectedColumn();
+		//전체 구매목록 값 받아오기
+		allr = allPurchase.getSelectedRow();
+		allc = allPurchase.getSelectedColumn();
 	}
 
 	@Override
@@ -274,29 +282,27 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 
 		if(obj==rebookBtn) {
 			System.out.println("예약변경 누름");
-			for(int i=0; i<dueTable.getRowCount(); i++) {
-				changeClass = (String)dueTable.getValueAt(i, 1);//시간바꾸고싶은 클래스 이름 받아옴
-				System.out.println("예약변경 원하는 수업의 제목 뽑아오기 .... "+changeClass);
+			changeClass = (String)dueTable.getValueAt(r, 1);//시간바꾸고싶은 클래스 이름 받아옴
+			System.out.println("예약변경 원하는 수업의 제목 뽑아오기 .... "+changeClass);
 				
-				//바꾸고 싶은 클래스의 글번호 뽑아오기 
-				Stu_ClassDAO dao = new Stu_ClassDAO();
-				List<Stu_ClassVO> lst = dao.getChangeClass(changeClass, idStr);
-				vo = lst.get(0);
-				vo.getClass_num();
+			//바꾸고 싶은 클래스의 글번호 뽑아오기 
+			Stu_ClassDAO dao = new Stu_ClassDAO();
+			List<Stu_ClassVO> lst = dao.getChangeClass(changeClass, idStr);
+			vo = lst.get(0);
+			vo.getClass_num();
 				
-				System.out.println(" vo실행 >  > >  >  > "+vo.getClass_num());
-				new duePurchaseDialog(vo.getClass_num(), idStr);
-			}
+			System.out.println(" vo실행 >  > >  >  > "+vo.getClass_num());
+			new duePurchaseDialog(vo.getClass_num(), idStr);
+			dueSp.setVisible(false);
+			setDuePurchase(idStr);
+			dueSp.setVisible(true);
 			
-			//setDuePurchase(idStr);... 실행떄마다 쌓임 
 		}else if(obj==cancelBtn) {
 			System.out.println("예약취소 누름");
 			int result = 0;
-			for(int i=0; i<dueTable.getRowCount(); i++){
-				String sendDelStr = (String) dueTable.getValueAt(i, 1);
-				Stu_ClassDAO dao = new Stu_ClassDAO(); 
-				result = dao.deletStuClass(idStr, sendDelStr);
-			}
+			String sendDelStr = (String) dueTable.getValueAt(r, 1);
+			Stu_ClassDAO dao = new Stu_ClassDAO(); 
+			result = dao.deletStuClass(idStr, sendDelStr);
 			if(result>0) {
 				JOptionPane.showMessageDialog(this, "예약이 취소되었습니다.");
 				dueModel.setRowCount(0);
@@ -306,8 +312,8 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			}
 		}else if(obj==writeReview) {
 			System.out.println("리뷰작성 누름");
-			for(int i=0; i<dueTable.getRowCount(); i++) {
-				changeClass = (String)allPurchase.getValueAt(i, 1);
+			//for(int i=0; i<dueTable.getRowCount(); i++) { < < < 테이블 값 다 받아옴
+				changeClass = (String)allPurchase.getValueAt(allr, 1);
 				System.out.println("리뷰작성수업의 제목 ?... "+changeClass);
 				//리뷰 쓰려고하는 글번호 뽑아오기 !
 				Stu_ClassDAO dao = new Stu_ClassDAO();
@@ -316,7 +322,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 				vo.getClass_num();
 				System.out.println(" - - - - - - 리뷰 쓰려는 글 번호? "+vo.getClass_num());
 				new writeReviewDialog(vo.getClass_num(), idStr);
-			}
+			//}
 		}
 	}
 	
