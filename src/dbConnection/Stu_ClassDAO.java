@@ -239,7 +239,31 @@ public class Stu_ClassDAO extends DBConnection{
 		}
 		return lst;
 	}
-	//
+	//학생 수업 예약 변경 
+	public int stuChangeClasstime (String classtime, String id, int class_num) {
+		int result = 0;
+		System.out.println("예약변경값 잘 받아왔나? "+classtime+", "+id+", "+class_num);
+		try {
+			getConn();
+			sql = "update stu_class set classtime = ? where id = ? and class_num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, classtime);
+			pstmt.setString(2, id);
+			pstmt.setInt(3, class_num);
+			
+			
+			result = pstmt.executeUpdate();
+			System.out.println("예약 변경 업데이트 됨? "+result);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		
+		return result;
+		
+	}
 	
 	//학생 수업 변경원하는 수업 받아오기 
 	public List<Stu_ClassVO> getChangeClass(String changeClass, String idStr) {
