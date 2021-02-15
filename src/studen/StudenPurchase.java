@@ -136,11 +136,11 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		
 		//버튼 넣기.. 달력 크기 조절하고 다시 셋바운드로 맞추기
 		rebookBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);	
-		rebookBtn.setBounds(410,500, 70,30);		add(rebookBtn);
+		rebookBtn.setBounds(370,500, 85,30);		add(rebookBtn);
 		cancelBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);
-		cancelBtn.setBounds(475,500, 70,30);		add(cancelBtn);
+		cancelBtn.setBounds(460,500, 85,30);		add(cancelBtn);
 		writeReview.setFont(btnFnt);			writeReview.setBackground(col6);
-		writeReview.setBounds(475,670, 70,30);		add(writeReview);
+		writeReview.setBounds(460,670, 85,30);		add(writeReview);
 		//전체 구매 클래스
 		allModel = new DefaultTableModel(allCol, 0) {
 			public boolean isCellEditable(int i, int c) {
@@ -293,9 +293,6 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 				
 			System.out.println(" vo실행 >  > >  >  > "+vo.getClass_num());
 			new duePurchaseDialog(vo.getClass_num(), idStr);
-			dueSp.setVisible(false);
-			setDuePurchase(idStr);
-			dueSp.setVisible(true);
 			
 		}else if(obj==cancelBtn) {
 			System.out.println("예약취소 누름");
