@@ -103,7 +103,7 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 		getSearchResult(cate); //검색결과
 		
 		// 검색 부분
-		searchTf.setText(" 검색할 클래스명/지역/강사명을 입력하세요."); 
+		searchTf.setText(" 검색할 카테고리명을 입력하세요."); 
 		mainPane.add(searchTf); mainPane.add(searchBtn);
 		
 		// 폰트 설정
