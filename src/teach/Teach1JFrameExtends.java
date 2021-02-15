@@ -120,9 +120,10 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 		if(obj==Logo) { // 로고버튼 누르면 -> 홈으로 돌아감
 			center.setVisible(false);
 			center.removeAll();
+			model.setRowCount(0);
 			TeachMain();
 			center.setVisible(true);
-			add("Center", center);
+			//add("Center", center);
 		} else if(obj==btn) { // 검색
 			String searchTxt = tf.getText();
 			TeachCateList tcl = new TeachCateList(searchTxt);
@@ -139,13 +140,7 @@ public class Teach1JFrameExtends extends JFrame implements ActionListener, Mouse
 			add(center);
 			center.setVisible(true);
 		} else if(obj==btn_new) { // 새글쓰기
-			//center.setVisible(false);
-			//center.removeAll();
 			new TeachTextCreate(id);
-			//center = new TeachTextCreate(id).main;
-			//add(center);
-			//center.setVisible(true);
-			
 		} else if(obj==btn_save) { // 메모저장
 			MemoVO vom = new MemoVO(ta.getText().substring(0, 10), ta.getText().substring(11), vo.getId());
 			MemoDAO dao = new MemoDAO();
@@ -277,7 +272,7 @@ System.out.println("로그아웃?"+result);
 		this.vo = lst.get(0);
 		login = new JLabel(vo.getName()+"님 로그인 완료");
 		
-		table.removeAll();
+		
 		center.removeAll();
 		add("Center", center);
 		center.setBackground(Color.white);
