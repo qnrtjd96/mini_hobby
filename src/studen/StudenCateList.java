@@ -146,8 +146,15 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 					 || searchTxt.equals("미술")  || searchTxt.equals("음악") ) {
 				model.setRowCount(0); // model 초기화
 				getCateList(searchTxt);
+			}else if(searchTxt.equals("")){
+				JOptionPane.showMessageDialog(this, "클래스명/지역명/카테고리명 중 검색하세요.");
+			}else if(searchTxt.contains("경기") || searchTxt.contains("서울")  || searchTxt.contains("부산")
+					 || searchTxt.contains("울산") || searchTxt.contains("전라")){
+				model.setRowCount(0);
+				getCityList(searchTxt);
 			}else {
-				JOptionPane.showMessageDialog(this, "음악, 스포츠, 미술, 요리 중 검색하세요.");
+				model.setRowCount(0);	
+				getTeaNameList(searchTxt);
 			}
 		}
 	}
@@ -161,7 +168,24 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 			model.addRow(data);
 		}
 	}
-	
+	public void getCityList(String city) {
+		Mem_teacherDAO dao = new Mem_teacherDAO();
+		List<Mem_teacherVO> lst = dao.cityList(city);
+		for(int i=0; i<lst.size(); i++) {
+			Mem_teacherVO vo = lst.get(i);
+			Object[] data = {vo.getClass_num(),"<HTML><U>"+vo.getClassName()+"</U></HTML>",vo.getCity(),vo.getCost(),vo.gettName()};
+			model.addRow(data);
+		}
+	}
+	public void getTeaNameList(String name) {
+		Mem_teacherDAO dao = new Mem_teacherDAO();
+		List<Mem_teacherVO> lst = dao.teaNameList(name);
+		for(int i=0; i<lst.size(); i++) {
+			Mem_teacherVO vo = lst.get(i);
+			Object[] data = {vo.getClass_num(),"<HTML><U>"+vo.getClassName()+"</U></HTML>",vo.getCity(),vo.getCost(),vo.gettName()};
+			model.addRow(data);
+		}
+	}
 	public void getSearchResult(String searchWord ) {
 		Mem_teacherDAO dao = new Mem_teacherDAO();
 		List<Mem_teacherVO> searchList = dao.getSearch(searchWord);

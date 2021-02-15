@@ -66,12 +66,71 @@ public class Mem_teacherDAO extends DBConnection {
 		}
 		return lst;
 	}
+	//학생 지역검색(카테고리 리스트)
+	public List<Mem_teacherVO> cityList(String city) {
+		List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
+		try {
+			getConn();
+			
+			sql = "select a.classname, a.city, a.cost, a.name, a.class_num from (select b.id, b.classname, b.city, b.cost, m.name, b.class_num, b.classdate from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where a.city like ? and a.classdate >= to_char(sysdate,'yy/mm/dd')";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+city+"%");
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Mem_teacherVO vo = new Mem_teacherVO();
+				vo.setClassName(rs.getString(1));
+				vo.setCity(rs.getString(2));
+				vo.setCost(rs.getInt(3));
+				vo.settName(rs.getString(4));
+				vo.setClass_num(rs.getInt(5));
+				
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
+	//학생 강사명검색(카테고리 리스트)
+	public List<Mem_teacherVO> teaNameList(String name) {
+		List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
+		try {
+			getConn();
+			
+			sql = "select a.classname, a.city, a.cost, a.name, a.class_num from (select b.id, b.classname, b.city, b.cost, m.name, b.class_num, b.classdate from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where a.name=? and a.classdate >= to_char(sysdate,'yy/mm/dd')";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Mem_teacherVO vo = new Mem_teacherVO();
+				vo.setClassName(rs.getString(1));
+				vo.setCity(rs.getString(2));
+				vo.setCost(rs.getInt(3));
+				vo.settName(rs.getString(4));
+				vo.setClass_num(rs.getInt(5));
+				
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
+	
 	public List<Mem_teacherVO> getSearch(String searchWord) {
 		List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
 		
 		try {
 			getConn(); 
-System.out.println("getSearch > > > "+searchWord);
+			System.out.println("getSearch > > > "+searchWord);
 			sql = "select class_num, classname, city, cost, mem.name from boardtbl b, membertbl mem "
 				+ "where b.id=mem.id and (b.classname like ? or mem.name like ? ) ";	//or mem.name like ?
 			pstmt = conn.prepareStatement(sql);
@@ -100,34 +159,92 @@ System.out.println("getSearch > > > "+searchWord);
 		
 	}
 	// 강사 카테고리 검색시 보여지는 리스트(studenCateList.java)
-		public List<Mem_teacherVO> teaCateList(String cate) {
-			List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
-			try {
-				getConn();
+	public List<Mem_teacherVO> teaCateList(String cate) {
+		List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
+		try {
+			getConn();
+			
+			sql = "select a.classname, a.city, a.name, a.career, a.class_num from (select b.id, b.classname, b.city, b.career, m.name ,b.class_num, b.classdate from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where t.cate=? and a.classdate >= to_char(sysdate,'yy/mm/dd')";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cate);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Mem_teacherVO vo = new Mem_teacherVO();
+				vo.setClassName(rs.getString(1));
+				vo.setCity(rs.getString(2));
+				vo.settName(rs.getString(3));
+				vo.setCareer(rs.getString(4));
+				vo.setClass_num(rs.getInt(5));
 				
-				sql = "select a.classname, a.city, a.name, a.career, a.class_num from (select b.id, b.classname, b.city, b.career, m.name ,b.class_num, b.classdate from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where t.cate=? and a.classdate >= to_char(sysdate,'yy/mm/dd')";
-				
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, cate);
-				
-				rs = pstmt.executeQuery();
-				while(rs.next()) {
-					Mem_teacherVO vo = new Mem_teacherVO();
-					vo.setClassName(rs.getString(1));
-					vo.setCity(rs.getString(2));
-					vo.settName(rs.getString(3));
-					vo.setCareer(rs.getString(4));
-					vo.setClass_num(rs.getInt(5));
-					
-					lst.add(vo);
-				}
-			}catch(Exception e) {
-				e.printStackTrace();
-			}finally {
-				dbClose();
+				lst.add(vo);
 			}
-			return lst;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
 		}
+		return lst;
+	}
+	//강사 지역검색(카테고리 리스트)
+	public List<Mem_teacherVO> teaCityList(String city) {
+		List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
+		try {
+			getConn();
+			
+			sql = "select a.classname, a.city, a.name, a.career, a.class_num from (select b.id, b.classname, b.city, b.career, m.name ,b.class_num, b.classdate from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where a.city like ? and a.classdate >= to_char(sysdate,'yy/mm/dd')";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+city+"%");
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Mem_teacherVO vo = new Mem_teacherVO();
+				vo.setClassName(rs.getString(1));
+				vo.setCity(rs.getString(2));
+				vo.settName(rs.getString(3));
+				vo.setCareer(rs.getString(4));
+				vo.setClass_num(rs.getInt(5));
+				
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
+	//강사 강사명검색(카테고리 리스트)
+	public List<Mem_teacherVO> teaTeachNameList(String name) {
+		List<Mem_teacherVO> lst = new ArrayList<Mem_teacherVO>();
+		try {
+			getConn();
+			
+			sql = "select a.classname, a.city, a.name, a.career, a.class_num from (select b.id, b.classname, b.city, b.career, m.name ,b.class_num, b.classdate from membertbl m join boardtbl b on m.id=b.id where m.sort=2) a join mem_teacher t on a.id=t.id where a.name=? and a.classdate >= to_char(sysdate,'yy/mm/dd')";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Mem_teacherVO vo = new Mem_teacherVO();
+				vo.setClassName(rs.getString(1));
+				vo.setCity(rs.getString(2));
+				vo.settName(rs.getString(3));
+				vo.setCareer(rs.getString(4));
+				vo.setClass_num(rs.getInt(5));
+				
+				lst.add(vo);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbClose();
+		}
+		return lst;
+	}
 	//선생님 회원정보 받아오기
 	public List<Mem_teacherVO> getTeachInfo(String id){	//String teacher id
 			
