@@ -124,7 +124,7 @@ public class AdminSendMsg extends JPanel implements MouseListener, ActionListene
 		// 폰트 설정
 		table.getTableHeader().setFont(fntBold15);
 		table.setFont(fntPlain15);
-		delBtn.setFont(fntPlain15);
+		delBtn.setFont(fntBold15);
 		consLbl.setFont(fntBold20); 
 		consListLbl.setFont(fntBold20);
 		consBtn.setFont(fntBold15); clearBtn.setFont(fntBold15);
@@ -162,11 +162,12 @@ public class AdminSendMsg extends JPanel implements MouseListener, ActionListene
 		getBanLstDef();
 		
 		// setBounds
+		
 		sortLbl.setBounds(580,0,100,30); sortBox.setBounds(639,0,100,30);
-		sp.setBounds(0,30,745,350); delBtn.setBounds(640,370,100,50);
-		consLbl.setBounds(280,390,200,50);
-		consTf.setBounds(30,440,560,30); consBtn.setBounds(610,440,100,30);
-		consListLbl.setBounds(252,500,250,30); 
+		sp.setBounds(0,30,745,350); delBtn.setBounds(630,390,100,30);
+		consLbl.setBounds(280,410,200,50);
+		consTf.setBounds(30,460,560,30); consBtn.setBounds(610,460,100,30);
+		consListLbl.setBounds(252,510,250,30); 
 		consListPane.setBounds(30,540,680,200);
 		clearBtn.setBounds(610,755,100,30);
 		

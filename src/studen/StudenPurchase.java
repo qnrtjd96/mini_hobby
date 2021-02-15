@@ -82,6 +82,9 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 	String allCol[] = {"번호", "클래스명", "강사", "예약일", "장소"};
 	Object allData[][] = new Object[0][allCol.length];
 	
+	JLabel dueTitle = new JLabel("수강예정목록");
+	JLabel allTitle = new JLabel("전체구매목록");
+	
 	int r, c;
 	int allr, allc;
 	
@@ -125,6 +128,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			}
 		};
 		dueTable = new JTable(dueModel);
+		dueTable.setBackground(Color.white);
 		dueTable.getColumn("번호").setPreferredWidth(30);
 		dueTable.getColumn("클래스명").setPreferredWidth(120);
 		dueTable.getColumn("예약일").setPreferredWidth(40);
@@ -132,15 +136,15 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		dueTable.getColumn("장소").setPreferredWidth(40);
 		dueTable.getTableHeader().setBackground(col6);	dueTable.getTableHeader().setFont(headFnt);
 		dueSp = new JScrollPane(dueTable);		dueSp.setSize(300, 200);
-		dueSp.setBounds(25, 360, 520, 140);		add(dueSp);
+		dueSp.setBounds(25, 390, 520, 140);		add(dueSp);
 		
 		//버튼 넣기.. 달력 크기 조절하고 다시 셋바운드로 맞추기
 		rebookBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);	
-		rebookBtn.setBounds(370,500, 85,30);		add(rebookBtn);
+		rebookBtn.setBounds(370,530, 85,30);		add(rebookBtn);
 		cancelBtn.setFont(btnFnt);				rebookBtn.setBackground(col6);
-		cancelBtn.setBounds(460,500, 85,30);		add(cancelBtn);
+		cancelBtn.setBounds(460,530, 85,30);		add(cancelBtn);
 		writeReview.setFont(btnFnt);			writeReview.setBackground(col6);
-		writeReview.setBounds(460,670, 85,30);		add(writeReview);
+		writeReview.setBounds(460,720, 85,30);		add(writeReview);
 		//전체 구매 클래스
 		allModel = new DefaultTableModel(allCol, 0) {
 			public boolean isCellEditable(int i, int c) {
@@ -148,7 +152,7 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 			}
 		};
 		allPurchase = new JTable(allModel);
-		allPurchase = new JTable(allModel);
+		allPurchase.setBackground(Color.white);
 		allPurchase.getTableHeader().setReorderingAllowed(false);
 		allPurchase.getColumn("번호").setPreferredWidth(30);
 		allPurchase.getColumn("클래스명").setPreferredWidth(120);
@@ -157,8 +161,13 @@ public class StudenPurchase extends JPanel implements ActionListener, MouseListe
 		allPurchase.getColumn("장소").setPreferredWidth(40);
 		allPurchase.getTableHeader().setBackground(col6);	allPurchase.getTableHeader().setFont(headFnt);
 		allSp = new JScrollPane(allPurchase);
-		allSp.setBounds(25, 530, 520, 140);		add(allSp);
-
+		allSp.setBounds(25, 580, 520, 140);		add(allSp);
+		
+		dueTitle.setBackground(Color.white);	dueTitle.setFont(fntBold15);
+		allTitle.setBackground(Color.white);	allTitle.setFont(fntBold15);
+		dueTitle.setBounds(30,360, 100,30);	add(dueTitle);
+		allTitle.setBounds(30,550, 100,30);	add(allTitle);
+		
 		//테이블 이벤트 
 		dueTable.addMouseListener(this);
 		allPurchase.addMouseListener(this);

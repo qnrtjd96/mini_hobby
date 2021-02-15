@@ -87,7 +87,7 @@ public class StudenSendMsg extends JPanel implements ActionListener, MouseListen
       // 폰트 설정
       table.getTableHeader().setFont(fntBold15);
       table.setFont(fntPlain15);
-      delBtn.setFont(fntPlain15);
+      delBtn.setFont(fntBold15);
       
       // 배경색 설정
       table.getTableHeader().setBackground(Color.lightGray);
@@ -107,7 +107,7 @@ public class StudenSendMsg extends JPanel implements ActionListener, MouseListen
       sendMsgLst(idStr);
       
       // setBounds
-      sp.setBounds(0,0,745,750); delBtn.setBounds(640,750,100,50);
+      sp.setBounds(0,0,745,750); delBtn.setBounds(620,770,100,30);
       table.addMouseListener(this);
       delBtn.addActionListener(this);
    }
