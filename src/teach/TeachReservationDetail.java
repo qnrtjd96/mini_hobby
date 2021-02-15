@@ -28,6 +28,8 @@ import javax.swing.border.LineBorder;
 
 import dbConnection.BoardDAO;
 import dbConnection.BoardVO;
+import dbConnection.ReviewDAO;
+import dbConnection.ReviewVO;
 
 public class TeachReservationDetail extends JDialog implements ActionListener, MouseListener{
 	Font fn = new Font("맑은 고딕",Font.PLAIN, 15);
@@ -67,8 +69,6 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			JPanel review = new JPanel(new BorderLayout());
 				JLabel re1 = new JLabel("후기글");
 				JPanel rev = new JPanel(new GridLayout(0,1));
-					JLabel re2 = new JLabel("별점 : ");
-					JLabel re3 = new JLabel("등록된 후기가 없습니다.");
 		JPanel detail = new JPanel(new BorderLayout());
 		JScrollPane sp = new JScrollPane(detail);
 		JButton editBtn = new JButton("내용수정");
@@ -91,7 +91,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	String classname;
 	String time;
 	String selStr;
-	String category;
+	String category; String classdate;
 	int class_num; int costInt;
 
 	public TeachReservationDetail() {}
@@ -123,6 +123,8 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 	public TeachReservationDetail(String id, String classname, int class_num, String classdate) {
 		this.id=id;
 		this.class_num = class_num;
+		this.classdate = classdate;
+System.out.println("최초id?"+this.id);
 		
 		BoardDAO dao = new BoardDAO();
 		List<BoardVO> lst = dao.studenInfo(class_num);
@@ -130,8 +132,8 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		this.classname = vo.getClassname();
 		time = vo.getClassdate();
 		
-		lbl1.setText("선택한 클래스 : "+classname);
-		lbl2.setText("선택한 일자 : "+classdate);
+		lbl1.setText("선택한 클래스 : "+this.classname);
+		lbl2.setText("선택한 일자 : "+this.classdate);
 		
 		mainStart();		
 		tableSetting();
@@ -145,8 +147,13 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		JLabel label = (JLabel)me.getSource();
 		int date = Integer.parseInt(label.getText());
 		time = y+"-"+m+"-"+date;
+System.out.println("날짜?"+date+"time?"+time);
 		
+		center.setVisible(false);
+		lbl1.setText("선택한 클래스 : "+this.classname);
+		lbl2.setText("선택한 일자 : "+this.classdate);
 		tableSetting();
+		center.setVisible(true);
 	}
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
@@ -198,6 +205,23 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 			li10.setText(vo.getCost()+"원");
 			costInt = vo.getCost();
 			li12.setText(vo.getClasstime());
+		}
+		ReviewDAO dao2 = new ReviewDAO();
+		List<ReviewVO> lst2 = dao2.tableReview(class_num);
+		if(lst2.size()>0) {
+			for (int i=0; i<lst2.size(); i++) {
+				ReviewVO vo2 = lst2.get(i);
+				String star="★";
+				if(vo2.getScore()==2) star="★★";
+				else if(vo2.getScore()==3) star="★★★";
+				else if(vo2.getScore()==4) star="★★★★";
+				else if(vo2.getScore()==5) star="★★★★★";
+				JLabel re2 = new JLabel("별점 : "+star);
+				JLabel re3 = new JLabel(vo2.getReview_detail());
+				rev.add("North", re2); re2.setFont(fn);
+				re2.setBackground(Color.white); re3.setBackground(Color.white);
+				rev.add(re3); re3.setFont(fn); re3.setBorder(new LineBorder(Color.LIGHT_GRAY));
+			}
 		}
 		checkBoxStart();
 		
@@ -288,8 +312,6 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
         
 		review.add("North", re1); re1.setFont(fnt);
 		review.add(rev); review.setBackground(Color.white);
-		rev.add("North", re2); re2.setFont(fn); re1.setBackground(Color.white);
-		rev.add(re3); re3.setFont(fn); rev.setBackground(Color.white);
 		
 		btn.addActionListener(this);
 		editBtn.addActionListener(this);
@@ -348,7 +370,9 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 		
 		// 월의 1일~마지막일 까지 출력 + 체크박스 연동
 		BoardDAO dao = new BoardDAO();
-		List<BoardVO> lst = dao.detailBoard(class_num);
+		List<BoardVO> lst = dao.detailBoardCal(id, classname);
+	System.out.println("달력세팅 클래스?"+classname+"     id?"+id);
+	System.out.println("몇개뽑아옴?"+lst.size());
 		for(int day=1; day<=lastDay; day++) {
 			JLabel dayOfMonthLbl = new JLabel(Integer.toString(day));
 			dayOfMonthLbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -361,6 +385,7 @@ public class TeachReservationDetail extends JDialog implements ActionListener, M
 					int month = Integer.parseInt(date.substring(5,7));
 					if (month==m) {
 						int da = Integer.parseInt(date.substring(8,10));
+	System.out.println(da);
 						if(da>=d && Integer.parseInt(dayOfMonthLbl.getText())==da) {
 							dayOfMonthLbl.setOpaque(true);
 							dayOfMonthLbl.setBackground(col6);

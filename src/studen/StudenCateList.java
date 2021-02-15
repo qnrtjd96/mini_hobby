@@ -54,6 +54,7 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
     	
     String idStr;
     String cate;
+    String classname;
     
     public StudenCateList() {}
 	public StudenCateList(String cate, String idStr) {
@@ -206,6 +207,7 @@ public class StudenCateList extends JPanel implements ActionListener, MouseListe
 			int col = table.getSelectedColumn();
 			if(col==1) {
 				title = (String)model.getValueAt(row, 1); // 클래스명 가져오기 (혹시몰라서)
+				
 				int class_num = (int)model.getValueAt(row, 0);
 				new StudenReservationDetail(idStr, class_num, title);
 			}
