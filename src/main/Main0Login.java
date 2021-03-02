@@ -113,7 +113,7 @@ public class Main0Login extends JFrame implements ActionListener, MouseListener{
 	}
 	public void sort(String idStr, String pwdStr) {
 		if(idStr.equals("") || pwdStr.equals("")) {
-			JOptionPane.showMessageDialog(this, "공란없이 값을 입력해주세요");
+			JOptionPane.showMessageDialog(this, "공란없이 값을  입력해주세요");
 		} else {
 			MemberDAO dao = new MemberDAO();
 			List<MemberVO> searchList = dao.loginStart(idStr, pwdStr);
