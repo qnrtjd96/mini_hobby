@@ -3,7 +3,7 @@
 ## 팀명 : 열심히하조
 ## 프로젝트 : Mini-Hobby < 재능판매 스윙으로 구현 >
 
-> BITCAMP 2020-12-14~2021-05-28 Toy Team Project (5조)
+> BITCAMP 2021/02/03~2021-02-15 Toy Team Project (5조)
 
 > 팀원 구성 
  - 이강산 
@@ -14,10 +14,6 @@
 > 팀 협업 툴
  - Google Drive : https://drive.google.com/drive/folders/1fLuYkWZsD3OZW4_D7uyGv935_ffjJ5YE 
 <br/>
-
-
-## Final Project : Mini-Hobby < 재능판매 스윙으로 구현 >
-> 2021/02/03 ~ 2021/02/15
 
 <br/>
 
