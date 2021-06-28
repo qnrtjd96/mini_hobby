@@ -27,7 +27,8 @@
  
 <details>
  <summary>내가한 레이아웃 살펴보기 </summary>
- 
+ ![001](https://user-images.githubusercontent.com/54973523/123640817-81ba6780-d85c-11eb-9397-5817c67c10c7.png)
+
  
 </details> 
 
