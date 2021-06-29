@@ -26,11 +26,14 @@
  <br/>
  
 <details>
- <summary>내가한 레이아웃 살펴보기 </summary>
- ![001](https://user-images.githubusercontent.com/54973523/123640817-81ba6780-d85c-11eb-9397-5817c67c10c7.png)
+ <summary>내가맡은 레이아웃 살펴보기 </summary>
+![1](https://user-images.githubusercontent.com/54973523/123778819-79216a00-d90c-11eb-9501-7266a85b60e8.png)
+![2](https://user-images.githubusercontent.com/54973523/123778822-7a529700-d90c-11eb-987e-a9ff38bc4299.png)
+![3](https://user-images.githubusercontent.com/54973523/123778824-7aeb2d80-d90c-11eb-8ce3-1f00afa29fcb.png)
+![4](https://user-images.githubusercontent.com/54973523/123778826-7aeb2d80-d90c-11eb-9795-064c6d464bdb.png)
 
- 
-</details> 
+</details>
+
 
 # Contact Me
 ## 연락하길 희망하면 아래 이메일로 연락주세요.
