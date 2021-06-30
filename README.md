@@ -31,6 +31,11 @@
  <img src='https://user-images.githubusercontent.com/54973523/123778822-7a529700-d90c-11eb-987e-a9ff38bc4299.png' >
  <img src='https://user-images.githubusercontent.com/54973523/123778824-7aeb2d80-d90c-11eb-8ce3-1f00afa29fcb.png' >
  <img src='https://user-images.githubusercontent.com/54973523/123778826-7aeb2d80-d90c-11eb-9795-064c6d464bdb.png' >
+ ![4-1](https://user-images.githubusercontent.com/54973523/123973520-caa62380-d9f6-11eb-8c43-168694500288.png)
+![5](https://user-images.githubusercontent.com/54973523/123973525-cbd75080-d9f6-11eb-95dc-5bf940e37ef3.png)
+![6](https://user-images.githubusercontent.com/54973523/123973528-cc6fe700-d9f6-11eb-9b19-9aa95fa2bcb2.png)
+![7](https://user-images.githubusercontent.com/54973523/123973535-cda11400-d9f6-11eb-9906-d0291f126e6a.PNG)
+
 </details>
 
 
